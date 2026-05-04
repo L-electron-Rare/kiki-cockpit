@@ -36,7 +36,11 @@ export function createApiClient(options: ApiClientOptions) {
 
     if (!response.ok) {
       let body: unknown;
-      try { body = await response.json(); } catch { body = null; }
+      try {
+        body = await response.json();
+      } catch {
+        body = null;
+      }
       throw new ApiError(response.status, body, `HTTP ${response.status} on ${method} ${path}`);
     }
 

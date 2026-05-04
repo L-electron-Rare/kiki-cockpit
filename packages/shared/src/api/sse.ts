@@ -2,7 +2,7 @@
  * Async-iterable parser for text/event-stream over a fetch ReadableStream.
  * Uses eventsource-parser for spec-compliant SSE chunk handling.
  */
-import { createParser, type EventSourceMessage } from 'eventsource-parser';
+import { type EventSourceMessage, createParser } from 'eventsource-parser';
 
 export interface SSEEvent {
   event: string | undefined;
@@ -18,13 +18,16 @@ export async function* parseSSEStream(
   let closed = false;
   let resolveNext: (() => void) | null = null;
 
+  const wakeWaiter = (): void => {
+    const fn: (() => void) | null = resolveNext;
+    resolveNext = null;
+    if (fn !== null) fn();
+  };
+
   const parser = createParser({
     onEvent: (msg: EventSourceMessage) => {
       queue.push({ event: msg.event, data: msg.data, id: msg.id });
-      if (resolveNext) {
-        resolveNext();
-        resolveNext = null;
-      }
+      wakeWaiter();
     },
   });
 
@@ -41,10 +44,7 @@ export async function* parseSSEStream(
       }
     } finally {
       closed = true;
-      if (resolveNext) {
-        resolveNext();
-        resolveNext = null;
-      }
+      wakeWaiter();
     }
   })();
 
