@@ -1,4 +1,5 @@
 """FastAPI app factory."""
+import asyncio
 from contextlib import asynccontextmanager
 from collections.abc import AsyncIterator
 
@@ -28,6 +29,17 @@ EU_KIKI_ALIASES: set[str] = {
 }
 
 
+async def _periodic_refresh(cache: HFCache, interval_seconds: int) -> None:
+    while True:
+        try:
+            await asyncio.sleep(interval_seconds)
+            await cache.refresh()
+        except asyncio.CancelledError:
+            raise
+        except Exception as exc:  # noqa: BLE001
+            log.warning("hfcache.periodic_refresh_failed", error=str(exc))
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     log.info("startup", service="kiki-cockpit", port=settings.port)
@@ -47,6 +59,8 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     except Exception as exc:
         log.warning("hf.initial_refresh_failed", error=str(exc))
 
+    refresh_task = asyncio.create_task(_periodic_refresh(cache, settings.hf_sync_interval_seconds))
+
     eval_index = EvalIndex(
         roots=[
             settings.eu_kiki_root / "eval" / "results",
@@ -65,6 +79,11 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
 
     yield
 
+    refresh_task.cancel()
+    try:
+        await refresh_task
+    except asyncio.CancelledError:
+        pass
     log.info("shutdown")
 
 
