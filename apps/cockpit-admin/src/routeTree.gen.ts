@@ -9,17 +9,12 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as EvalRouteImport } from './routes/eval'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WorkersIndexRouteImport } from './routes/workers.index'
 import { Route as TrainingIndexRouteImport } from './routes/training.index'
+import { Route as EvalIndexRouteImport } from './routes/eval.index'
 import { Route as TrainingIdRouteImport } from './routes/training.$id'
 
-const EvalRoute = EvalRouteImport.update({
-  id: '/eval',
-  path: '/eval',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -35,6 +30,11 @@ const TrainingIndexRoute = TrainingIndexRouteImport.update({
   path: '/training/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EvalIndexRoute = EvalIndexRouteImport.update({
+  id: '/eval/',
+  path: '/eval/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TrainingIdRoute = TrainingIdRouteImport.update({
   id: '/training/$id',
   path: '/training/$id',
@@ -43,51 +43,44 @@ const TrainingIdRoute = TrainingIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/eval': typeof EvalRoute
   '/training/$id': typeof TrainingIdRoute
+  '/eval/': typeof EvalIndexRoute
   '/training/': typeof TrainingIndexRoute
   '/workers/': typeof WorkersIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/eval': typeof EvalRoute
   '/training/$id': typeof TrainingIdRoute
+  '/eval': typeof EvalIndexRoute
   '/training': typeof TrainingIndexRoute
   '/workers': typeof WorkersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/eval': typeof EvalRoute
   '/training/$id': typeof TrainingIdRoute
+  '/eval/': typeof EvalIndexRoute
   '/training/': typeof TrainingIndexRoute
   '/workers/': typeof WorkersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/eval' | '/training/$id' | '/training/' | '/workers/'
+  fullPaths: '/' | '/training/$id' | '/eval/' | '/training/' | '/workers/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/eval' | '/training/$id' | '/training' | '/workers'
-  id: '__root__' | '/' | '/eval' | '/training/$id' | '/training/' | '/workers/'
+  to: '/' | '/training/$id' | '/eval' | '/training' | '/workers'
+  id: '__root__' | '/' | '/training/$id' | '/eval/' | '/training/' | '/workers/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  EvalRoute: typeof EvalRoute
   TrainingIdRoute: typeof TrainingIdRoute
+  EvalIndexRoute: typeof EvalIndexRoute
   TrainingIndexRoute: typeof TrainingIndexRoute
   WorkersIndexRoute: typeof WorkersIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/eval': {
-      id: '/eval'
-      path: '/eval'
-      fullPath: '/eval'
-      preLoaderRoute: typeof EvalRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -109,6 +102,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TrainingIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/eval/': {
+      id: '/eval/'
+      path: '/eval'
+      fullPath: '/eval/'
+      preLoaderRoute: typeof EvalIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/training/$id': {
       id: '/training/$id'
       path: '/training/$id'
@@ -121,8 +121,8 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  EvalRoute: EvalRoute,
   TrainingIdRoute: TrainingIdRoute,
+  EvalIndexRoute: EvalIndexRoute,
   TrainingIndexRoute: TrainingIndexRoute,
   WorkersIndexRoute: WorkersIndexRoute,
 }
