@@ -1,5 +1,5 @@
 """Admin training runs endpoints."""
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import StreamingResponse
 
 from kiki_cockpit.auth.tailscale import require_tailscale_user
@@ -45,10 +45,14 @@ def _training_log_event_schema_marker() -> TrainingMetric:  # pragma: no cover
 @router.get("/training/runs/{run_id}/logs")
 async def stream_training_logs(
     run_id: str,
+    request: Request,
     provider=Depends(get_training_runs_provider),
 ) -> StreamingResponse:
     run = provider.get_run(run_id)
     if run is None:
         raise HTTPException(status_code=404, detail=f"Run {run_id} not found")
 
-    return StreamingResponse(provider.tail_log_sse(run_id), media_type="text/event-stream")
+    return StreamingResponse(
+        provider.tail_log_sse(run_id, disconnect_probe=request),
+        media_type="text/event-stream",
+    )

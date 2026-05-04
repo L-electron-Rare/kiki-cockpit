@@ -9,18 +9,14 @@ from pydantic import BaseModel, Field
 
 log = structlog.get_logger()
 
-EU_KIKI_ALIASES: set[str] = {
-    "eu-kiki/apertus-70b",
-    "eu-kiki/devstral-24b",
-    "eu-kiki/eurollm-22b",
-}
-
-# Map our user-facing alias to the gateway's expected model param
+# Single source of truth: model_id alias -> gateway model name.
+# `EU_KIKI_ALIASES` derives from the keys so adding a model only requires one edit.
 ALIAS_TO_GATEWAY_MODEL: dict[str, str] = {
     "eu-kiki/apertus-70b": "apertus-70b",
     "eu-kiki/devstral-24b": "devstral-24b",
     "eu-kiki/eurollm-22b": "eurollm-22b",
 }
+EU_KIKI_ALIASES: frozenset[str] = frozenset(ALIAS_TO_GATEWAY_MODEL)
 
 
 class ChatMessage(BaseModel):

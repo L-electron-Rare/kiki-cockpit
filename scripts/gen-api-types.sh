@@ -21,7 +21,9 @@ for i in {1..30}; do
   sleep 0.5
 done
 
-# Fetch OpenAPI and convert
-curl -fsS http://127.0.0.1:9199/openapi.json | pnpm exec openapi-typescript --output "$OUT"
+# Fetch OpenAPI and convert. The `-` argument tells openapi-typescript to read
+# the schema from stdin; without it v7+ may treat the missing positional as an
+# error and produce no output (silent CI failure).
+curl -fsS http://127.0.0.1:9199/openapi.json | pnpm exec openapi-typescript - --output "$OUT"
 
 echo "✓ Generated $OUT"

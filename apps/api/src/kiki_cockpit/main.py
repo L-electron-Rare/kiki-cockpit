@@ -26,11 +26,9 @@ from kiki_cockpit.services.training_runs_provider import TrainingRunsProvider
 
 log = structlog.get_logger()
 
-EU_KIKI_ALIASES: set[str] = {
-    "eu-kiki/apertus-70b",
-    "eu-kiki/devstral-24b",
-    "eu-kiki/eurollm-22b",
-}
+# Single source of truth — re-exported for the public API; chat_proxy imports the same
+# constant. Adding a new live model here automatically makes it chat-eligible.
+from kiki_cockpit.services.chat_proxy import EU_KIKI_ALIASES  # noqa: E402
 
 
 async def _periodic_refresh(cache: HFCache, interval_seconds: int) -> None:

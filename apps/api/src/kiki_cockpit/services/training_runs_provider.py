@@ -5,6 +5,7 @@ import asyncio
 import json
 from collections.abc import AsyncIterator
 from pathlib import Path
+from typing import Protocol
 
 import structlog
 
@@ -13,6 +14,12 @@ from kiki_cockpit.services.log_tail import parse_line
 from kiki_cockpit.services.training_runs import discover_runs
 
 log = structlog.get_logger()
+
+
+class _DisconnectProbe(Protocol):
+    """Minimal interface for probing client disconnect — Starlette's Request fits."""
+
+    async def is_disconnected(self) -> bool: ...
 
 
 class TrainingRunsProvider:
@@ -29,7 +36,16 @@ class TrainingRunsProvider:
                 return run
         return None
 
-    async def tail_log_sse(self, run_id: str) -> AsyncIterator[bytes]:
+    async def tail_log_sse(
+        self,
+        run_id: str,
+        disconnect_probe: _DisconnectProbe | None = None,
+    ) -> AsyncIterator[bytes]:
+        """Stream SSE events from the log of `run_id`.
+
+        Honors client disconnect via `disconnect_probe.is_disconnected()` so that
+        tail loops do not leak server-side coroutines after the browser closes.
+        """
         run = self.get_run(run_id)
         if run is None:
             yield b'event: error\ndata: {"message":"run not found"}\n\n'
@@ -47,10 +63,13 @@ class TrainingRunsProvider:
             if event:
                 yield event
 
-        # Tail for new lines
+        # Tail for new lines, polling 500ms with disconnect check between each poll
         with log_path.open("r") as f:
             f.seek(0, 2)  # end
             while True:
+                if disconnect_probe is not None and await disconnect_probe.is_disconnected():
+                    log.info("tail_log_sse.client_disconnected", run_id=run_id)
+                    break
                 pos = f.tell()
                 line = f.readline()
                 if not line:
