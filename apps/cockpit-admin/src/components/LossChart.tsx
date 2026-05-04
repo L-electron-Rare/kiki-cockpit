@@ -1,5 +1,14 @@
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import type { components } from '@cockpit/shared';
+import {
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
 
 type Metric = components['schemas']['TrainingMetric'];
 
@@ -30,8 +39,22 @@ export function LossChart({ metrics }: Props) {
         <YAxis tick={{ fontSize: 11 }} />
         <Tooltip />
         <Legend />
-        <Line type="monotone" dataKey="train" stroke="#2563eb" name="Train loss" dot={false} connectNulls />
-        <Line type="monotone" dataKey="val" stroke="#dc2626" name="Val loss" dot={false} connectNulls />
+        <Line
+          type="monotone"
+          dataKey="train"
+          stroke="#2563eb"
+          name="Train loss"
+          dot={false}
+          connectNulls
+        />
+        <Line
+          type="monotone"
+          dataKey="val"
+          stroke="#dc2626"
+          name="Val loss"
+          dot={false}
+          connectNulls
+        />
       </LineChart>
     </ResponsiveContainer>
   );

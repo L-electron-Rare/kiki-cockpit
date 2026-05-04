@@ -1,6 +1,6 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useTrainingRuns } from '@/hooks/useTrainingRuns';
 import { TrainingRunCard } from '@/components/TrainingRunCard';
+import { useTrainingRuns } from '@/hooks/useTrainingRuns';
+import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/training/')({
   component: TrainingListPage,

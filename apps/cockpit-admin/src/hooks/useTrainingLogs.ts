@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
 import { parseSSEStream } from '@cockpit/shared';
 import type { components } from '@cockpit/shared';
+import { useEffect, useRef, useState } from 'react';
 
 type Metric = components['schemas']['TrainingMetric'];
 

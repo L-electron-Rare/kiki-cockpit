@@ -1,6 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import type { components } from '@cockpit/shared';
+import { useQuery } from '@tanstack/react-query';
 
 type TrainingRun = components['schemas']['TrainingRun'];
 

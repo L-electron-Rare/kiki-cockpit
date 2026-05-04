@@ -1,7 +1,7 @@
+import type { LogEvent } from '@/hooks/useTrainingLogs';
+import { Copy, Search } from 'lucide-react';
 import { useState } from 'react';
 import { Virtuoso } from 'react-virtuoso';
-import { Search, Copy } from 'lucide-react';
-import type { LogEvent } from '@/hooks/useTrainingLogs';
 
 interface Props {
   events: LogEvent[];
@@ -12,7 +12,7 @@ export function LogTail({ events }: Props) {
 
   const filtered = events.filter((e) => {
     if (!filter) return true;
-    const text = e.raw ?? (e.metric ? JSON.stringify(e.metric) : e.error ?? '');
+    const text = e.raw ?? (e.metric ? JSON.stringify(e.metric) : (e.error ?? ''));
     try {
       return new RegExp(filter, 'i').test(text);
     } catch {
@@ -22,7 +22,7 @@ export function LogTail({ events }: Props) {
 
   const copyAll = async () => {
     const text = filtered
-      .map((e) => e.raw ?? (e.metric ? JSON.stringify(e.metric) : e.error ?? ''))
+      .map((e) => e.raw ?? (e.metric ? JSON.stringify(e.metric) : (e.error ?? '')))
       .join('\n');
     await navigator.clipboard.writeText(text);
   };

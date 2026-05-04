@@ -1,14 +1,22 @@
-import { Link } from '@tanstack/react-router';
-import { Activity, CheckCircle2, AlertCircle } from 'lucide-react';
 import type { components } from '@cockpit/shared';
+import { Link } from '@tanstack/react-router';
+import { Activity, AlertCircle, CheckCircle2 } from 'lucide-react';
 
 type Run = components['schemas']['TrainingRun'];
 
-interface Props { run: Run }
+interface Props {
+  run: Run;
+}
 
 export function TrainingRunCard({ run }: Props) {
-  const Icon = run.status === 'active' ? Activity : run.status === 'completed' ? CheckCircle2 : AlertCircle;
-  const color = run.status === 'active' ? 'text-emerald-600' : run.status === 'completed' ? 'text-slate-500' : 'text-rose-600';
+  const Icon =
+    run.status === 'active' ? Activity : run.status === 'completed' ? CheckCircle2 : AlertCircle;
+  const color =
+    run.status === 'active'
+      ? 'text-emerald-600'
+      : run.status === 'completed'
+        ? 'text-slate-500'
+        : 'text-rose-600';
   return (
     <Link
       to="/training/$id"

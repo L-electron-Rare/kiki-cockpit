@@ -1,6 +1,6 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useWorkersStatus } from '@/hooks/useWorkersStatus';
 import { WorkerStatusGrid } from '@/components/WorkerStatusGrid';
+import { useWorkersStatus } from '@/hooks/useWorkersStatus';
+import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/workers/')({
   component: WorkersPage,

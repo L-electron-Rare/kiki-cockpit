@@ -1,10 +1,10 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useQuery } from '@tanstack/react-query';
-import { api } from '@/lib/api';
-import { LossChart } from '@/components/LossChart';
 import { LogTail } from '@/components/LogTail';
+import { LossChart } from '@/components/LossChart';
 import { useTrainingLogs } from '@/hooks/useTrainingLogs';
+import { api } from '@/lib/api';
 import type { components } from '@cockpit/shared';
+import { useQuery } from '@tanstack/react-query';
+import { createFileRoute } from '@tanstack/react-router';
 
 type TrainingRun = components['schemas']['TrainingRun'];
 

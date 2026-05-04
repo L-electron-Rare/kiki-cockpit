@@ -2,7 +2,9 @@ import type { components } from '@cockpit/shared';
 
 type Worker = components['schemas']['WorkerStatus'];
 
-interface Props { workers: Worker[] }
+interface Props {
+  workers: Worker[];
+}
 
 export function WorkerStatusGrid({ workers }: Props) {
   return (
@@ -36,9 +38,7 @@ function WorkerCard({ worker }: { worker: Worker }) {
             <dd className="font-mono">{worker.latency_ms.toFixed(0)} ms</dd>
           </div>
         )}
-        {worker.error && (
-          <p className="text-xs italic">Error: {worker.error}</p>
-        )}
+        {worker.error && <p className="text-xs italic">Error: {worker.error}</p>}
       </dl>
     </article>
   );
