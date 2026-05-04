@@ -11,6 +11,7 @@ from slowapi.middleware import SlowAPIMiddleware
 from slowapi import _rate_limit_exceeded_handler
 
 from kiki_cockpit.config import settings
+from kiki_cockpit.routers.admin import eval_browser as admin_eval_browser
 from kiki_cockpit.routers.admin import health as admin_health
 from kiki_cockpit.routers.admin import training as admin_training
 from kiki_cockpit.routers.admin import workers as admin_workers
@@ -123,6 +124,7 @@ def create_app() -> FastAPI:
     app.include_router(admin_health.router)
     app.include_router(admin_training.router)
     app.include_router(admin_workers.router)
+    app.include_router(admin_eval_browser.router)
 
     return app
 
