@@ -8,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from kiki_cockpit.config import settings
 from kiki_cockpit.routers.public import health as public_health
+from kiki_cockpit.routers.admin import health as admin_health
 
 log = structlog.get_logger()
 
@@ -36,6 +37,7 @@ def create_app() -> FastAPI:
     )
 
     app.include_router(public_health.router)
+    app.include_router(admin_health.router)
 
     return app
 
