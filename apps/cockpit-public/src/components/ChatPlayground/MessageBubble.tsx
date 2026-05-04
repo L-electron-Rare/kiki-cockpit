@@ -1,13 +1,13 @@
 import ReactMarkdown from 'react-markdown';
 
 interface Props {
-  role: 'user' | 'assistant';
+  speaker: 'user' | 'assistant';
   content: string;
   streaming?: boolean;
 }
 
-export function MessageBubble({ role, content, streaming }: Props) {
-  const align = role === 'user' ? 'ml-auto bg-slate-100' : 'mr-auto bg-emerald-50';
+export function MessageBubble({ speaker, content, streaming }: Props) {
+  const align = speaker === 'user' ? 'ml-auto bg-slate-100' : 'mr-auto bg-emerald-50';
   return (
     <div className={`max-w-[75%] rounded-lg p-3 ${align}`}>
       <ReactMarkdown>{content}</ReactMarkdown>

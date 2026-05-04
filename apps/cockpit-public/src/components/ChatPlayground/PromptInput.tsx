@@ -1,5 +1,5 @@
-import { useState, type KeyboardEvent } from 'react';
 import { Send } from 'lucide-react';
+import { type KeyboardEvent, useState } from 'react';
 
 interface Props {
   onSubmit: (text: string) => void;

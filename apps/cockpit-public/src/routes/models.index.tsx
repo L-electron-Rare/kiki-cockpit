@@ -1,10 +1,10 @@
-import { createFileRoute, useSearch, useNavigate } from '@tanstack/react-router';
-import { z } from 'zod';
 import { ModelCard } from '@/components/ModelCard';
-import { useModels } from '@/hooks/useModels';
-import { DomainFilter } from '@/components/filters/DomainFilter';
 import { BaseModelFilter } from '@/components/filters/BaseModelFilter';
+import { DomainFilter } from '@/components/filters/DomainFilter';
 import { StatusFilter } from '@/components/filters/StatusFilter';
+import { useModels } from '@/hooks/useModels';
+import { createFileRoute, useNavigate, useSearch } from '@tanstack/react-router';
+import { z } from 'zod';
 
 const searchSchema = z.object({
   domain: z.string().optional(),

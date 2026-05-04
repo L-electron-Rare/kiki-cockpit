@@ -1,7 +1,7 @@
-import { Link } from '@tanstack/react-router';
-import { Heart, Download } from 'lucide-react';
 import { formatDownloads } from '@cockpit/shared';
 import type { components } from '@cockpit/shared';
+import { Link } from '@tanstack/react-router';
+import { Download, Heart } from 'lucide-react';
 
 type Card = components['schemas']['ModelCard'];
 

@@ -1,6 +1,6 @@
-import { createFileRoute, Link } from '@tanstack/react-router';
 import { ModelCard } from '@/components/ModelCard';
 import { useModels } from '@/hooks/useModels';
+import { Link, createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/')({
   component: HomePage,

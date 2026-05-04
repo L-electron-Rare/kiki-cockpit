@@ -1,7 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { ApiError } from '@cockpit/shared';
 import type { components } from '@cockpit/shared';
+import { useQuery } from '@tanstack/react-query';
 
 type EvalSummary = components['schemas']['EvalSummary'];
 

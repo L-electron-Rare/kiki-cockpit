@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { type ChatMessage, useChatStream } from '@/hooks/useChatStream';
 import { Square } from 'lucide-react';
-import { useChatStream, type ChatMessage } from '@/hooks/useChatStream';
+import { useState } from 'react';
 import { MessageBubble } from './MessageBubble';
+import { type ChatParams, ParamsPanel } from './ParamsPanel';
 import { PromptInput } from './PromptInput';
-import { ParamsPanel, type ChatParams } from './ParamsPanel';
 
 interface Props {
   modelId: string;
@@ -38,9 +38,14 @@ export function ChatPlayground({ modelId, modelDisplayName }: Props) {
 
       <div className="flex-1 overflow-y-auto rounded border border-slate-200 p-4 space-y-3">
         {messages.map((m, i) => (
-          <MessageBubble key={i} role={m.role as 'user' | 'assistant'} content={m.content} />
+          <MessageBubble
+            // biome-ignore lint/suspicious/noArrayIndexKey: chat history is append-only, never reordered
+            key={`msg-${i}`}
+            speaker={m.role as 'user' | 'assistant'}
+            content={m.content}
+          />
         ))}
-        {isStreaming && <MessageBubble role="assistant" content={assistantText} streaming />}
+        {isStreaming && <MessageBubble speaker="assistant" content={assistantText} streaming />}
         {error && <p className="text-rose-700 text-sm">Error: {error}</p>}
       </div>
 

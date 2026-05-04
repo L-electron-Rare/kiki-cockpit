@@ -8,8 +8,12 @@ export function Header() {
           kiki-cockpit
         </Link>
         <nav className="flex gap-4 text-sm">
-          <Link to="/models" className="hover:underline">Models</Link>
-          <Link to="/about" className="hover:underline">About</Link>
+          <Link to="/models" className="hover:underline">
+            Models
+          </Link>
+          <Link to="/about" className="hover:underline">
+            About
+          </Link>
           <a
             href="https://huggingface.co/clemsail"
             target="_blank"

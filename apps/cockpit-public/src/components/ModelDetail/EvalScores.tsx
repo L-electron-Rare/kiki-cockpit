@@ -2,7 +2,9 @@ import type { components } from '@cockpit/shared';
 
 type EvalSummary = components['schemas']['EvalSummary'];
 
-interface Props { summary: EvalSummary | null }
+interface Props {
+  summary: EvalSummary | null;
+}
 
 export function EvalScores({ summary }: Props) {
   if (!summary || !summary.by_benchmark || Object.keys(summary.by_benchmark).length === 0) {
@@ -31,9 +33,7 @@ export function EvalScores({ summary }: Props) {
             <tr key={benchmark} className="border-b border-slate-100">
               <td className="py-2 font-mono">{benchmark}</td>
               <td className="py-2 text-slate-500">{result.metric}</td>
-              <td className="py-2 font-mono">
-                {(result.score * 100).toFixed(1)}%
-              </td>
+              <td className="py-2 font-mono">{(result.score * 100).toFixed(1)}%</td>
               <td className="py-2 text-slate-500">
                 {new Date(result.timestamp).toLocaleDateString()}
               </td>

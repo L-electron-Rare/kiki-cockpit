@@ -1,4 +1,11 @@
-const BASES = ['mistral-large-123b', 'qwen3.5-122b', 'qwen3.5-35b', 'apertus-70b', 'devstral-24b', 'eurollm-22b'] as const;
+const BASES = [
+  'mistral-large-123b',
+  'qwen3.5-122b',
+  'qwen3.5-35b',
+  'apertus-70b',
+  'devstral-24b',
+  'eurollm-22b',
+] as const;
 
 interface Props {
   value: string | undefined;

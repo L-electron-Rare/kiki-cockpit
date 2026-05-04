@@ -1,13 +1,11 @@
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import { ModelCard } from '../../src/components/ModelCard';
 import type { components } from '@cockpit/shared';
+import { render, screen } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
+import { ModelCard } from '../../src/components/ModelCard';
 
 vi.mock('@tanstack/react-router', () => ({
   Link: ({ to, params, children, ...props }: any) => {
-    const href = to
-      .replace('$owner', params?.owner || '')
-      .replace('$name', params?.name || '');
+    const href = to.replace('$owner', params?.owner || '').replace('$name', params?.name || '');
     return (
       <a href={href} {...props}>
         {children}

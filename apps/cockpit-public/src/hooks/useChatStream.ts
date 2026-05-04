@@ -1,7 +1,10 @@
-import { useCallback, useRef, useState } from 'react';
 import { parseSSEStream } from '@cockpit/shared';
+import { useCallback, useRef, useState } from 'react';
 
-export interface ChatMessage { role: 'system' | 'user' | 'assistant'; content: string }
+export interface ChatMessage {
+  role: 'system' | 'user' | 'assistant';
+  content: string;
+}
 
 export function useChatStream() {
   const [assistantText, setAssistantText] = useState('');
@@ -10,7 +13,11 @@ export function useChatStream() {
   const abortRef = useRef<AbortController | null>(null);
 
   const send = useCallback(
-    async (modelId: string, messages: ChatMessage[], params?: { temperature?: number; max_tokens?: number; system_prompt?: string }) => {
+    async (
+      modelId: string,
+      messages: ChatMessage[],
+      params?: { temperature?: number; max_tokens?: number; system_prompt?: string },
+    ) => {
       setAssistantText('');
       setError(null);
       setIsStreaming(true);

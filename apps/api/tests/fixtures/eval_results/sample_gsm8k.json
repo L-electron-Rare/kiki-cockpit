@@ -6,5 +6,5 @@
   "timestamp": "2026-04-30T13:00:00Z",
   "run_sha": "abc123",
   "hardware": "M3 Ultra 512G",
-  "config": {"seed": 42, "shots": 5}
+  "config": { "seed": 42, "shots": 5 }
 }

@@ -2,7 +2,9 @@ import type { components } from '@cockpit/shared';
 
 type Card = components['schemas']['ModelCard'];
 
-interface Props { card: Card }
+interface Props {
+  card: Card;
+}
 
 export function Provenance({ card }: Props) {
   return (

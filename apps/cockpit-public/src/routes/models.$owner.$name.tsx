@@ -1,9 +1,9 @@
-import { createFileRoute, Link } from '@tanstack/react-router';
-import { useModelDetail } from '@/hooks/useModelDetail';
-import { useEvalScores } from '@/hooks/useEvalScores';
-import { Provenance } from '@/components/ModelDetail/Provenance';
-import { EvalScores } from '@/components/ModelDetail/EvalScores';
 import { DatasetList } from '@/components/ModelDetail/DatasetList';
+import { EvalScores } from '@/components/ModelDetail/EvalScores';
+import { Provenance } from '@/components/ModelDetail/Provenance';
+import { useEvalScores } from '@/hooks/useEvalScores';
+import { useModelDetail } from '@/hooks/useModelDetail';
+import { Link, createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/models/$owner/$name')({
   component: ModelDetailPage,
@@ -23,9 +23,7 @@ function ModelDetailPage() {
       <header>
         <h1 className="text-3xl font-bold">{card.display_name}</h1>
         <p className="text-slate-500">{card.id}</p>
-        {card.featured_headline && (
-          <p className="mt-2 italic">{card.featured_headline}</p>
-        )}
+        {card.featured_headline && <p className="mt-2 italic">{card.featured_headline}</p>}
       </header>
 
       {card.chat_eligible ? (

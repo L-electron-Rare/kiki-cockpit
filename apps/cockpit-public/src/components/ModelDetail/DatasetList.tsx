@@ -2,7 +2,9 @@ import type { components } from '@cockpit/shared';
 
 type Card = components['schemas']['ModelCard'];
 
-interface Props { card: Card }
+interface Props {
+  card: Card;
+}
 
 export function DatasetList({ card }: Props) {
   // Sprint 1: ModelCard does not yet include datasets. Placeholder for sprint 1+ when ModelDetail is split out.

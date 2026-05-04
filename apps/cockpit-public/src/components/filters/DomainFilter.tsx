@@ -1,4 +1,16 @@
-const DOMAINS = ['kicad', 'stm32', 'esp32', 'platformio', 'iot', 'spice', 'embedded', 'dsp', 'emc', 'power', 'freecad'] as const;
+const DOMAINS = [
+  'kicad',
+  'stm32',
+  'esp32',
+  'platformio',
+  'iot',
+  'spice',
+  'embedded',
+  'dsp',
+  'emc',
+  'power',
+  'freecad',
+] as const;
 
 interface Props {
   value: string | undefined;

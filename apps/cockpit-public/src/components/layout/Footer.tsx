@@ -4,8 +4,13 @@ export function Footer() {
       <div className="max-w-6xl mx-auto px-6 py-6 text-sm text-slate-500">
         <p>
           L'Électron Rare — Apache-2.0 — Models on{' '}
-          <a className="underline" href="https://huggingface.co/clemsail">clemsail</a> +{' '}
-          <a className="underline" href="https://huggingface.co/electron-rare">electron-rare</a>
+          <a className="underline" href="https://huggingface.co/clemsail">
+            clemsail
+          </a>{' '}
+          +{' '}
+          <a className="underline" href="https://huggingface.co/electron-rare">
+            electron-rare
+          </a>
         </p>
         <p className="mt-1">
           Source:{' '}

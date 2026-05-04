@@ -1,6 +1,6 @@
-import { createFileRoute } from '@tanstack/react-router';
 import { ChatPlayground } from '@/components/ChatPlayground/ChatPlayground';
 import { useModelDetail } from '@/hooks/useModelDetail';
+import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/chat/$owner/$name')({
   component: ChatPage,

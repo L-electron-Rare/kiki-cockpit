@@ -1,5 +1,5 @@
-import { describe, it, expect, vi } from 'vitest';
 import { act, renderHook } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
 import { useChatStream } from '../../src/hooks/useChatStream';
 
 function mockFetchSSE(events: string[]) {
@@ -10,9 +10,11 @@ function mockFetchSSE(events: string[]) {
       controller.close();
     },
   });
-  return vi.fn().mockResolvedValue(
-    new Response(stream, { status: 200, headers: { 'content-type': 'text/event-stream' } }),
-  );
+  return vi
+    .fn()
+    .mockResolvedValue(
+      new Response(stream, { status: 200, headers: { 'content-type': 'text/event-stream' } }),
+    );
 }
 
 describe('useChatStream', () => {
