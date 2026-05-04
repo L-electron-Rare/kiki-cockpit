@@ -1,20 +1,21 @@
 import '@testing-library/jest-dom/vitest';
-import { vi } from 'vitest';
 import React from 'react';
+import { vi } from 'vitest';
 
-// Mock ResizeObserver for recharts
-global.ResizeObserver = class ResizeObserver {
+// Mock ResizeObserver for recharts (jsdom does not provide it).
+class ResizeObserverMock {
   observe() {}
   unobserve() {}
   disconnect() {}
-} as any;
+}
+vi.stubGlobal('ResizeObserver', ResizeObserverMock);
 
 // Mock recharts ResponsiveContainer to render a simple wrapper
 vi.mock('recharts', async () => {
-  const actual = await vi.importActual('recharts');
+  const actual = await vi.importActual<typeof import('recharts')>('recharts');
   return {
     ...actual,
-    ResponsiveContainer: ({ children }: any) =>
+    ResponsiveContainer: ({ children }: { children: React.ReactNode }) =>
       React.createElement('div', { className: 'recharts-wrapper' }, children),
   };
 });

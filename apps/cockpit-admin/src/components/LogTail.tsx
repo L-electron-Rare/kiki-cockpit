@@ -63,8 +63,8 @@ function LogLine({ ev }: { ev: LogEvent }) {
     return (
       <div className={`px-2 py-0.5 font-mono text-xs ${color}`}>
         Iter {m.iter} [{m.split}] loss={m.loss.toFixed(4)}
-        {m.lr !== null && ` lr=${m.lr.toExponential(2)}`}
-        {m.took_s !== null && ` took=${m.took_s}s`}
+        {m.lr != null && ` lr=${m.lr.toExponential(2)}`}
+        {m.took_s != null && ` took=${m.took_s}s`}
       </div>
     );
   }
