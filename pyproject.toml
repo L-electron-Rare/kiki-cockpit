@@ -12,3 +12,4 @@ ignore = ["E501"]
 [tool.pytest.ini_options]
 addopts = "-ra -q --strict-markers"
 testpaths = ["apps/api/tests"]
+asyncio_mode = "auto"
