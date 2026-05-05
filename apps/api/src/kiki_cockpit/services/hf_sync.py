@@ -1,6 +1,7 @@
 """HuggingFace API sync — fetch model metadata, cache in memory."""
 from __future__ import annotations
 
+import asyncio
 from datetime import datetime
 
 import structlog
@@ -49,7 +50,47 @@ async def fetch_models_for_owner(
         log.warning("hf_sync.unexpected_payload", owner=owner)
         return []
 
-    return data
+    # Listing endpoint omits per-file sizes, safetensors, gguf and cardData.
+    # Enrich in parallel with /api/models/{id}?blobs=true so size + parameter
+    # count actually populate. ~30 models × 1 request, fan-out keeps this fast.
+    enriched = await _enrich_models(client, data)
+    return enriched
+
+
+async def _enrich_models(
+    client: httpx.AsyncClient, models: list[dict]
+) -> list[dict]:
+    async def fetch_one(m: dict) -> dict:
+        model_id = m.get("id") or m.get("modelId")
+        if not model_id:
+            return m
+        try:
+            r = await client.get(
+                f"/api/models/{model_id}",
+                params={"blobs": "true"},
+                timeout=httpx.Timeout(10.0, connect=5.0),
+            )
+            if r.status_code == 200:
+                detail = r.json()
+                # Merge: detail wins for the rich blocks we care about; the
+                # listing provides downloads/likes which are already current.
+                merged = dict(m)
+                for k in (
+                    "siblings",
+                    "safetensors",
+                    "gguf",
+                    "cardData",
+                    "tags",
+                    "library_name",
+                ):
+                    if k in detail:
+                        merged[k] = detail[k]
+                return merged
+        except (httpx.HTTPError, ValueError):
+            pass
+        return m
+
+    return await asyncio.gather(*(fetch_one(m) for m in models))
 
 
 def to_model_card(raw: dict, eu_kiki_aliases: set[str]) -> ModelCard:
