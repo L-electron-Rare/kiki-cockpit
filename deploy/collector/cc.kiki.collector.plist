@@ -14,7 +14,7 @@
     curl http://studio:9150/healthz   # from another tailnet member
 
   Logs:
-    tail -f /var/log/kiki-collector.log
+    tail -f /Users/clems/Library/Logs/kiki-collector.log
 
   Reload after editing:
     sudo launchctl bootout system/cc.kiki.collector
@@ -68,9 +68,9 @@
     <true/>
 
     <key>StandardOutPath</key>
-    <string>/var/log/kiki-collector.log</string>
+    <string>/Users/clems/Library/Logs/kiki-collector.log</string>
     <key>StandardErrorPath</key>
-    <string>/var/log/kiki-collector.log</string>
+    <string>/Users/clems/Library/Logs/kiki-collector.log</string>
 
     <key>ProcessType</key>
     <string>Background</string>
