@@ -74,7 +74,9 @@ services:
       dockerfile: Dockerfile
       target: public
       args:
-        VITE_API_BASE_URL: /api
+        # Empty: SPA hooks already include the /api/ prefix in their fetch
+        # paths (see useModels.ts, useTrainingRuns.ts, etc.).
+        VITE_API_BASE_URL: ""
     image: kiki-cockpit-public:${TAG:-latest}
     networks:
       - traefik
@@ -95,7 +97,9 @@ services:
       dockerfile: Dockerfile
       target: admin
       args:
-        VITE_API_BASE_URL: /api
+        # Empty: SPA hooks already include the /api/ prefix in their fetch
+        # paths (see useModels.ts, useTrainingRuns.ts, etc.).
+        VITE_API_BASE_URL: ""
     image: kiki-cockpit-admin:${TAG:-latest}
     networks:
       - traefik

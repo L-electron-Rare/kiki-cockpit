@@ -33,7 +33,7 @@ FROM node-base AS public-build
 COPY apps/cockpit-public ./apps/cockpit-public
 COPY apps/cockpit-admin ./apps/cockpit-admin
 COPY --from=gen-types /repo/packages/shared/src/api/types.ts ./packages/shared/src/api/types.ts
-ARG VITE_API_BASE_URL=/api
+ARG VITE_API_BASE_URL=
 ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
 RUN pnpm --filter cockpit-public build
 
@@ -49,7 +49,7 @@ FROM node-base AS admin-build
 COPY apps/cockpit-public ./apps/cockpit-public
 COPY apps/cockpit-admin ./apps/cockpit-admin
 COPY --from=gen-types /repo/packages/shared/src/api/types.ts ./packages/shared/src/api/types.ts
-ARG VITE_API_BASE_URL=/api
+ARG VITE_API_BASE_URL=
 ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
 RUN pnpm --filter cockpit-admin build
 
