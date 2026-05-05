@@ -1,0 +1,35 @@
+# VCS / IDE
+.git
+.gitignore
+.github
+.vscode
+.idea
+
+# Node
+**/node_modules
+**/dist
+**/.turbo
+**/.next
+**/coverage
+
+# Python
+**/__pycache__
+**/*.pyc
+**/.venv
+**/.pytest_cache
+**/.mypy_cache
+**/.ruff_cache
+
+# OS / tooling junk
+.DS_Store
+*.swp
+*.log
+
+# Local dev artefacts
+.env
+.env.*
+!.env.example
+
+# Docs and tests don't ship in image (tests run in CI)
+docs
+**/tests

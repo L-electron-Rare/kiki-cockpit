@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Install on studio (Mac M3 Ultra):
+    cp deploy/collector/cc.kiki.collector.plist ~/Library/LaunchAgents/
+    # Edit the two PATH entries below to match your local checkout, then:
+    launchctl load ~/Library/LaunchAgents/cc.kiki.collector.plist
+    launchctl start cc.kiki.collector
+
+  Verify:
+    curl http://localhost:9150/healthz
+    curl http://studio:9150/healthz   # from another tailnet member
+
+  Logs:
+    tail -f ~/Library/Logs/kiki-collector.log
+-->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>cc.kiki.collector</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/clems/.local/bin/uv</string>
+        <string>run</string>
+        <string>--directory</string>
+        <string>/Users/clems/Documents/Projets/kiki-cockpit/deploy/collector</string>
+        <string>uvicorn</string>
+        <string>kiki_collector.main:app</string>
+        <string>--host</string>
+        <string>0.0.0.0</string>
+        <string>--port</string>
+        <string>9150</string>
+    </array>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>COLLECTOR_MACHINE_LABEL</key>
+        <string>studio</string>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+    </dict>
+
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+
+    <key>StandardOutPath</key>
+    <string>/Users/clems/Library/Logs/kiki-collector.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/clems/Library/Logs/kiki-collector.log</string>
+
+    <key>ProcessType</key>
+    <string>Background</string>
+</dict>
+</plist>
