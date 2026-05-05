@@ -31,6 +31,11 @@ _LIVE_DISPLAY = {
         "Qwen3.5 35B A3B (live)",
         "Qwen3.5 35B Active-3B MoE Q3 — reasoning model on kxkm-ai.",
     ),
+    "eu-kiki/auto": (
+        "Auto-router (MiniLM)",
+        "Domain router classifies your prompt and forwards to the best worker. "
+        "Decision is shown above each reply.",
+    ),
 }
 
 

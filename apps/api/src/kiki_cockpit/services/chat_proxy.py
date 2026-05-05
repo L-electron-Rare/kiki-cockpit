@@ -22,6 +22,19 @@ ALIAS_TO_GATEWAY_MODEL: dict[str, str] = {
     "eu-kiki/devstral-24b": "eu-kiki-devstral",
     "eu-kiki/eurollm-22b": "eu-kiki-eurollm",
     "eu-kiki/qwen-35b-a3b": "eu-kiki-qwen",
+    # The bare "eu-kiki" alias triggers the gateway's domain router (MiniLM
+    # MLP classifier) — not in MODEL_FORCE_MAP on purpose. We surface the
+    # decision in the chat stream via a route preamble (see stream_chat).
+    "eu-kiki/auto": "eu-kiki",
+}
+
+# Worker port → human-readable label, used for the route preamble.
+_PORT_LABELS: dict[int, str] = {
+    9301: "Apertus 70B (studio)",
+    9302: "Devstral 24B (macm1)",
+    9303: "EuroLLM 22B (studio)",
+    9304: "Gemma 3 4B (tower)",
+    8002: "Qwen3.5 35B (kxkm-ai)",
 }
 EU_KIKI_ALIASES: frozenset[str] = frozenset(ALIAS_TO_GATEWAY_MODEL)
 
@@ -67,6 +80,41 @@ async def stream_chat(
     if http_transport is not None:
         kwargs["transport"] = http_transport
 
+    # Auto-router: ask the gateway who would handle this prompt and emit a
+    # one-line preamble so the user sees the routing decision in the chat.
+    route_preamble: str | None = None
+    if req.model_id == "eu-kiki/auto":
+        last_user = next(
+            (
+                (m["content"] if isinstance(m, dict) else m.content)
+                for m in reversed(req.messages)
+                if (m["role"] if isinstance(m, dict) else m.role) == "user"
+            ),
+            "",
+        )
+        if last_user:
+            try:
+                async with httpx.AsyncClient(timeout=5.0) as rc:
+                    r = await rc.post(
+                        f"{gateway_url}/v1/route", json={"prompt": last_user}
+                    )
+                    if r.status_code == 200:
+                        info = r.json()
+                        chosen = info.get("chosen_domain") or "?"
+                        port = info.get("chosen_port") or 0
+                        worker = _PORT_LABELS.get(port, f"port {port}")
+                        sels = info.get("selections", [])[:3]
+                        topk = ", ".join(
+                            f"{s['domain']} ({s['score']:.2f})" for s in sels
+                        )
+                        route_preamble = (
+                            f"🧭 **Router** → **{worker}** "
+                            f"— domaine `{chosen}`  \n"
+                            f"_top: {topk}_\n\n---\n\n"
+                        )
+            except Exception as exc:  # noqa: BLE001
+                log.warning("auto_router.preflight_failed", error=str(exc))
+
     async with httpx.AsyncClient(**kwargs) as client:
         async with client.stream(
             "POST",
@@ -83,6 +131,9 @@ async def stream_chat(
             # into the cockpit's expected event format (event: token | done |
             # error). The frontend hook in useChatStream.ts only reacts to
             # those three named events.
+            if route_preamble:
+                preamble = json.dumps({"text": route_preamble})
+                yield f"event: token\ndata: {preamble}\n\n".encode()
             buffer = ""
             async for chunk in response.aiter_text():
                 buffer += chunk
