@@ -1,6 +1,7 @@
 """Forward chat requests as SSE streams to the eu-kiki gateway."""
 from __future__ import annotations
 
+import json
 from collections.abc import AsyncIterator
 
 import httpx
@@ -77,5 +78,34 @@ async def stream_chat(
                     f'event: error\ndata: {{"status":{response.status_code}}}\n\n'
                 ).encode()
                 return
-            async for chunk in response.aiter_bytes():
-                yield chunk
+            # Translate OpenAI-style SSE chunks (data: {json} / data: [DONE])
+            # into the cockpit's expected event format (event: token | done |
+            # error). The frontend hook in useChatStream.ts only reacts to
+            # those three named events.
+            buffer = ""
+            async for chunk in response.aiter_text():
+                buffer += chunk
+                while "\n" in buffer:
+                    line, _, buffer = buffer.partition("\n")
+                    line = line.rstrip("\r")
+                    if not line.startswith("data:"):
+                        continue
+                    payload_str = line[5:].strip()
+                    if not payload_str:
+                        continue
+                    if payload_str == "[DONE]":
+                        yield b"event: done\ndata: {}\n\n"
+                        return
+                    try:
+                        obj = json.loads(payload_str)
+                    except json.JSONDecodeError:
+                        continue
+                    choices = obj.get("choices") or []
+                    if not choices:
+                        continue
+                    delta = choices[0].get("delta") or {}
+                    text = delta.get("content")
+                    if text:
+                        out = json.dumps({"text": text})
+                        yield f"event: token\ndata: {out}\n\n".encode()
+            yield b"event: done\ndata: {}\n\n"
