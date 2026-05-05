@@ -27,6 +27,10 @@ _LIVE_DISPLAY = {
         "EuroLLM 22B (live)",
         "EuroLLM 22B — multilingual EU coverage.",
     ),
+    "eu-kiki/qwen-35b-a3b": (
+        "Qwen3.5 35B A3B (live)",
+        "Qwen3.5 35B Active-3B MoE Q3 — reasoning model on kxkm-ai.",
+    ),
 }
 
 

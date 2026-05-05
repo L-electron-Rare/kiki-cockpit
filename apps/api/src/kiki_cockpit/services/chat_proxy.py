@@ -21,6 +21,7 @@ ALIAS_TO_GATEWAY_MODEL: dict[str, str] = {
     "eu-kiki/apertus-70b": "eu-kiki-apertus",
     "eu-kiki/devstral-24b": "eu-kiki-devstral",
     "eu-kiki/eurollm-22b": "eu-kiki-eurollm",
+    "eu-kiki/qwen-35b-a3b": "eu-kiki-qwen",
 }
 EU_KIKI_ALIASES: frozenset[str] = frozenset(ALIAS_TO_GATEWAY_MODEL)
 
