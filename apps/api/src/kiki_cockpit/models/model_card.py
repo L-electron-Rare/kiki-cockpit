@@ -47,6 +47,17 @@ class ModelCard(BaseModel):
     top_eval_score: float | None = None
     top_eval_benchmark: str | None = None
 
+    # Hardware / footprint metadata. Populated from HF API (siblings sum,
+    # safetensors.total, gguf.total) for HF models and from _LIVE_DETAILS for
+    # live workers. All optional — older clients ignore them.
+    parameters: int | None = None
+    disk_size_bytes: int | None = None
+    memory_gb: float | None = None
+    quantization: str | None = None
+    host: str | None = None
+    architecture: str | None = None
+    license: str | None = None
+
 
 class ModelDetail(ModelCard):
     """Full detail page payload."""

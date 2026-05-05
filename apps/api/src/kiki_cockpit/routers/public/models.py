@@ -18,6 +18,9 @@ router = APIRouter(prefix="/api/public", tags=["public"])
 # any future widget read the same source of truth. base_model = base
 # architecture; domain = primary use case; description includes hardware host
 # + memory footprint so users can pick the right model.
+# 1 GiB constant for size annotations
+_GIB = 1024**3
+
 _LIVE_DETAILS: dict[str, dict] = {
     "eu-kiki/apertus-70b": {
         "display_name": "Apertus 70B",
@@ -25,19 +28,33 @@ _LIVE_DETAILS: dict[str, dict] = {
         "domain": "general",
         "description": (
             "Swiss-stack 70B foundation model — fluent FR/DE/IT/EN. "
-            "MLX 8-bit · ~70 GB · runs on Mac Studio M3 Ultra (studio:9301)."
+            "Runs on Mac Studio M3 Ultra."
         ),
-        "headline": "70B params · 8-bit · Mac Studio M3 Ultra",
+        "headline": "70B params · MLX 8-bit · Mac Studio M3 Ultra",
+        "parameters": 70_000_000_000,
+        "disk_size_bytes": 70 * _GIB,
+        "memory_gb": 75.0,
+        "quantization": "MLX 8-bit",
+        "host": "studio (Mac Studio M3 Ultra)",
+        "architecture": "mlx",
+        "license": "apache-2.0",
     },
     "eu-kiki/devstral-24b": {
         "display_name": "Devstral 24B",
         "base_model": "Mistral Small 3.1",
         "domain": "code",
         "description": (
-            "Mistral-AI Devstral 24B — code-focused. MLX 4-bit · ~13 GB · "
-            "runs on Mac mini M1 (macm1:9302)."
+            "Mistral-AI Devstral 24B — code-focused. "
+            "Runs on Mac mini M1."
         ),
         "headline": "24B params · MLX 4-bit · Mac mini M1",
+        "parameters": 24_000_000_000,
+        "disk_size_bytes": 13 * _GIB,
+        "memory_gb": 14.0,
+        "quantization": "MLX 4-bit",
+        "host": "macm1 (Mac mini M1)",
+        "architecture": "mlx",
+        "license": "apache-2.0",
     },
     "eu-kiki/eurollm-22b": {
         "display_name": "EuroLLM 22B",
@@ -45,20 +62,33 @@ _LIVE_DETAILS: dict[str, dict] = {
         "domain": "multilingual",
         "description": (
             "EuroLLM 22B — multilingual EU coverage (24 official languages). "
-            "MLX 8-bit · ~22 GB · runs on Mac Studio M3 Ultra (studio:9303)."
+            "Runs on Mac Studio M3 Ultra."
         ),
-        "headline": "22B params · 8-bit · Mac Studio M3 Ultra",
+        "headline": "22B params · MLX 8-bit · Mac Studio M3 Ultra",
+        "parameters": 22_000_000_000,
+        "disk_size_bytes": 22 * _GIB,
+        "memory_gb": 24.0,
+        "quantization": "MLX 8-bit",
+        "host": "studio (Mac Studio M3 Ultra)",
+        "architecture": "mlx",
+        "license": "apache-2.0",
     },
     "eu-kiki/qwen-35b-a3b": {
         "display_name": "Qwen3.5 35B A3B",
         "base_model": "Qwen3.5 35B (MoE 256 experts, 3B active)",
         "domain": "reasoning",
         "description": (
-            "Qwen3.5 35B Active-3B MoE Q3_K_XL — reasoning-tuned with explicit "
-            "<think> traces. ~17 GB · llama.cpp on KXKM-AI server (RTX 4090 "
-            "via SSH tunnel)."
+            "Qwen3.5 35B Active-3B MoE — reasoning-tuned with explicit "
+            "<think> traces. llama.cpp on KXKM-AI server."
         ),
         "headline": "35B MoE / 3B active · Q3_K_XL · KXKM-AI",
+        "parameters": 35_000_000_000,
+        "disk_size_bytes": 17 * _GIB,
+        "memory_gb": 18.0,
+        "quantization": "Q3_K_XL",
+        "host": "kxkm-ai (RTX 4090 via SSH tunnel)",
+        "architecture": "gguf",
+        "license": "apache-2.0",
     },
     "eu-kiki/auto": {
         "display_name": "Auto-router",
@@ -70,6 +100,13 @@ _LIVE_DETAILS: dict[str, dict] = {
             "Qwen 35B / Gemma 3 4B). Decision shown above each reply."
         ),
         "headline": "MiniLM 384d · 34 domains · top1=65 % top3=86 %",
+        "parameters": 22_700_000,  # MiniLM L6 v2 ≈ 22.7M
+        "disk_size_bytes": 90_000_000 + 432_000,  # ST model + safetensors head
+        "memory_gb": 0.2,
+        "quantization": "FP32",
+        "host": "electron-server (gateway-side, CPU)",
+        "architecture": "safetensors",
+        "license": "apache-2.0",
     },
 }
 
@@ -91,9 +128,16 @@ def _live_cards() -> list[ModelCard]:
                 status=ModelStatus.PRODUCTION,
                 chat_backend=ChatBackend.EU_KIKI_LIVE,
                 chat_eligible=True,
-                featured_rank=0,  # surfaces them at the top of the listing
+                featured_rank=0,
                 featured_headline=details.get("headline"),
                 hf_url=f"https://huggingface.co/{alias}",
+                parameters=details.get("parameters"),
+                disk_size_bytes=details.get("disk_size_bytes"),
+                memory_gb=details.get("memory_gb"),
+                quantization=details.get("quantization"),
+                host=details.get("host"),
+                architecture=details.get("architecture"),
+                license=details.get("license"),
             )
         )
     return cards
