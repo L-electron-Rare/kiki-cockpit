@@ -14,8 +14,8 @@ export function Footer() {
         </p>
         <p className="mt-1">
           Source:{' '}
-          <a className="underline" href="https://github.com/L-electron-Rare/kiki-cockpit">
-            github.com/L-electron-Rare/kiki-cockpit
+          <a className="underline" href="https://github.com/L-electron-Rare">
+            https://github.com/L-electron-Rare
           </a>
         </p>
       </div>
