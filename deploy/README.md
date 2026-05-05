@@ -88,8 +88,10 @@ Step 2 — relocate to `/opt/kiki-collector/` and bootstrap (one sudo prompt):
 ```bash
 sudo mkdir -p /opt/kiki-collector
 sudo chown clems:staff /opt/kiki-collector
-rsync -az ~/Documents/Projets/kiki-cockpit/deploy/collector/ /opt/kiki-collector/
-cd /opt/kiki-collector && ~/.local/bin/uv sync
+# IMPORTANT: exclude .venv — virtualenvs bake the project root into pyvenv.cfg,
+# so a venv created in ~/Documents stays bound to ~/Documents (TCC-blocked).
+rsync -az --exclude='.venv' ~/Documents/Projets/kiki-cockpit/deploy/collector/ /opt/kiki-collector/
+cd /opt/kiki-collector && ~/.local/bin/uv sync       # fresh venv at /opt/kiki-collector/.venv
 
 sudo cp /opt/kiki-collector/cc.kiki.collector.plist /Library/LaunchDaemons/
 sudo chown root:wheel /Library/LaunchDaemons/cc.kiki.collector.plist
