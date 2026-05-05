@@ -17,12 +17,15 @@ export function useChatStream() {
       modelId: string,
       messages: ChatMessage[],
       params?: { temperature?: number; max_tokens?: number; system_prompt?: string },
-    ) => {
+    ): Promise<string> => {
       setAssistantText('');
       setError(null);
       setIsStreaming(true);
       const ac = new AbortController();
       abortRef.current = ac;
+      // Local accumulator — handleSubmit's closure can't observe React state
+      // updates triggered inside this hook, so we must return the final string.
+      let assembled = '';
       try {
         const response = await fetch('/api/public/chat', {
           method: 'POST',
@@ -38,14 +41,16 @@ export function useChatStream() {
         });
         if (!response.ok || !response.body) {
           setError(`HTTP ${response.status}`);
-          setIsStreaming(false);
-          return;
+          return '';
         }
         for await (const ev of parseSSEStream(response.body, ac.signal)) {
           if (ev.event === 'token') {
             try {
               const parsed = JSON.parse(ev.data) as { text?: string };
-              if (parsed.text) setAssistantText((cur) => cur + parsed.text);
+              if (parsed.text) {
+                assembled += parsed.text;
+                setAssistantText(assembled);
+              }
             } catch {}
           }
           if (ev.event === 'done') break;
@@ -61,6 +66,7 @@ export function useChatStream() {
       } finally {
         setIsStreaming(false);
       }
+      return assembled;
     },
     [],
   );

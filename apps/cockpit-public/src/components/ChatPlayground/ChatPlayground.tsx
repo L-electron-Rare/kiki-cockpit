@@ -23,8 +23,10 @@ export function ChatPlayground({ modelId, modelDisplayName }: Props) {
     const userMsg: ChatMessage = { role: 'user', content: text };
     const next = [...messages, userMsg];
     setMessages(next);
-    await send(modelId, next, params);
-    setMessages([...next, { role: 'assistant', content: assistantText || '' }]);
+    const reply = await send(modelId, next, params);
+    if (reply) {
+      setMessages([...next, { role: 'assistant', content: reply }]);
+    }
   };
 
   return (
