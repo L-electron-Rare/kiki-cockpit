@@ -3,7 +3,7 @@
 # Build a specific service with: docker build --target=<api|public|admin> .
 
 # --- Node build base (shared by both SPAs) ----------------------------------
-FROM node:20-alpine AS node-base
+FROM node:20-bookworm-slim AS node-base
 RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
 WORKDIR /repo
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml biome.json ./
@@ -12,10 +12,27 @@ COPY apps/cockpit-public/package.json ./apps/cockpit-public/
 COPY apps/cockpit-admin/package.json ./apps/cockpit-admin/
 RUN pnpm install --frozen-lockfile
 
+# --- Generate packages/shared/src/api/types.ts from FastAPI OpenAPI ---------
+# scripts/gen-api-types.sh boots the API briefly and runs openapi-typescript.
+# Both Python and Node are needed in this stage.
+FROM node-base AS gen-types
+RUN apt-get update && apt-get install -y --no-install-recommends curl ca-certificates \
+ && rm -rf /var/lib/apt/lists/*
+COPY --from=ghcr.io/astral-sh/uv:0.5.11 /uv /usr/local/bin/uv
+ENV UV_LINK_MODE=copy UV_COMPILE_BYTECODE=0 UV_PYTHON_DOWNLOADS=automatic
+COPY pyproject.toml uv.lock ./
+COPY apps/api ./apps/api
+COPY featured.yaml ./featured.yaml
+COPY scripts ./scripts
+RUN uv sync --frozen --no-dev --package kiki-cockpit-api
+ENV PATH="/repo/.venv/bin:${PATH}"
+RUN bash scripts/gen-api-types.sh
+
 # --- cockpit-public build ---------------------------------------------------
 FROM node-base AS public-build
 COPY apps/cockpit-public ./apps/cockpit-public
 COPY apps/cockpit-admin ./apps/cockpit-admin
+COPY --from=gen-types /repo/packages/shared/src/api/types.ts ./packages/shared/src/api/types.ts
 ARG VITE_API_BASE_URL=/api
 ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
 RUN pnpm --filter cockpit-public build
@@ -31,6 +48,7 @@ HEALTHCHECK --interval=30s --timeout=3s CMD wget -qO- http://localhost/ >/dev/nu
 FROM node-base AS admin-build
 COPY apps/cockpit-public ./apps/cockpit-public
 COPY apps/cockpit-admin ./apps/cockpit-admin
+COPY --from=gen-types /repo/packages/shared/src/api/types.ts ./packages/shared/src/api/types.ts
 ARG VITE_API_BASE_URL=/api
 ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
 RUN pnpm --filter cockpit-admin build
