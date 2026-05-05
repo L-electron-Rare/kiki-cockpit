@@ -14,15 +14,21 @@ This mirrors the eu-kiki worker pattern: each machine exposes its data over HTTP
 
 ## DNS
 
-| Record | Mode | Target |
-|---|---|---|
-| `ml.saillant.cc` | Cloudflare proxied (orange) | electron-server public IP |
-| `admin.ml.saillant.cc` | Cloudflare DNS-only (grey) | electron-server **Tailscale** IP `100.78.191.52` |
+| Record | Type | Mode | Target |
+|---|---|---|---|
+| `ml.saillant.cc` | CNAME | proxied (orange) | `<TUNNEL_ID>.cfargotunnel.com` |
+| `admin.ml.saillant.cc` | A | DNS-only (grey) | electron-server Tailscale IP (`100.78.191.52`) |
+
+The public host goes through Cloudflare Tunnel (`cloudflared` already running on
+electron-server, serving every other `*.saillant.cc` subdomain). The tunnel's
+ingress must include a rule for `ml.saillant.cc` → `https://localhost:443`
+(noTLSVerify: true) — managed in the Cloudflare Zero Trust dashboard or via API.
 
 The grey-cloud admin record makes the admin host reachable **only from the tailnet**:
 non-members can resolve it but can't route to a `100.64/10` IP. No Traefik IPAllowList
 needed. Cloudflare can't proxy a Tailscale-only origin (no public IP), so leaving it
-DNS-only is both correct and necessary.
+DNS-only is both correct and necessary. Traefik issues its Let's Encrypt cert via
+ACME DNS-01 (Cloudflare provider) — works without any inbound public route.
 
 ---
 
@@ -35,11 +41,15 @@ Prerequisites on the host:
 
 ```bash
 ssh electron-server
-mkdir -p /opt/kiki-cockpit && cd /opt/kiki-cockpit
-git clone https://github.com/L-electron-Rare/kiki-cockpit.git .
-git checkout deploy/electron-server      # until merged
-cp deploy/.env.example deploy/.env       # then edit
+sudo mkdir -p /opt/kiki-cockpit && sudo chown $USER:$USER /opt/kiki-cockpit
+cd /opt/kiki-cockpit
+gh repo clone L-electron-Rare/kiki-cockpit .
+cp deploy/.env.example deploy/.env                    # then edit
 docker compose -f deploy/docker-compose.yml --env-file deploy/.env up -d --build
+
+# Install the SPA routers (compose labels for these are silently dropped — TBD)
+sudo cp deploy/traefik-dynamic/kiki-cockpit.yml \
+  /home/electron/lelectron-rare/factory-4-life/traefik/dynamic/
 ```
 
 Verify:
