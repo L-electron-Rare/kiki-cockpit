@@ -1,7 +1,7 @@
 """Schema sanity tests."""
 from datetime import datetime, UTC
 
-from kiki_cockpit.models import ChatBackend, EvalResult, ModelCard, ModelStatus
+from ailiance_demo.models import ChatBackend, EvalResult, ModelCard, ModelStatus
 
 
 def test_model_card_minimal_fields() -> None:

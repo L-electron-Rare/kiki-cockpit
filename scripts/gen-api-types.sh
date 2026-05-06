@@ -11,7 +11,7 @@ mkdir -p "$(dirname "$OUT")"
 
 # Boot API in background
 cd "$ROOT"
-uv run uvicorn kiki_cockpit.main:app --host 127.0.0.1 --port 9199 &
+uv run uvicorn ailiance_demo.main:app --host 127.0.0.1 --port 9199 &
 API_PID=$!
 trap 'kill $API_PID 2>/dev/null || true' EXIT
 

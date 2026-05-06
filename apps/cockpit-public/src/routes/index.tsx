@@ -19,7 +19,7 @@ function HomePage() {
         <h1 className="text-4xl font-bold">L'Électron Rare — Model Showcase</h1>
         <p className="mt-2 text-slate-600">
           24 fine-tuned LLMs published on HuggingFace + 3 EU-sovereign models served live.
-          Provenance, eval scores, and chat playground for the EU-KIKI Live stack.
+          Provenance, eval scores, and chat playground for the AILIANCE Live stack.
         </p>
         <div className="mt-4 flex gap-3">
           <Link to="/models" className="rounded bg-slate-900 px-4 py-2 text-white">

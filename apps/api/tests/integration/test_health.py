@@ -8,5 +8,5 @@ def test_healthz_returns_ok(client: TestClient) -> None:
     assert response.status_code == 200
     payload = response.json()
     assert payload["status"] == "ok"
-    assert payload["service"] == "kiki-cockpit"
+    assert payload["service"] == "ailiance-demo"
     assert "version" in payload

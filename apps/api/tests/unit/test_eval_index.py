@@ -1,7 +1,7 @@
 """Tests for eval_index service."""
 from pathlib import Path
 
-from kiki_cockpit.services.eval_index import EvalIndex
+from ailiance_demo.services.eval_index import EvalIndex
 
 FIXTURES = Path(__file__).parent.parent / "fixtures" / "eval_results"
 

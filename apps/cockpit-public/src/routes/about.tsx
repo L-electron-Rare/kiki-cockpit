@@ -17,8 +17,8 @@ function AboutPage() {
       <p>
         Each model published with full provenance: base model, training method (LoRA / SFT),
         hyperparameters, datasets (HF-traceable, licensed Apache/MIT/CC-BY), hardware, run SHA. See{' '}
-        <a href="https://github.com/L-electron-Rare/eu-kiki/blob/main/docs/eu-ai-act-transparency.md">
-          the EU-KIKI transparency document
+        <a href="https://github.com/L-electron-Rare/ailiance/blob/main/docs/eu-ai-act-transparency.md">
+          the AILIANCE transparency document
         </a>
         .
       </p>
@@ -34,7 +34,7 @@ function AboutPage() {
       </ul>
       <h2>Portable backend</h2>
       <p>
-        The eu-kiki gateway and worker stack are <strong>not tied to Apple Silicon</strong>.
+        The ailiance gateway and worker stack are <strong>not tied to Apple Silicon</strong>.
         Our reference deployment runs on Mac Studio M3 Ultra (MLX) and macOS via MLX-LM and
         llama.cpp, but the same OpenAI-compatible HTTP contract can be served from any
         runtime that exposes a compatible <code>/v1/chat/completions</code> endpoint.

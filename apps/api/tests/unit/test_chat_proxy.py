@@ -2,16 +2,16 @@
 import httpx
 import pytest
 
-from kiki_cockpit.services.chat_proxy import (
+from ailiance_demo.services.chat_proxy import (
     ChatRequest,
     is_chat_eligible,
     stream_chat,
-    EU_KIKI_ALIASES,
+    AILIANCE_ALIASES,
 )
 
 
-def test_is_chat_eligible_returns_true_for_eu_kiki_aliases() -> None:
-    for alias in EU_KIKI_ALIASES:
+def test_is_chat_eligible_returns_true_for_ailiance_aliases() -> None:
+    for alias in AILIANCE_ALIASES:
         assert is_chat_eligible(alias) is True
 
 
@@ -32,7 +32,7 @@ async def test_stream_chat_forwards_sse_events() -> None:
     transport = httpx.MockTransport(server_handler)
 
     chat_req = ChatRequest(
-        model_id="eu-kiki/apertus-70b",
+        model_id="ailiance/apertus-70b",
         messages=[{"role": "user", "content": "hi"}],
         temperature=0.7,
     )

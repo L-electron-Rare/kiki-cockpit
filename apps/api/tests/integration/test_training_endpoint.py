@@ -3,9 +3,9 @@ from pathlib import Path
 
 from fastapi.testclient import TestClient
 
-from kiki_cockpit.deps import get_training_runs_provider, get_hf_cache, get_eval_index
-from kiki_cockpit.main import create_app
-from kiki_cockpit.services.training_runs_provider import TrainingRunsProvider
+from ailiance_demo.deps import get_training_runs_provider, get_hf_cache, get_eval_index
+from ailiance_demo.main import create_app
+from ailiance_demo.services.training_runs_provider import TrainingRunsProvider
 
 
 def test_list_runs_requires_tailscale_user(tmp_path: Path, empty_hf_cache, empty_eval_index) -> None:

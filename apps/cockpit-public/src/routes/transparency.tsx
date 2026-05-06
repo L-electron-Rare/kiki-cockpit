@@ -16,60 +16,60 @@ interface ProvenanceLink {
 
 const ENTRIES: ProvenanceLink[] = [
   {
-    alias: 'eu-kiki/apertus-70b',
+    alias: 'ailiance/apertus-70b',
     display: 'Apertus 70B Instruct',
     base: 'swiss-ai/Apertus-70B-Instruct-2509',
     provider: 'Swiss AI Initiative (EPFL/ETHZ/CSCS)',
     license: 'Apache-2.0',
     provenance_url:
-      'https://github.com/L-electron-Rare/eu-kiki/blob/main/docs/provenance/apertus-70b-instruct-2509.json',
+      'https://github.com/L-electron-Rare/ailiance/blob/main/docs/provenance/apertus-70b-instruct-2509.json',
   },
   {
-    alias: 'eu-kiki/devstral-24b',
+    alias: 'ailiance/devstral-24b',
     display: 'Devstral Small 2 24B Instruct',
     base: 'mistralai/Devstral-Small-2-24B-Instruct-2512',
     provider: 'Mistral AI',
     license: 'Apache-2.0',
     provenance_url:
-      'https://github.com/L-electron-Rare/eu-kiki/blob/main/docs/provenance/devstral-small-2-24b-instruct-2512.json',
+      'https://github.com/L-electron-Rare/ailiance/blob/main/docs/provenance/devstral-small-2-24b-instruct-2512.json',
   },
   {
-    alias: 'eu-kiki/eurollm-22b',
+    alias: 'ailiance/eurollm-22b',
     display: 'EuroLLM 22B Instruct',
     base: 'utter-project/EuroLLM-22B-Instruct-2512',
     provider: 'Utter Project (EU consortium)',
     license: 'Apache-2.0',
     provenance_url:
-      'https://github.com/L-electron-Rare/eu-kiki/blob/main/docs/provenance/eurollm-22b-instruct-2512.json',
+      'https://github.com/L-electron-Rare/ailiance/blob/main/docs/provenance/eurollm-22b-instruct-2512.json',
   },
   {
-    alias: 'eu-kiki/gemma3-4b',
+    alias: 'ailiance/gemma3-4b',
     display: 'Gemma 3 4B IT',
     base: 'google/gemma-3-4b-it',
     provider: 'Google DeepMind',
     license: 'Gemma Terms of Use',
     provenance_url:
-      'https://github.com/L-electron-Rare/eu-kiki/blob/main/docs/provenance/gemma3-4b-it.json',
+      'https://github.com/L-electron-Rare/ailiance/blob/main/docs/provenance/gemma3-4b-it.json',
     notes: 'Light-weight worker — runs on tower (NVIDIA Quadro P2000 5 GB).',
   },
   {
-    alias: 'eu-kiki/qwen3-next-80b-a3b-instruct',
+    alias: 'ailiance/qwen3-next-80b-a3b-instruct',
     display: 'Qwen3-Next 80B A3B Instruct',
     base: 'Qwen/Qwen3-Next-80B-A3B-Instruct',
     provider: 'Qwen (Alibaba Cloud)',
     license: 'Apache-2.0',
     provenance_url:
-      'https://github.com/L-electron-Rare/eu-kiki/blob/main/docs/provenance/qwen3-next-80b-a3b-instruct.json',
+      'https://github.com/L-electron-Rare/ailiance/blob/main/docs/provenance/qwen3-next-80b-a3b-instruct.json',
     notes: 'MoE 80B / 3B active. Runs on kxkm-ai (RTX 4090) via llama.cpp with expert offload to RAM.',
   },
   {
-    alias: 'eu-kiki/auto',
+    alias: 'ailiance/auto',
     display: 'Auto-router (MiniLM + MLP head)',
     base: 'sentence-transformers/all-MiniLM-L6-v2 + internal head',
     provider: 'Microsoft (encoder) + L\'Électron Rare (head)',
     license: 'Apache-2.0',
     provenance_url:
-      'https://github.com/L-electron-Rare/eu-kiki/blob/main/docs/provenance/auto-router-minilm.json',
+      'https://github.com/L-electron-Rare/ailiance/blob/main/docs/provenance/auto-router-minilm.json',
     notes: 'Routing classifier only — no chat output of its own.',
   },
   {
@@ -79,7 +79,7 @@ const ENTRIES: ProvenanceLink[] = [
     provider: 'Google',
     license: 'Gemma Terms',
     provenance_url:
-      'https://github.com/L-electron-Rare/eu-kiki/blob/main/docs/provenance/gemma-3-4b-it.json',
+      'https://github.com/L-electron-Rare/ailiance/blob/main/docs/provenance/gemma-3-4b-it.json',
     notes: 'Used only by the auto-router as a quick fallback when no labelled domain matches.',
   },
 ];
@@ -169,13 +169,13 @@ function TransparencyPage() {
         material; opt-out signals (robots.txt, ai.txt) are respected for any web data. The
         full per-dataset breakdown lives in{' '}
         <a
-          href="https://github.com/L-electron-Rare/eu-kiki/tree/main/docs/transparency"
+          href="https://github.com/L-electron-Rare/ailiance/tree/main/docs/transparency"
           target="_blank"
           rel="noopener noreferrer"
         >
           docs/transparency/
         </a>{' '}
-        of the eu-kiki repository.
+        of the ailiance repository.
       </p>
 
       <h2>Logs &amp; data retention</h2>

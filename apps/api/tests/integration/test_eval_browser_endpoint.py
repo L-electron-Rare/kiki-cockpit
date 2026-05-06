@@ -4,9 +4,9 @@ from pathlib import Path
 
 from fastapi.testclient import TestClient
 
-from kiki_cockpit.deps import get_hf_cache, get_eval_index
-from kiki_cockpit.main import create_app
-from kiki_cockpit.services.eval_index import EvalIndex
+from ailiance_demo.deps import get_hf_cache, get_eval_index
+from ailiance_demo.main import create_app
+from ailiance_demo.services.eval_index import EvalIndex
 
 
 def test_eval_browser_requires_tailscale(empty_hf_cache, empty_eval_index) -> None:

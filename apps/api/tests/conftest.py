@@ -4,18 +4,18 @@ from pathlib import Path
 import pytest
 from fastapi.testclient import TestClient
 
-from kiki_cockpit.main import EU_KIKI_ALIASES, create_app
-from kiki_cockpit.models import ModelCard, ModelStatus, ChatBackend
-from kiki_cockpit.services.featured import FeaturedConfig
-from kiki_cockpit.services.hf_cache import HFCache
-from kiki_cockpit.services.eval_index import EvalIndex
+from ailiance_demo.main import AILIANCE_ALIASES, create_app
+from ailiance_demo.models import ModelCard, ModelStatus, ChatBackend
+from ailiance_demo.services.featured import FeaturedConfig
+from ailiance_demo.services.hf_cache import HFCache
+from ailiance_demo.services.eval_index import EvalIndex
 
 
 @pytest.fixture
 def empty_hf_cache(tmp_path: Path) -> HFCache:
     return HFCache(
         owners=[],
-        eu_kiki_aliases=EU_KIKI_ALIASES,
+        ailiance_aliases=AILIANCE_ALIASES,
         featured=FeaturedConfig(),
         cache_dir=tmp_path / "cache",
     )
@@ -43,7 +43,7 @@ def client_with_cache(empty_hf_cache: HFCache, sample_card: ModelCard) -> TestCl
     app = create_app()
     empty_hf_cache._cards = [sample_card]
     # Replace the lifespan-installed cache by overriding app.state directly via dependency_overrides
-    from kiki_cockpit.deps import get_hf_cache
+    from ailiance_demo.deps import get_hf_cache
     app.dependency_overrides[get_hf_cache] = lambda: empty_hf_cache
     return TestClient(app)
 
@@ -61,7 +61,7 @@ def client_with_full_state(
 ) -> TestClient:
     app = create_app()
     empty_hf_cache._cards = [sample_card]
-    from kiki_cockpit.deps import get_hf_cache, get_eval_index
+    from ailiance_demo.deps import get_hf_cache, get_eval_index
     app.dependency_overrides[get_hf_cache] = lambda: empty_hf_cache
     app.dependency_overrides[get_eval_index] = lambda: empty_eval_index
     return TestClient(app)

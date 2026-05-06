@@ -5,8 +5,8 @@ from pathlib import Path
 import httpx
 import pytest
 
-from kiki_cockpit.services.hf_sync import fetch_models_for_owner, to_model_card
-from kiki_cockpit.models import ChatBackend, ModelStatus
+from ailiance_demo.services.hf_sync import fetch_models_for_owner, to_model_card
+from ailiance_demo.models import ChatBackend, ModelStatus
 
 FIXTURES = Path(__file__).parent.parent / "fixtures" / "hf_responses"
 
@@ -52,7 +52,7 @@ def test_to_model_card_maps_basic_fields() -> None:
         "tags": ["text-generation", "lora", "mistral"],
     }
 
-    card = to_model_card(raw, eu_kiki_aliases=set())
+    card = to_model_card(raw, ailiance_aliases=set())
 
     assert card.id == "clemsail/micro-kiki-v3"
     assert card.owner == "clemsail"
@@ -65,12 +65,12 @@ def test_to_model_card_maps_basic_fields() -> None:
     assert card.hf_url == "https://huggingface.co/clemsail/micro-kiki-v3"
 
 
-def test_to_model_card_marks_eu_kiki_live_models_chat_eligible() -> None:
-    raw = {"id": "eu-kiki/apertus-70b", "author": "eu-kiki"}
+def test_to_model_card_marks_ailiance_live_models_chat_eligible() -> None:
+    raw = {"id": "ailiance/apertus-70b", "author": "ailiance"}
 
-    card = to_model_card(raw, eu_kiki_aliases={"eu-kiki/apertus-70b"})
+    card = to_model_card(raw, ailiance_aliases={"ailiance/apertus-70b"})
 
-    assert card.chat_backend == ChatBackend.EU_KIKI_LIVE
+    assert card.chat_backend == ChatBackend.AILIANCE_LIVE
     assert card.chat_eligible is True
 
 
@@ -82,6 +82,6 @@ def test_to_model_card_zero_downloads_marks_alpha() -> None:
         "likes": 0,
     }
 
-    card = to_model_card(raw, eu_kiki_aliases=set())
+    card = to_model_card(raw, ailiance_aliases=set())
 
     assert card.status == ModelStatus.ALPHA

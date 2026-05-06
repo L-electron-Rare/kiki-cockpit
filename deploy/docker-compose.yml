@@ -1,8 +1,8 @@
-# kiki-cockpit deployment on electron-server
+# ailiance-demo deployment on electron-server
 #
 # Hosts:
-#   - ml.saillant.cc        → public vitrine (Cloudflare proxied)
-#   - admin.ml.saillant.cc  → admin (Cloudflare DNS-only / grey, points to
+#   - ailiance.fr        → public vitrine (Cloudflare proxied)
+#   - admin.ailiance.fr  → admin (Cloudflare DNS-only / grey, points to
 #                             electron-server's Tailscale IP — only tailnet
 #                             members can resolve+reach it).
 #
@@ -11,7 +11,7 @@
 #
 # Required: external Docker network `traefik` must exist (Traefik 3 already
 # running on electron-server with cert resolver `letsencrypt`).
-name: kiki-cockpit
+name: ailiance-demo
 
 x-restart: &restart
   restart: unless-stopped
@@ -30,18 +30,18 @@ services:
       context: ..
       dockerfile: Dockerfile
       target: api
-    image: kiki-cockpit-api:${TAG:-latest}
+    image: ailiance-demo-api:${TAG:-latest}
     environment:
       COCKPIT_HOST: 0.0.0.0
       COCKPIT_PORT: 9100
       COCKPIT_LOG_LEVEL: ${COCKPIT_LOG_LEVEL:-INFO}
-      # eu-kiki gateway lives on the same host (electron-server) — co-located
+      # ailiance gateway lives on the same host (electron-server) — co-located
       # so chat proxy never crosses the public internet.
-      COCKPIT_EU_KIKI_GATEWAY_URL: ${COCKPIT_EU_KIKI_GATEWAY_URL:-http://host.docker.internal:9300}
+      COCKPIT_AILIANCE_GATEWAY_URL: ${COCKPIT_AILIANCE_GATEWAY_URL:-http://host.docker.internal:9300}
       # Workers are pinged via Tailscale Magic DNS — same network agent-kiki
-      # uses (see cli/src/utils/eu-kiki-default.ts).
+      # uses (see cli/src/utils/ailiance-default.ts).
       COCKPIT_HF_TOKEN: ${HF_TOKEN:-}
-      # Filesystem-on-studio access goes through the kiki-collector HTTP shim
+      # Filesystem-on-studio access goes through the ailiance-collector HTTP shim
       # (see deploy/collector/) — empty roots disables direct FS reads.
       COCKPIT_TRAINING_LOG_ROOTS: "[]"
       COCKPIT_COLLECTOR_BASE_URL: ${COCKPIT_COLLECTOR_BASE_URL:-http://studio:9150}
@@ -57,12 +57,12 @@ services:
       - "traefik.docker.network=traefik"
       - "traefik.http.services.kiki-api.loadbalancer.server.port=9100"
       # public host: /api → api
-      - "traefik.http.routers.kiki-api-public.rule=Host(`ml.saillant.cc`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.kiki-api-public.rule=Host(`ailiance.fr`) && PathPrefix(`/api`)"
       - "traefik.http.routers.kiki-api-public.entrypoints=websecure"
       - "traefik.http.routers.kiki-api-public.tls.certresolver=${TRAEFIK_CERTRESOLVER:-letsencrypt}"
       - "traefik.http.routers.kiki-api-public.service=kiki-api"
       # admin host: /api → api (same backend, admin endpoints reachable here)
-      - "traefik.http.routers.kiki-api-admin.rule=Host(`admin.ml.saillant.cc`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.kiki-api-admin.rule=Host(`admin.ailiance.fr`) && PathPrefix(`/api`)"
       - "traefik.http.routers.kiki-api-admin.entrypoints=websecure"
       - "traefik.http.routers.kiki-api-admin.tls.certresolver=${TRAEFIK_CERTRESOLVER:-letsencrypt}"
       - "traefik.http.routers.kiki-api-admin.service=kiki-api"
@@ -84,14 +84,14 @@ services:
         # Empty: SPA hooks already include the /api/ prefix in their fetch
         # paths (see useModels.ts, useTrainingRuns.ts, etc.).
         VITE_API_BASE_URL: ""
-    image: kiki-cockpit-public:${TAG:-latest}
+    image: ailiance-demo-public:${TAG:-latest}
     networks:
       - traefik
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik"
       - "traefik.http.services.kiki-public.loadbalancer.server.port=80"
-      - "traefik.http.routers.kiki-public.rule=Host(`ml.saillant.cc`)"
+      - "traefik.http.routers.kiki-public.rule=Host(`ailiance.fr`)"
       - "traefik.http.routers.kiki-public.entrypoints=websecure"
       - "traefik.http.routers.kiki-public.tls.certresolver=${TRAEFIK_CERTRESOLVER:-letsencrypt}"
       - "traefik.http.routers.kiki-public.service=kiki-public"
@@ -107,14 +107,14 @@ services:
         # Empty: SPA hooks already include the /api/ prefix in their fetch
         # paths (see useModels.ts, useTrainingRuns.ts, etc.).
         VITE_API_BASE_URL: ""
-    image: kiki-cockpit-admin:${TAG:-latest}
+    image: ailiance-demo-admin:${TAG:-latest}
     networks:
       - traefik
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik"
       - "traefik.http.services.kiki-admin.loadbalancer.server.port=80"
-      - "traefik.http.routers.kiki-admin.rule=Host(`admin.ml.saillant.cc`)"
+      - "traefik.http.routers.kiki-admin.rule=Host(`admin.ailiance.fr`)"
       - "traefik.http.routers.kiki-admin.entrypoints=websecure"
       - "traefik.http.routers.kiki-admin.tls.certresolver=${TRAEFIK_CERTRESOLVER:-letsencrypt}"
       - "traefik.http.routers.kiki-admin.service=kiki-admin"

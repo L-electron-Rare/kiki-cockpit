@@ -1,7 +1,7 @@
 """Tests for featured.yaml parsing."""
 from pathlib import Path
 
-from kiki_cockpit.services.featured import FeaturedConfig, load_featured
+from ailiance_demo.services.featured import FeaturedConfig, load_featured
 
 FIXTURE = Path(__file__).parent.parent / "fixtures" / "featured_sample.yaml"
 

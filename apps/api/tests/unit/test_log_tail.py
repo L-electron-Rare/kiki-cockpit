@@ -1,5 +1,5 @@
 """Tests for log_tail mlx_lm parser."""
-from kiki_cockpit.services.log_tail import parse_line
+from ailiance_demo.services.log_tail import parse_line
 
 
 def test_parses_train_iter_line() -> None:

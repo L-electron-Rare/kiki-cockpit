@@ -8,10 +8,10 @@ featured:
   - id: clemsail/kiki-stm32-sft
     rank: 3
     headline: "Adapter STM32 — 79 downloads"
-  - id: eu-kiki/apertus-70b
+  - id: ailiance/apertus-70b
     rank: 4
     headline: "EU sovereign — Apertus 70B (EPFL+ETH+CSCS) avec 32 adapters EU"
-  - id: eu-kiki/devstral-24b
+  - id: ailiance/devstral-24b
     rank: 5
     headline: "Devstral 2 24B — code generation EU"
 
@@ -25,6 +25,6 @@ deprecated:
 
 aliases:
   clemsail/micro-kiki-v3: "Micro-KIKI v3"
-  eu-kiki/apertus-70b: "Apertus 70B (EU-KIKI)"
-  eu-kiki/devstral-24b: "Devstral 24B (EU-KIKI)"
-  eu-kiki/eurollm-22b: "EuroLLM 22B (EU-KIKI)"
+  ailiance/apertus-70b: "Apertus 70B (AILIANCE)"
+  ailiance/devstral-24b: "Devstral 24B (AILIANCE)"
+  ailiance/eurollm-22b: "EuroLLM 22B (AILIANCE)"

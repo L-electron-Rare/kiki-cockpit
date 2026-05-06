@@ -7,8 +7,8 @@ from unittest.mock import patch
 import pytest
 from fastapi.testclient import TestClient
 
-from kiki_cockpit.main import app
-from kiki_cockpit.models.status import RouterStats, WorkerStatus
+from ailiance_demo.main import app
+from ailiance_demo.models.status import RouterStats, WorkerStatus
 
 
 @pytest.fixture
@@ -38,8 +38,8 @@ async def test_status_endpoint(stub_workers):
     async def fake_metrics(_url):
         return RouterStats(cache_hits=42, cache_misses=8, total_requests=50)
 
-    with patch("kiki_cockpit.routers.public.status.fetch_workers_status", fake_probe), \
-         patch("kiki_cockpit.routers.public.status.fetch_router_stats", fake_metrics):
+    with patch("ailiance_demo.routers.public.status.fetch_workers_status", fake_probe), \
+         patch("ailiance_demo.routers.public.status.fetch_router_stats", fake_metrics):
         client = TestClient(app)
         r = client.get("/api/public/status")
     assert r.status_code == 200
@@ -56,7 +56,7 @@ async def test_status_endpoint(stub_workers):
 
 def test_workers_constant_matches_production_fleet():
     """The hard-coded WORKERS list is the single source of truth for /status."""
-    from kiki_cockpit.services.gateway_probe import WORKERS
+    from ailiance_demo.services.gateway_probe import WORKERS
 
     ids = {w["id"] for w in WORKERS}
     assert ids == {"apertus", "devstral", "eurollm", "gemma3", "qwen3-next"}

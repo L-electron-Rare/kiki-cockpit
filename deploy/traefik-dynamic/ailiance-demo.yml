@@ -1,0 +1,37 @@
+# Traefik dynamic config for the public + admin SPA routers.
+#
+# Why this file instead of compose labels?
+# Traefik's docker provider silently drops the equivalent labels on the
+# public/admin containers (kiki-api labels are picked up just fine; root
+# cause TBD). The api router is still defined via compose labels —
+# only the two SPA routers need this fallback.
+#
+# Install on electron-server:
+#   sudo cp deploy/traefik-dynamic/ailiance-demo.yml \
+#     /home/electron/lelectron-rare/factory-4-life/traefik/dynamic/
+# Traefik file provider has `watch: true` — reload is automatic.
+http:
+  routers:
+    kiki-public:
+      rule: 'Host(`ailiance.fr`)'
+      entryPoints: [websecure]
+      service: kiki-public
+      priority: 1
+      tls:
+        certResolver: letsencrypt
+    kiki-admin:
+      rule: 'Host(`admin.ailiance.fr`)'
+      entryPoints: [websecure]
+      service: kiki-admin
+      priority: 1
+      tls:
+        certResolver: letsencrypt
+  services:
+    kiki-public:
+      loadBalancer:
+        servers:
+          - url: 'http://ailiance-demo-public-1:80'
+    kiki-admin:
+      loadBalancer:
+        servers:
+          - url: 'http://ailiance-demo-admin-1:80'

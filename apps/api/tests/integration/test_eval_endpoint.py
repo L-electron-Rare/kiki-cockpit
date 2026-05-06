@@ -4,9 +4,9 @@ import json
 
 from fastapi.testclient import TestClient
 
-from kiki_cockpit.main import create_app
-from kiki_cockpit.deps import get_eval_index, get_hf_cache
-from kiki_cockpit.services.eval_index import EvalIndex
+from ailiance_demo.main import create_app
+from ailiance_demo.deps import get_eval_index, get_hf_cache
+from ailiance_demo.services.eval_index import EvalIndex
 
 
 def test_eval_summary_returns_per_benchmark(tmp_path: Path, empty_hf_cache) -> None:

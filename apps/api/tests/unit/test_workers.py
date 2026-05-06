@@ -2,8 +2,8 @@
 import httpx
 import pytest
 
-from kiki_cockpit.models import WorkerHealth
-from kiki_cockpit.services.workers import ping_worker
+from ailiance_demo.models import WorkerHealth
+from ailiance_demo.services.workers import ping_worker
 
 
 @pytest.mark.asyncio

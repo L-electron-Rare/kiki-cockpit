@@ -28,7 +28,7 @@ describe('useChatStream', () => {
     const { result } = renderHook(() => useChatStream());
 
     await act(async () => {
-      await result.current.send('eu-kiki/apertus-70b', [{ role: 'user', content: 'hi' }]);
+      await result.current.send('ailiance/apertus-70b', [{ role: 'user', content: 'hi' }]);
     });
 
     expect(result.current.assistantText).toBe('Hello');

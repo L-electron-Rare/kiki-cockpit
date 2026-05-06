@@ -1,4 +1,4 @@
-# Optional: containerised kiki-collector. The native launchd plist (cc.kiki.collector.plist)
+# Optional: containerised ailiance-collector. The native launchd plist (cc.kiki.collector.plist)
 # is preferred on studio because the collector needs read access to logs and eval results
 # living under the user's home directory.
 FROM python:3.12-slim AS collector
@@ -13,4 +13,4 @@ RUN uv sync --no-dev
 ENV PATH="/app/.venv/bin:${PATH}" COLLECTOR_HOST=0.0.0.0 COLLECTOR_PORT=9150
 EXPOSE 9150
 HEALTHCHECK --interval=30s --timeout=3s CMD curl -fsS http://127.0.0.1:9150/healthz || exit 1
-CMD ["uvicorn", "kiki_collector.main:app", "--host", "0.0.0.0", "--port", "9150"]
+CMD ["uvicorn", "ailiance_collector.main:app", "--host", "0.0.0.0", "--port", "9150"]

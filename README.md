@@ -1,16 +1,16 @@
 <div align="center">
 
-# kiki-cockpit
+# ailiance-demo
 
-### Vitrine publique + console d'admin de la flotte LLM eu-kiki — 5 workers, provenance EU AI Act, chat live
+### Vitrine publique + console d'admin de la flotte LLM ailiance — 5 workers, provenance EU AI Act, chat live
 
-[![live](https://img.shields.io/badge/live-ml.saillant.cc-7e3af2)](https://ml.saillant.cc)
-[![status](https://img.shields.io/badge/fleet-5%2F5%20healthy-success)](https://ml.saillant.cc/api/public/status)
+[![live](https://img.shields.io/badge/live-ailiance.fr-7e3af2)](https://ailiance.fr)
+[![status](https://img.shields.io/badge/fleet-5%2F5%20healthy-success)](https://ailiance.fr/api/public/status)
 [![license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 [![api](https://img.shields.io/badge/api-FastAPI-009688)](apps/api)
 [![spa](https://img.shields.io/badge/SPA-React%2019%20%2B%20Vite-61dafb)](apps/cockpit-public)
 
-**Public** → [`ml.saillant.cc`](https://ml.saillant.cc) · **Admin (Tailscale-only)** → [`admin.ml.saillant.cc`](https://admin.ml.saillant.cc) · **Status** → [`/api/public/status`](https://ml.saillant.cc/api/public/status)
+**Public** → [`ailiance.fr`](https://ailiance.fr) · **Admin (Tailscale-only)** → [`admin.ailiance.fr`](https://admin.ailiance.fr) · **Status** → [`/api/public/status`](https://ailiance.fr/api/public/status)
 
 </div>
 
@@ -18,9 +18,9 @@
 
 ## C'est quoi
 
-Le front-end de la flotte LLM [eu-kiki](https://github.com/L-electron-Rare/eu-kiki). Deux applications, un seul backend FastAPI :
+Le front-end de la flotte LLM [ailiance](https://github.com/L-electron-Rare/ailiance). Deux applications, un seul backend FastAPI :
 
-- **Vitrine publique** — galerie des modèles servis (5 workers eu-kiki + 24 modèles publiés sur HuggingFace), provenance EU AI Act inlinée par modèle, chat playground avec streaming SSE, page `/transparency`, page `/status` live.
+- **Vitrine publique** — galerie des modèles servis (5 workers ailiance + 24 modèles publiés sur HuggingFace), provenance EU AI Act inlinée par modèle, chat playground avec streaming SSE, page `/transparency`, page `/status` live.
 - **Admin (Tailscale-only)** — monitoring des runs de training, santé workers, résultats d'éval, futurs sprints orchestration eval/train.
 
 Une seule API FastAPI sert les deux frontends. Rate-limiting Traefik (30 req/min/IP) sur tout `/api`.
@@ -33,8 +33,8 @@ flowchart TB
     op([🔧 Opérateur tailnet])
 
     subgraph cloudflare["Cloudflare"]
-        cf_proxy["ml.saillant.cc<br/>(proxied)"]
-        cf_dns["admin.ml.saillant.cc<br/>(DNS-only)"]
+        cf_proxy["ailiance.fr<br/>(proxied)"]
+        cf_dns["admin.ailiance.fr<br/>(DNS-only)"]
     end
 
     user -->|HTTPS| cf_proxy
@@ -43,7 +43,7 @@ flowchart TB
     subgraph electron["electron-server (Docker host, Traefik)"]
         rl["Traefik<br/>middleware kiki-api-ratelimit<br/>30 req/min/IP"]
 
-        subgraph cockpit["docker compose: kiki-cockpit"]
+        subgraph cockpit["docker compose: ailiance-demo"]
             spa_pub["public<br/>React 19 + Vite<br/>:80"]
             spa_adm["admin<br/>React 19 + Vite<br/>:80"]
             api["api · FastAPI<br/><b>:9100</b><br/>5 workers probe + chat proxy"]
@@ -57,9 +57,9 @@ flowchart TB
     cf_proxy -.-> rl
     cf_dns -.-> rl
 
-    api -.->|host.docker.internal:9300| eukiki
+    api -.->|host.docker.internal:9300| ailiance
 
-    subgraph eukiki["eu-kiki gateway :9300"]
+    subgraph ailiance["ailiance gateway :9300"]
         gw["MiniLM router-v6<br/>32 domaines · 87.7 % top-1"]
         gw --> w1["studio<br/>Apertus / EuroLLM"]
         gw --> w2["macm1<br/>Devstral"]
@@ -72,7 +72,7 @@ flowchart TB
     classDef sov fill:#dbeafe,stroke:#1e40af
     class cloudflare pub
     class cockpit,electron stack
-    class eukiki sov
+    class ailiance sov
 ```
 
 ## Endpoints
@@ -82,11 +82,11 @@ flowchart TB
 | Route | Effet |
 |---|---|
 | `GET /api/public/healthz` | liveness |
-| `GET /api/public/models` | catalogue : 5 cards live eu-kiki + auto-router + ce qu'expose le HF cache (clemsail/*, electron-rare/*) |
+| `GET /api/public/models` | catalogue : 5 cards live ailiance + auto-router + ce qu'expose le HF cache (clemsail/*, electron-rare/*) |
 | `GET /api/public/models/{owner}/{name}` | détail + provenance JSON inline |
 | `GET /api/public/status` | santé live des 5 workers (cache 30 s) |
 | `GET /api/public/router-stats` | métriques Prometheus du router (cache hits / misses, latence) |
-| `POST /api/public/chat` | proxy SSE vers eu-kiki gateway, slowapi 30/min |
+| `POST /api/public/chat` | proxy SSE vers ailiance gateway, slowapi 30/min |
 
 ### Admin (`/api/admin/*`, Tailscale-only)
 
@@ -96,7 +96,7 @@ flowchart TB
 | `GET /api/admin/training-runs` | runs MLX-LM via collector :9150 (filesystem-on-studio shim) |
 | `GET /api/admin/eval-runs` | catalogue eval, résultats agrégés |
 
-Auth admin : header `X-Tailscale-User` injecté par Traefik (cf. [`apps/api/src/kiki_cockpit/auth/tailscale.py`](apps/api/src/kiki_cockpit/auth/tailscale.py)).
+Auth admin : header `X-Tailscale-User` injecté par Traefik (cf. [`apps/api/src/ailiance_demo/auth/tailscale.py`](apps/api/src/ailiance_demo/auth/tailscale.py)).
 
 ## Cycle d'une requête de chat
 
@@ -106,8 +106,8 @@ sequenceDiagram
     participant U as Utilisateur
     participant CF as Cloudflare
     participant T as Traefik (electron-server)
-    participant A as kiki-cockpit api
-    participant G as eu-kiki gateway
+    participant A as ailiance-demo api
+    participant G as ailiance gateway
     participant W as Worker
 
     U->>CF: POST /api/public/chat<br/>{model_id, messages}
@@ -165,9 +165,9 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    PROV["📁 eu-kiki/docs/provenance/<br/>5 JSON Annex IV §1(c)"]
+    PROV["📁 ailiance/docs/provenance/<br/>5 JSON Annex IV §1(c)"]
     API["apps/api · _LIVE_DETAILS<br/>5 cards live (host, port, quant)"]
-    PROXY["chat_proxy · ALIAS_TO_GATEWAY_MODEL<br/>5 alias eu-kiki/* + auto"]
+    PROXY["chat_proxy · ALIAS_TO_GATEWAY_MODEL<br/>5 alias ailiance/* + auto"]
     PROBE["gateway_probe · WORKERS<br/>5 entrées probées toutes les 30 s"]
 
     PROV -- raw.githubusercontent --> SPA1["SPA · useProvenance<br/>fetch JSON par modèle"]
@@ -186,8 +186,8 @@ Quand on ajoute / retire un modèle servi, **les 4 listes doivent bouger ensembl
 ## Démarrage rapide (dev)
 
 ```bash
-git clone https://github.com/L-electron-Rare/kiki-cockpit.git
-cd kiki-cockpit
+git clone https://github.com/L-electron-Rare/ailiance-demo.git
+cd ailiance-demo
 pnpm install
 uv sync
 pnpm dev          # boots api + public + admin en parallèle
@@ -207,7 +207,7 @@ cd apps/cockpit-admin && pnpm test
 ## Déploiement
 
 ```bash
-# depuis electron-server, /opt/kiki-cockpit
+# depuis electron-server, /opt/ailiance-demo
 git pull --ff-only
 docker compose -f deploy/docker-compose.yml --env-file deploy/.env up -d --build api public admin
 ```
@@ -220,7 +220,7 @@ Le `docker-compose.yml` déclare les routers Traefik (`kiki-api-public`, `kiki-a
 |---|---|---|
 | `COCKPIT_HOST` / `COCKPIT_PORT` | bind FastAPI | `0.0.0.0:9100` |
 | `COCKPIT_LOG_LEVEL` | niveau de log uvicorn | `INFO` |
-| `COCKPIT_EU_KIKI_GATEWAY_URL` | passerelle eu-kiki | `http://host.docker.internal:9300` |
+| `COCKPIT_AILIANCE_GATEWAY_URL` | passerelle ailiance | `http://host.docker.internal:9300` |
 | `COCKPIT_HF_TOKEN` | jeton HF pour `hf_cache` | (vide → unauthenticated) |
 | `COCKPIT_TRAINING_LOG_ROOTS` | racines filesystem direct | `[]` (utilise collector) |
 | `COCKPIT_COLLECTOR_BASE_URL` | shim filesystem-on-studio | `http://studio:9150` |
@@ -228,10 +228,10 @@ Le `docker-compose.yml` déclare les routers Traefik (`kiki-api-public`, `kiki-a
 ## Layout monorepo
 
 ```
-kiki-cockpit/
+ailiance-demo/
 ├── apps/
 │   ├── api/                       FastAPI service
-│   │   └── src/kiki_cockpit/
+│   │   └── src/ailiance_demo/
 │   │       ├── routers/
 │   │       │   ├── public/        models, chat, status, healthz
 │   │       │   └── admin/         workers, training, eval (Tailscale auth)
@@ -260,11 +260,11 @@ cd apps/api && uv run pytest tests/integration/test_status_endpoint.py \
 # 7 passed
 ```
 
-`test_workers_constant_matches_production_fleet` est le canari : il échoue si on retire un alias eu-kiki/* sans aussi mettre à jour `WORKERS`.
+`test_workers_constant_matches_production_fleet` est le canari : il échoue si on retire un alias ailiance/* sans aussi mettre à jour `WORKERS`.
 
 ## Sister projects
 
-- [`eu-kiki`](https://github.com/L-electron-Rare/eu-kiki) — la passerelle LLM elle-même (workers, router-v6, dossier EU AI Act).
+- [`ailiance`](https://github.com/L-electron-Rare/ailiance) — la passerelle LLM elle-même (workers, router-v6, dossier EU AI Act).
 - [`agent-kiki`](https://github.com/L-electron-Rare/agent-kiki) — agent de code (CLI `aki` + extension VS Code) qui pointe sur cette passerelle par défaut.
 
 ## Licence
@@ -274,5 +274,5 @@ Apache-2.0.
 ---
 
 <div align="center">
-<sub>Built in France 🇫🇷 · No cloud · Apache-2.0 · <a href="https://ml.saillant.cc">ml.saillant.cc</a></sub>
+<sub>Built in France 🇫🇷 · No cloud · Apache-2.0 · <a href="https://ailiance.fr">ailiance.fr</a></sub>
 </div>

@@ -8,14 +8,14 @@ def test_list_models_returns_cards(client_with_cache: TestClient) -> None:
     assert response.status_code == 200
     cards = response.json()
     ids = {c["id"] for c in cards}
-    # 5 live eu-kiki workers + auto-router + the mocked HF entry.
+    # 5 live ailiance workers + auto-router + the mocked HF entry.
     assert {
-        "eu-kiki/apertus-70b",
-        "eu-kiki/devstral-24b",
-        "eu-kiki/eurollm-22b",
-        "eu-kiki/gemma3-4b",
-        "eu-kiki/qwen3-next-80b-a3b-instruct",
-        "eu-kiki/auto",
+        "ailiance/apertus-70b",
+        "ailiance/devstral-24b",
+        "ailiance/eurollm-22b",
+        "ailiance/gemma3-4b",
+        "ailiance/qwen3-next-80b-a3b-instruct",
+        "ailiance/auto",
         "clemsail/micro-kiki-v3",
     }.issubset(ids)
     hf_card = next(c for c in cards if c["id"] == "clemsail/micro-kiki-v3")

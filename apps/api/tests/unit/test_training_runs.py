@@ -2,8 +2,8 @@
 from datetime import datetime, UTC
 from pathlib import Path
 
-from kiki_cockpit.models import TrainingRunStatus
-from kiki_cockpit.services.training_runs import discover_runs, summarize_run
+from ailiance_demo.models import TrainingRunStatus
+from ailiance_demo.services.training_runs import discover_runs, summarize_run
 
 FIXTURE = Path(__file__).parent.parent / "fixtures" / "training_logs"
 

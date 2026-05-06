@@ -1,10 +1,10 @@
-# kiki-cockpit Implementation Plan (Sprints 0+1+2)
+# ailiance-demo Implementation Plan (Sprints 0+1+2)
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Build kiki-cockpit's foundation (Sprint 0 — repo + tooling + healthcheck), public vitrine + chat playground for the 3 EU-KIKI Live models with HF deep-link for the 24 HF models (Sprint 1), and admin monitoring read-only — training runs, live LossChart, virtualized LogTail, workers status grid, eval browser (Sprint 2).
+**Goal:** Build ailiance-demo's foundation (Sprint 0 — repo + tooling + healthcheck), public vitrine + chat playground for the 3 AILIANCE Live models with HF deep-link for the 24 HF models (Sprint 1), and admin monitoring read-only — training runs, live LossChart, virtualized LogTail, workers status grid, eval browser (Sprint 2).
 
-**Architecture:** Monorepo (pnpm + uv) with two Vite apps (`cockpit-public`, `cockpit-admin`), one FastAPI service (`api`), one shared package (`@cockpit/shared`). FastAPI runs on studio:9100, agrégates HF API + filesystem (logs, eval results) + eu-kiki gateway :9200. Frontend served by electron-server (deploy plus tard — out of scope). SSE for streaming, REST polling for status.
+**Architecture:** Monorepo (pnpm + uv) with two Vite apps (`cockpit-public`, `cockpit-admin`), one FastAPI service (`api`), one shared package (`@cockpit/shared`). FastAPI runs on studio:9100, agrégates HF API + filesystem (logs, eval results) + ailiance gateway :9200. Frontend served by electron-server (deploy plus tard — out of scope). SSE for streaming, REST polling for status.
 
 **Tech Stack:** Python 3.12+ / FastAPI / Pydantic v2 / httpx / structlog / pytest / uv — Node 20+ / pnpm / Vite 6 / React 19 / TypeScript / TanStack Router + Query / Tailwind / Radix UI / recharts / shiki / vitest / Testing Library — biome (lint+format).
 
@@ -15,7 +15,7 @@
 ## File Structure (final state after sprints 0+1+2)
 
 ```
-kiki-cockpit/
+ailiance-demo/
 ├── .github/workflows/ci.yml
 ├── .gitignore
 ├── biome.json
@@ -26,9 +26,9 @@ kiki-cockpit/
 ├── tailwind.config.preset.ts              # tokens design partagés
 ├── featured.yaml                          # curation manuelle vitrine
 ├── apps/
-│   ├── api/                               # FastAPI service "kiki-cockpit"
+│   ├── api/                               # FastAPI service "ailiance-demo"
 │   │   ├── pyproject.toml
-│   │   ├── src/kiki_cockpit/
+│   │   ├── src/ailiance_demo/
 │   │   │   ├── __init__.py
 │   │   │   ├── main.py                    # FastAPI app + middleware + lifespan
 │   │   │   ├── config.py                  # Settings (paths, ports, HF token)
@@ -51,11 +51,11 @@ kiki-cockpit/
 │   │   │   │   ├── __init__.py
 │   │   │   │   ├── hf_sync.py             # HF API client + cache + background refresh
 │   │   │   │   ├── featured.py            # featured.yaml parser, file-watched
-│   │   │   │   ├── eval_index.py          # walk eu-kiki/eval/results, parse, index
+│   │   │   │   ├── eval_index.py          # walk ailiance/eval/results, parse, index
 │   │   │   │   ├── training_runs.py       # discover logs, parse headers
 │   │   │   │   ├── log_tail.py            # tail -F + parse mlx_lm format
 │   │   │   │   ├── workers.py             # ping :9200/:9301/:9302/:9303
-│   │   │   │   └── chat_proxy.py          # forward SSE to eu-kiki gateway
+│   │   │   │   └── chat_proxy.py          # forward SSE to ailiance gateway
 │   │   │   ├── models/                    # Pydantic schemas (drives OpenAPI)
 │   │   │   │   ├── __init__.py
 │   │   │   │   ├── model_card.py
@@ -263,11 +263,11 @@ packages/shared/src/api/types.ts
 - [ ] **Step 2: Write `README.md`**
 
 ```markdown
-# kiki-cockpit
+# ailiance-demo
 
 Frontend for training, evaluation, and testing of L'Électron Rare's LLM fleet.
 
-- **Public showcase**: gallery + provenance + chat playground for the 3 EU-KIKI Live models, HF deep-link for the 24 published HF models
+- **Public showcase**: gallery + provenance + chat playground for the 3 AILIANCE Live models, HF deep-link for the 24 published HF models
 - **Admin (Tailscale-only)**: monitoring training runs, worker health, eval results, and (future sprints) eval/train orchestration
 
 See [`docs/superpowers/specs/`](docs/superpowers/specs/) for design specs.
@@ -275,7 +275,7 @@ See [`docs/superpowers/specs/`](docs/superpowers/specs/) for design specs.
 ## Stack
 
 Monorepo (pnpm + uv) with:
-- `apps/api` — FastAPI service (`kiki-cockpit` on studio:9100)
+- `apps/api` — FastAPI service (`ailiance-demo` on studio:9100)
 - `apps/cockpit-public` — Vite + React 19 (public vitrine)
 - `apps/cockpit-admin` — Vite + React 19 (Tailscale-only admin)
 - `packages/shared` — `@cockpit/shared` (types, UI primitives, hooks)
@@ -293,7 +293,7 @@ pnpm dev        # boots all apps in parallel
 
 ```json
 {
-  "name": "kiki-cockpit",
+  "name": "ailiance-demo",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -412,15 +412,15 @@ git commit -m "chore: configure biome for lint and format"
 ### Task 0.3: Scaffold `apps/api/` FastAPI minimal + healthz
 
 **Files:**
-- Create: `apps/api/pyproject.toml`, `apps/api/src/kiki_cockpit/{__init__.py,main.py,config.py}`, `apps/api/src/kiki_cockpit/routers/{__init__.py,public/__init__.py,public/health.py}`, `apps/api/tests/{conftest.py,integration/test_health.py}`
+- Create: `apps/api/pyproject.toml`, `apps/api/src/ailiance_demo/{__init__.py,main.py,config.py}`, `apps/api/src/ailiance_demo/routers/{__init__.py,public/__init__.py,public/health.py}`, `apps/api/tests/{conftest.py,integration/test_health.py}`
 
 - [ ] **Step 1: Write `apps/api/pyproject.toml`**
 
 ```toml
 [project]
-name = "kiki-cockpit-api"
+name = "ailiance-demo-api"
 version = "0.0.0"
-description = "FastAPI service for kiki-cockpit"
+description = "FastAPI service for ailiance-demo"
 requires-python = ">=3.12"
 dependencies = [
   "fastapi>=0.115.0",
@@ -449,17 +449,17 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/kiki_cockpit"]
+packages = ["src/ailiance_demo"]
 ```
 
-- [ ] **Step 2: Write `apps/api/src/kiki_cockpit/__init__.py`**
+- [ ] **Step 2: Write `apps/api/src/ailiance_demo/__init__.py`**
 
 ```python
-"""kiki-cockpit API service."""
+"""ailiance-demo API service."""
 __version__ = "0.0.0"
 ```
 
-- [ ] **Step 3: Write `apps/api/src/kiki_cockpit/config.py`**
+- [ ] **Step 3: Write `apps/api/src/ailiance_demo/config.py`**
 
 ```python
 """Application settings (from env + defaults)."""
@@ -478,10 +478,10 @@ class Settings(BaseSettings):
 
     # Paths to sibling repos (read-only sources)
     kiki_mac_tunner_root: Path = Path.home() / "Documents" / "Projets" / "KIKI-Mac_tunner"
-    eu_kiki_root: Path = Path.home() / "Documents" / "Projets" / "eu-kiki"
+    ailiance_root: Path = Path.home() / "Documents" / "Projets" / "ailiance"
 
-    # eu-kiki gateway
-    eu_kiki_gateway_url: str = "http://localhost:9200"
+    # ailiance gateway
+    ailiance_gateway_url: str = "http://localhost:9200"
 
     # HF
     hf_api_base: str = "https://huggingface.co/api"
@@ -493,23 +493,23 @@ class Settings(BaseSettings):
     featured_path: Path = Path("featured.yaml")
 
     # Cache
-    cache_dir: Path = Path.home() / ".cache" / "kiki-cockpit"
+    cache_dir: Path = Path.home() / ".cache" / "ailiance-demo"
 
 
 settings = Settings()
 ```
 
-- [ ] **Step 4: Write `apps/api/src/kiki_cockpit/routers/__init__.py` (empty)**
+- [ ] **Step 4: Write `apps/api/src/ailiance_demo/routers/__init__.py` (empty)**
 
 ```python
 ```
 
-- [ ] **Step 5: Write `apps/api/src/kiki_cockpit/routers/public/__init__.py` (empty)**
+- [ ] **Step 5: Write `apps/api/src/ailiance_demo/routers/public/__init__.py` (empty)**
 
 ```python
 ```
 
-- [ ] **Step 6: Write `apps/api/src/kiki_cockpit/routers/public/health.py`**
+- [ ] **Step 6: Write `apps/api/src/ailiance_demo/routers/public/health.py`**
 
 ```python
 """Public liveness probe."""
@@ -527,11 +527,11 @@ class HealthResponse(BaseModel):
 
 @router.get("/api/public/healthz", response_model=HealthResponse)
 async def healthz() -> HealthResponse:
-    from kiki_cockpit import __version__
-    return HealthResponse(status="ok", service="kiki-cockpit", version=__version__)
+    from ailiance_demo import __version__
+    return HealthResponse(status="ok", service="ailiance-demo", version=__version__)
 ```
 
-- [ ] **Step 7: Write `apps/api/src/kiki_cockpit/main.py`**
+- [ ] **Step 7: Write `apps/api/src/ailiance_demo/main.py`**
 
 ```python
 """FastAPI app factory."""
@@ -542,22 +542,22 @@ import structlog
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from kiki_cockpit.config import settings
-from kiki_cockpit.routers.public import health as public_health
+from ailiance_demo.config import settings
+from ailiance_demo.routers.public import health as public_health
 
 log = structlog.get_logger()
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
-    log.info("startup", service="kiki-cockpit", port=settings.port)
+    log.info("startup", service="ailiance-demo", port=settings.port)
     yield
     log.info("shutdown")
 
 
 def create_app() -> FastAPI:
     app = FastAPI(
-        title="kiki-cockpit",
+        title="ailiance-demo",
         version="0.0.0",
         description="Frontend backend for KIKI training/eval/test",
         lifespan=lifespan,
@@ -586,7 +586,7 @@ app = create_app()
 import pytest
 from fastapi.testclient import TestClient
 
-from kiki_cockpit.main import create_app
+from ailiance_demo.main import create_app
 
 
 @pytest.fixture
@@ -613,7 +613,7 @@ def test_healthz_returns_ok(client: TestClient) -> None:
     assert response.status_code == 200
     payload = response.json()
     assert payload["status"] == "ok"
-    assert payload["service"] == "kiki-cockpit"
+    assert payload["service"] == "ailiance-demo"
     assert "version" in payload
 ```
 
@@ -621,7 +621,7 @@ def test_healthz_returns_ok(client: TestClient) -> None:
 
 Run:
 ```bash
-cd /Users/electron/Documents/Projets/kiki-cockpit
+cd /Users/electron/Documents/Projets/ailiance-demo
 uv sync --all-extras
 uv run pytest apps/api/tests/integration/test_health.py -v
 ```
@@ -639,37 +639,37 @@ git commit -m "feat(api): scaffold FastAPI service with healthz endpoint"
 ### Task 0.4: Add OpenAPI export script + admin healthz
 
 **Files:**
-- Create: `apps/api/src/kiki_cockpit/routers/admin/{__init__.py,health.py}`, `apps/api/tests/integration/test_admin_health.py`, `scripts/gen-api-types.sh`
-- Modify: `apps/api/src/kiki_cockpit/main.py` (mount admin router)
+- Create: `apps/api/src/ailiance_demo/routers/admin/{__init__.py,health.py}`, `apps/api/tests/integration/test_admin_health.py`, `scripts/gen-api-types.sh`
+- Modify: `apps/api/src/ailiance_demo/main.py` (mount admin router)
 
-- [ ] **Step 1: Write `apps/api/src/kiki_cockpit/routers/admin/__init__.py` (empty)**
+- [ ] **Step 1: Write `apps/api/src/ailiance_demo/routers/admin/__init__.py` (empty)**
 
 ```python
 ```
 
-- [ ] **Step 2: Write `apps/api/src/kiki_cockpit/routers/admin/health.py`**
+- [ ] **Step 2: Write `apps/api/src/ailiance_demo/routers/admin/health.py`**
 
 ```python
 """Admin liveness probe (no auth at this stage; gated by Tailscale infra in deploy)."""
 from fastapi import APIRouter
-from kiki_cockpit.routers.public.health import HealthResponse
+from ailiance_demo.routers.public.health import HealthResponse
 
 router = APIRouter(tags=["admin"])
 
 
 @router.get("/api/admin/healthz", response_model=HealthResponse)
 async def admin_healthz() -> HealthResponse:
-    from kiki_cockpit import __version__
-    return HealthResponse(status="ok", service="kiki-cockpit-admin", version=__version__)
+    from ailiance_demo import __version__
+    return HealthResponse(status="ok", service="ailiance-demo-admin", version=__version__)
 ```
 
-- [ ] **Step 3: Modify `apps/api/src/kiki_cockpit/main.py` — add admin router**
+- [ ] **Step 3: Modify `apps/api/src/ailiance_demo/main.py` — add admin router**
 
-Replace the `from kiki_cockpit.routers.public import health as public_health` and `app.include_router(public_health.router)` block:
+Replace the `from ailiance_demo.routers.public import health as public_health` and `app.include_router(public_health.router)` block:
 
 ```python
-from kiki_cockpit.routers.public import health as public_health
-from kiki_cockpit.routers.admin import health as admin_health
+from ailiance_demo.routers.public import health as public_health
+from ailiance_demo.routers.admin import health as admin_health
 ```
 
 And in `create_app()`:
@@ -692,7 +692,7 @@ def test_admin_healthz_returns_ok(client: TestClient) -> None:
     assert response.status_code == 200
     payload = response.json()
     assert payload["status"] == "ok"
-    assert payload["service"] == "kiki-cockpit-admin"
+    assert payload["service"] == "ailiance-demo-admin"
 ```
 
 - [ ] **Step 5: Write `scripts/gen-api-types.sh`**
@@ -711,7 +711,7 @@ mkdir -p "$(dirname "$OUT")"
 
 # Boot API in background
 cd "$ROOT"
-uv run uvicorn kiki_cockpit.main:app --host 127.0.0.1 --port 9199 &
+uv run uvicorn ailiance_demo.main:app --host 127.0.0.1 --port 9199 &
 API_PID=$!
 trap 'kill $API_PID 2>/dev/null || true' EXIT
 
@@ -973,7 +973,7 @@ export { formatDownloads, parseModelId } from './utils/format';
 
 Run:
 ```bash
-cd /Users/electron/Documents/Projets/kiki-cockpit
+cd /Users/electron/Documents/Projets/ailiance-demo
 pnpm install
 pnpm --filter @cockpit/shared test
 ```
@@ -1118,7 +1118,7 @@ export default {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>kiki-cockpit — L'Électron Rare</title>
+    <title>ailiance-demo — L'Électron Rare</title>
   </head>
   <body>
     <div id="root"></div>
@@ -1175,7 +1175,7 @@ function RootLayout() {
   return (
     <div className="min-h-screen bg-white text-slate-900">
       <header className="border-b border-slate-200 px-6 py-4">
-        <h1 className="text-xl font-bold">kiki-cockpit</h1>
+        <h1 className="text-xl font-bold">ailiance-demo</h1>
       </header>
       <main className="px-6 py-8">
         <Outlet />
@@ -1260,7 +1260,7 @@ import '@testing-library/jest-dom/vitest';
 
 Run:
 ```bash
-cd /Users/electron/Documents/Projets/kiki-cockpit
+cd /Users/electron/Documents/Projets/ailiance-demo
 pnpm install
 pnpm --filter cockpit-public typecheck
 pnpm --filter cockpit-public build
@@ -1352,7 +1352,7 @@ git commit -m "ci: add GitHub Actions workflow for lint, typecheck, tests"
 
 Run:
 ```bash
-cd /Users/electron/Documents/Projets/kiki-cockpit
+cd /Users/electron/Documents/Projets/ailiance-demo
 pnpm gen:api-types
 ```
 Expected: `✓ Generated packages/shared/src/api/types.ts`
@@ -1550,7 +1550,7 @@ Expected: all green.
 Run in 2 terminals (or with `&`):
 ```bash
 # Terminal 1
-uv run uvicorn kiki_cockpit.main:app --reload --port 9100
+uv run uvicorn ailiance_demo.main:app --reload --port 9100
 
 # Terminal 2
 pnpm --filter cockpit-public dev
@@ -1571,18 +1571,18 @@ git tag -a sprint-0 -m "Sprint 0 — Foundation complete"
 
 ## Sprint 1 — Vitrine + Playground (24 tasks)
 
-Goal: public site at `/`, `/models`, `/models/$owner/$name`, `/chat/$owner/$name`, `/about`. HF auto-sync, featured curation, eval scores, chat SSE for the 3 EU-KIKI Live models, HF deep-link for the 24 HF models.
+Goal: public site at `/`, `/models`, `/models/$owner/$name`, `/chat/$owner/$name`, `/about`. HF auto-sync, featured curation, eval scores, chat SSE for the 3 AILIANCE Live models, HF deep-link for the 24 HF models.
 
 ### Task 1.1: Pydantic schemas — ModelCard, ModelDetail, EvalSummary
 
 **Files:**
-- Create: `apps/api/src/kiki_cockpit/models/__init__.py`, `apps/api/src/kiki_cockpit/models/model_card.py`, `apps/api/src/kiki_cockpit/models/eval_result.py`, `apps/api/tests/unit/test_schemas.py`
+- Create: `apps/api/src/ailiance_demo/models/__init__.py`, `apps/api/src/ailiance_demo/models/model_card.py`, `apps/api/src/ailiance_demo/models/eval_result.py`, `apps/api/tests/unit/test_schemas.py`
 
-- [ ] **Step 1: Write `apps/api/src/kiki_cockpit/models/__init__.py`**
+- [ ] **Step 1: Write `apps/api/src/ailiance_demo/models/__init__.py`**
 
 ```python
-from kiki_cockpit.models.model_card import ModelCard, ModelDetail, ModelStatus, ChatBackend
-from kiki_cockpit.models.eval_result import EvalResult, EvalSummary
+from ailiance_demo.models.model_card import ModelCard, ModelDetail, ModelStatus, ChatBackend
+from ailiance_demo.models.eval_result import EvalResult, EvalSummary
 
 __all__ = [
     "ChatBackend",
@@ -1594,7 +1594,7 @@ __all__ = [
 ]
 ```
 
-- [ ] **Step 2: Write `apps/api/src/kiki_cockpit/models/model_card.py`**
+- [ ] **Step 2: Write `apps/api/src/ailiance_demo/models/model_card.py`**
 
 ```python
 """Pydantic schemas for model cards exposed to the public API."""
@@ -1613,7 +1613,7 @@ class ModelStatus(str, Enum):
 
 
 class ChatBackend(str, Enum):
-    EU_KIKI_LIVE = "eu_kiki_live"  # served by gateway :9200
+    AILIANCE_LIVE = "ailiance_live"  # served by gateway :9200
     HF_EXTERNAL = "hf_external"    # deep-link to huggingface.co
     NOT_AVAILABLE = "not_available"
 
@@ -1658,7 +1658,7 @@ class ModelDetail(ModelCard):
     superseded_by: str | None = None
 ```
 
-- [ ] **Step 3: Write `apps/api/src/kiki_cockpit/models/eval_result.py`**
+- [ ] **Step 3: Write `apps/api/src/ailiance_demo/models/eval_result.py`**
 
 ```python
 """Pydantic schemas for eval results."""
@@ -1698,7 +1698,7 @@ class EvalSummary(BaseModel):
 """Schema sanity tests."""
 from datetime import datetime, UTC
 
-from kiki_cockpit.models import ChatBackend, EvalResult, ModelCard, ModelStatus
+from ailiance_demo.models import ChatBackend, EvalResult, ModelCard, ModelStatus
 
 
 def test_model_card_minimal_fields() -> None:
@@ -1750,9 +1750,9 @@ git commit -m "feat(api): add Pydantic schemas for ModelCard, ModelDetail, EvalR
 ### Task 1.2: HF sync service — fetch models for one owner
 
 **Files:**
-- Create: `apps/api/src/kiki_cockpit/services/__init__.py`, `apps/api/src/kiki_cockpit/services/hf_sync.py`, `apps/api/tests/fixtures/hf_responses/clemsail_models.json`, `apps/api/tests/unit/test_hf_sync.py`
+- Create: `apps/api/src/ailiance_demo/services/__init__.py`, `apps/api/src/ailiance_demo/services/hf_sync.py`, `apps/api/tests/fixtures/hf_responses/clemsail_models.json`, `apps/api/tests/unit/test_hf_sync.py`
 
-- [ ] **Step 1: Write `apps/api/src/kiki_cockpit/services/__init__.py`** (empty)
+- [ ] **Step 1: Write `apps/api/src/ailiance_demo/services/__init__.py`** (empty)
 
 ```python
 ```
@@ -1799,7 +1799,7 @@ from pathlib import Path
 import httpx
 import pytest
 
-from kiki_cockpit.services.hf_sync import fetch_models_for_owner
+from ailiance_demo.services.hf_sync import fetch_models_for_owner
 
 FIXTURES = Path(__file__).parent.parent / "fixtures" / "hf_responses"
 
@@ -1854,7 +1854,7 @@ uv run pytest apps/api/tests/unit/test_hf_sync.py -v
 ```
 Expected: FAIL with `ImportError: cannot import name 'fetch_models_for_owner'`
 
-- [ ] **Step 7: Write `apps/api/src/kiki_cockpit/services/hf_sync.py`**
+- [ ] **Step 7: Write `apps/api/src/ailiance_demo/services/hf_sync.py`**
 
 ```python
 """HuggingFace API sync — fetch model metadata, cache in memory."""
@@ -1924,7 +1924,7 @@ git commit -m "feat(api): hf_sync.fetch_models_for_owner with httpx mock tests"
 ### Task 1.3: HF sync — map raw JSON to ModelCard + cache layer
 
 **Files:**
-- Modify: `apps/api/src/kiki_cockpit/services/hf_sync.py`
+- Modify: `apps/api/src/ailiance_demo/services/hf_sync.py`
 - Modify: `apps/api/tests/unit/test_hf_sync.py`
 
 - [ ] **Step 1: Add test for `to_model_card()` mapper** (test first)
@@ -1932,8 +1932,8 @@ git commit -m "feat(api): hf_sync.fetch_models_for_owner with httpx mock tests"
 Append to `apps/api/tests/unit/test_hf_sync.py`:
 
 ```python
-from kiki_cockpit.services.hf_sync import to_model_card
-from kiki_cockpit.models import ChatBackend, ModelStatus
+from ailiance_demo.services.hf_sync import to_model_card
+from ailiance_demo.models import ChatBackend, ModelStatus
 
 
 def test_to_model_card_maps_basic_fields() -> None:
@@ -1946,7 +1946,7 @@ def test_to_model_card_maps_basic_fields() -> None:
         "tags": ["text-generation", "lora", "mistral"],
     }
 
-    card = to_model_card(raw, eu_kiki_aliases=set())
+    card = to_model_card(raw, ailiance_aliases=set())
 
     assert card.id == "clemsail/micro-kiki-v3"
     assert card.owner == "clemsail"
@@ -1959,12 +1959,12 @@ def test_to_model_card_maps_basic_fields() -> None:
     assert card.hf_url == "https://huggingface.co/clemsail/micro-kiki-v3"
 
 
-def test_to_model_card_marks_eu_kiki_live_models_chat_eligible() -> None:
-    raw = {"id": "eu-kiki/apertus-70b", "author": "eu-kiki"}
+def test_to_model_card_marks_ailiance_live_models_chat_eligible() -> None:
+    raw = {"id": "ailiance/apertus-70b", "author": "ailiance"}
 
-    card = to_model_card(raw, eu_kiki_aliases={"eu-kiki/apertus-70b"})
+    card = to_model_card(raw, ailiance_aliases={"ailiance/apertus-70b"})
 
-    assert card.chat_backend == ChatBackend.EU_KIKI_LIVE
+    assert card.chat_backend == ChatBackend.AILIANCE_LIVE
     assert card.chat_eligible is True
 
 
@@ -1976,7 +1976,7 @@ def test_to_model_card_zero_downloads_marks_alpha() -> None:
         "likes": 0,
     }
 
-    card = to_model_card(raw, eu_kiki_aliases=set())
+    card = to_model_card(raw, ailiance_aliases=set())
 
     assert card.status == ModelStatus.ALPHA
 ```
@@ -1989,17 +1989,17 @@ uv run pytest apps/api/tests/unit/test_hf_sync.py::test_to_model_card_maps_basic
 ```
 Expected: FAIL with `ImportError: cannot import name 'to_model_card'`
 
-- [ ] **Step 3: Append `to_model_card` to `apps/api/src/kiki_cockpit/services/hf_sync.py`**
+- [ ] **Step 3: Append `to_model_card` to `apps/api/src/ailiance_demo/services/hf_sync.py`**
 
 ```python
 from datetime import datetime
-from kiki_cockpit.models import ChatBackend, ModelCard, ModelStatus
+from ailiance_demo.models import ChatBackend, ModelCard, ModelStatus
 
 
-def to_model_card(raw: dict, eu_kiki_aliases: set[str]) -> ModelCard:
+def to_model_card(raw: dict, ailiance_aliases: set[str]) -> ModelCard:
     """Map a raw HF API model JSON object to a ModelCard.
 
-    eu_kiki_aliases: model IDs that should be marked chat-eligible (Live stack).
+    ailiance_aliases: model IDs that should be marked chat-eligible (Live stack).
     """
     model_id = raw.get("id") or raw.get("modelId") or ""
     owner, _, name = model_id.partition("/")
@@ -2013,8 +2013,8 @@ def to_model_card(raw: dict, eu_kiki_aliases: set[str]) -> ModelCard:
         else None
     )
 
-    is_live = model_id in eu_kiki_aliases
-    chat_backend = ChatBackend.EU_KIKI_LIVE if is_live else ChatBackend.HF_EXTERNAL
+    is_live = model_id in ailiance_aliases
+    chat_backend = ChatBackend.AILIANCE_LIVE if is_live else ChatBackend.HF_EXTERNAL
 
     if is_live:
         status = ModelStatus.PRODUCTION
@@ -2058,7 +2058,7 @@ git commit -m "feat(api): hf_sync.to_model_card mapper with chat-eligibility det
 ### Task 1.4: featured.yaml service
 
 **Files:**
-- Create: `apps/api/src/kiki_cockpit/services/featured.py`, `apps/api/tests/unit/test_featured.py`, `apps/api/tests/fixtures/featured_sample.yaml`, `featured.yaml` (root)
+- Create: `apps/api/src/ailiance_demo/services/featured.py`, `apps/api/tests/unit/test_featured.py`, `apps/api/tests/fixtures/featured_sample.yaml`, `featured.yaml` (root)
 
 - [ ] **Step 1: Write `apps/api/tests/fixtures/featured_sample.yaml`**
 
@@ -2086,7 +2086,7 @@ aliases:
 """Tests for featured.yaml parsing."""
 from pathlib import Path
 
-from kiki_cockpit.services.featured import FeaturedConfig, load_featured
+from ailiance_demo.services.featured import FeaturedConfig, load_featured
 
 FIXTURE = Path(__file__).parent.parent / "fixtures" / "featured_sample.yaml"
 
@@ -2132,7 +2132,7 @@ uv run pytest apps/api/tests/unit/test_featured.py -v
 ```
 Expected: FAIL `ImportError: cannot import name 'FeaturedConfig'`
 
-- [ ] **Step 4: Write `apps/api/src/kiki_cockpit/services/featured.py`**
+- [ ] **Step 4: Write `apps/api/src/ailiance_demo/services/featured.py`**
 
 ```python
 """Parse featured.yaml — manual curation overlay for the public showcase."""
@@ -2218,10 +2218,10 @@ featured:
   - id: clemsail/kiki-stm32-sft
     rank: 3
     headline: "Adapter STM32 — 79 downloads"
-  - id: eu-kiki/apertus-70b
+  - id: ailiance/apertus-70b
     rank: 4
     headline: "EU sovereign — Apertus 70B (EPFL+ETH+CSCS) avec 32 adapters EU"
-  - id: eu-kiki/devstral-24b
+  - id: ailiance/devstral-24b
     rank: 5
     headline: "Devstral 2 24B — code generation EU"
 
@@ -2235,9 +2235,9 @@ deprecated:
 
 aliases:
   clemsail/micro-kiki-v3: "Micro-KIKI v3"
-  eu-kiki/apertus-70b: "Apertus 70B (EU-KIKI)"
-  eu-kiki/devstral-24b: "Devstral 24B (EU-KIKI)"
-  eu-kiki/eurollm-22b: "EuroLLM 22B (EU-KIKI)"
+  ailiance/apertus-70b: "Apertus 70B (AILIANCE)"
+  ailiance/devstral-24b: "Devstral 24B (AILIANCE)"
+  ailiance/eurollm-22b: "EuroLLM 22B (AILIANCE)"
 ```
 
 - [ ] **Step 7: Commit**
@@ -2252,7 +2252,7 @@ git commit -m "feat(api): featured.yaml parser and root curation file"
 ### Task 1.5: HFCache — orchestrate sync, cache, merge featured
 
 **Files:**
-- Create: `apps/api/src/kiki_cockpit/services/hf_cache.py`, `apps/api/tests/unit/test_hf_cache.py`
+- Create: `apps/api/src/ailiance_demo/services/hf_cache.py`, `apps/api/tests/unit/test_hf_cache.py`
 
 - [ ] **Step 1: Write `apps/api/tests/unit/test_hf_cache.py`** (test first)
 
@@ -2263,8 +2263,8 @@ from pathlib import Path
 import httpx
 import pytest
 
-from kiki_cockpit.services.hf_cache import HFCache
-from kiki_cockpit.services.featured import FeaturedConfig, FeaturedEntry, DeprecatedEntry
+from ailiance_demo.services.hf_cache import HFCache
+from ailiance_demo.services.featured import FeaturedConfig, FeaturedEntry, DeprecatedEntry
 
 
 def make_handler(responses: dict[str, list[dict]]):
@@ -2275,7 +2275,7 @@ def make_handler(responses: dict[str, list[dict]]):
 
 
 @pytest.mark.asyncio
-async def test_hfcache_refresh_merges_owners_and_marks_eu_kiki() -> None:
+async def test_hfcache_refresh_merges_owners_and_marks_ailiance() -> None:
     responses = {
         "clemsail": [{"id": "clemsail/micro-kiki-v3", "downloads": 242}],
         "electron-rare": [{"id": "electron-rare/mascarade-iot", "downloads": 6}],
@@ -2283,7 +2283,7 @@ async def test_hfcache_refresh_merges_owners_and_marks_eu_kiki() -> None:
     transport = httpx.MockTransport(make_handler(responses))
     cache = HFCache(
         owners=["clemsail", "electron-rare"],
-        eu_kiki_aliases={"eu-kiki/apertus-70b"},
+        ailiance_aliases={"ailiance/apertus-70b"},
         featured=FeaturedConfig(),
         cache_dir=Path("/tmp/test-cache-refresh"),
         http_transport=transport,
@@ -2306,7 +2306,7 @@ async def test_hfcache_applies_featured_rank_and_headline() -> None:
     )
     cache = HFCache(
         owners=["clemsail"],
-        eu_kiki_aliases=set(),
+        ailiance_aliases=set(),
         featured=featured,
         cache_dir=Path("/tmp/test-cache-featured"),
         http_transport=transport,
@@ -2334,7 +2334,7 @@ async def test_hfcache_filters_deprecated() -> None:
     )
     cache = HFCache(
         owners=["electron-rare"],
-        eu_kiki_aliases=set(),
+        ailiance_aliases=set(),
         featured=featured,
         cache_dir=Path("/tmp/test-cache-deprecated"),
         http_transport=transport,
@@ -2353,7 +2353,7 @@ uv run pytest apps/api/tests/unit/test_hf_cache.py -v
 ```
 Expected: FAIL with `ImportError: cannot import name 'HFCache'`
 
-- [ ] **Step 3: Write `apps/api/src/kiki_cockpit/services/hf_cache.py`**
+- [ ] **Step 3: Write `apps/api/src/ailiance_demo/services/hf_cache.py`**
 
 ```python
 """Orchestrate HF API sync + featured.yaml merge + in-memory cache + disk fallback."""
@@ -2366,9 +2366,9 @@ from pathlib import Path
 import httpx
 import structlog
 
-from kiki_cockpit.models import ModelCard, ModelStatus
-from kiki_cockpit.services.featured import FeaturedConfig
-from kiki_cockpit.services.hf_sync import fetch_models_for_owner, to_model_card
+from ailiance_demo.models import ModelCard, ModelStatus
+from ailiance_demo.services.featured import FeaturedConfig
+from ailiance_demo.services.hf_sync import fetch_models_for_owner, to_model_card
 
 log = structlog.get_logger()
 
@@ -2379,13 +2379,13 @@ class HFCache:
     def __init__(
         self,
         owners: list[str],
-        eu_kiki_aliases: set[str],
+        ailiance_aliases: set[str],
         featured: FeaturedConfig,
         cache_dir: Path,
         http_transport: httpx.BaseTransport | None = None,
     ) -> None:
         self.owners = owners
-        self.eu_kiki_aliases = eu_kiki_aliases
+        self.ailiance_aliases = ailiance_aliases
         self.featured = featured
         self.cache_dir = cache_dir
         self.http_transport = http_transport
@@ -2416,7 +2416,7 @@ class HFCache:
             cards: list[ModelCard] = []
             for raw_list in results:
                 for raw in raw_list:
-                    cards.append(to_model_card(raw, eu_kiki_aliases=self.eu_kiki_aliases))
+                    cards.append(to_model_card(raw, ailiance_aliases=self.ailiance_aliases))
 
             for card in cards:
                 if card.id in self.featured.deprecated:
@@ -2486,11 +2486,11 @@ git commit -m "feat(api): HFCache orchestrator with featured/deprecated merge"
 ### Task 1.6: GET /api/public/models endpoint
 
 **Files:**
-- Create: `apps/api/src/kiki_cockpit/routers/public/models.py`, `apps/api/tests/integration/test_models_endpoint.py`
-- Modify: `apps/api/src/kiki_cockpit/main.py` (mount router + lifespan with HFCache)
-- Modify: `apps/api/src/kiki_cockpit/deps.py` (provide HFCache as dependency)
+- Create: `apps/api/src/ailiance_demo/routers/public/models.py`, `apps/api/tests/integration/test_models_endpoint.py`
+- Modify: `apps/api/src/ailiance_demo/main.py` (mount router + lifespan with HFCache)
+- Modify: `apps/api/src/ailiance_demo/deps.py` (provide HFCache as dependency)
 
-- [ ] **Step 1: Write `apps/api/src/kiki_cockpit/deps.py`**
+- [ ] **Step 1: Write `apps/api/src/ailiance_demo/deps.py`**
 
 ```python
 """FastAPI dependencies."""
@@ -2498,7 +2498,7 @@ from __future__ import annotations
 
 from fastapi import Request
 
-from kiki_cockpit.services.hf_cache import HFCache
+from ailiance_demo.services.hf_cache import HFCache
 
 
 def get_hf_cache(request: Request) -> HFCache:
@@ -2508,15 +2508,15 @@ def get_hf_cache(request: Request) -> HFCache:
     return cache
 ```
 
-- [ ] **Step 2: Write `apps/api/src/kiki_cockpit/routers/public/models.py`**
+- [ ] **Step 2: Write `apps/api/src/ailiance_demo/routers/public/models.py`**
 
 ```python
 """Public models listing + detail."""
 from fastapi import APIRouter, Depends, HTTPException, Query
 
-from kiki_cockpit.deps import get_hf_cache
-from kiki_cockpit.models import ModelCard
-from kiki_cockpit.services.hf_cache import HFCache
+from ailiance_demo.deps import get_hf_cache
+from ailiance_demo.models import ModelCard
+from ailiance_demo.services.hf_cache import HFCache
 
 router = APIRouter(prefix="/api/public", tags=["public"])
 
@@ -2547,7 +2547,7 @@ def get_model(owner: str, name: str, cache: HFCache = Depends(get_hf_cache)) -> 
     return card
 ```
 
-- [ ] **Step 3: Modify `apps/api/src/kiki_cockpit/main.py` — wire HFCache to app lifespan**
+- [ ] **Step 3: Modify `apps/api/src/ailiance_demo/main.py` — wire HFCache to app lifespan**
 
 Replace the current `lifespan` function and update imports:
 
@@ -2560,30 +2560,30 @@ import structlog
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from kiki_cockpit.config import settings
-from kiki_cockpit.routers.admin import health as admin_health
-from kiki_cockpit.routers.public import health as public_health
-from kiki_cockpit.routers.public import models as public_models
-from kiki_cockpit.services.featured import load_featured
-from kiki_cockpit.services.hf_cache import HFCache
+from ailiance_demo.config import settings
+from ailiance_demo.routers.admin import health as admin_health
+from ailiance_demo.routers.public import health as public_health
+from ailiance_demo.routers.public import models as public_models
+from ailiance_demo.services.featured import load_featured
+from ailiance_demo.services.hf_cache import HFCache
 
 log = structlog.get_logger()
 
-EU_KIKI_ALIASES: set[str] = {
-    "eu-kiki/apertus-70b",
-    "eu-kiki/devstral-24b",
-    "eu-kiki/eurollm-22b",
+AILIANCE_ALIASES: set[str] = {
+    "ailiance/apertus-70b",
+    "ailiance/devstral-24b",
+    "ailiance/eurollm-22b",
 }
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
-    log.info("startup", service="kiki-cockpit", port=settings.port)
+    log.info("startup", service="ailiance-demo", port=settings.port)
 
     featured = load_featured(settings.featured_path)
     cache = HFCache(
         owners=settings.hf_owners,
-        eu_kiki_aliases=EU_KIKI_ALIASES,
+        ailiance_aliases=AILIANCE_ALIASES,
         featured=featured,
         cache_dir=settings.cache_dir,
     )
@@ -2602,7 +2602,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
 
 def create_app() -> FastAPI:
     app = FastAPI(
-        title="kiki-cockpit",
+        title="ailiance-demo",
         version="0.0.0",
         description="Frontend backend for KIKI training/eval/test",
         lifespan=lifespan,
@@ -2637,17 +2637,17 @@ from pathlib import Path
 import pytest
 from fastapi.testclient import TestClient
 
-from kiki_cockpit.main import EU_KIKI_ALIASES, create_app
-from kiki_cockpit.models import ModelCard, ModelStatus, ChatBackend
-from kiki_cockpit.services.featured import FeaturedConfig
-from kiki_cockpit.services.hf_cache import HFCache
+from ailiance_demo.main import AILIANCE_ALIASES, create_app
+from ailiance_demo.models import ModelCard, ModelStatus, ChatBackend
+from ailiance_demo.services.featured import FeaturedConfig
+from ailiance_demo.services.hf_cache import HFCache
 
 
 @pytest.fixture
 def empty_hf_cache(tmp_path: Path) -> HFCache:
     return HFCache(
         owners=[],
-        eu_kiki_aliases=EU_KIKI_ALIASES,
+        ailiance_aliases=AILIANCE_ALIASES,
         featured=FeaturedConfig(),
         cache_dir=tmp_path / "cache",
     )
@@ -2675,7 +2675,7 @@ def client_with_cache(empty_hf_cache: HFCache, sample_card: ModelCard) -> TestCl
     app = create_app()
     empty_hf_cache._cards = [sample_card]
     # Replace the lifespan-installed cache by overriding app.state directly via dependency_overrides
-    from kiki_cockpit.deps import get_hf_cache
+    from ailiance_demo.deps import get_hf_cache
     app.dependency_overrides[get_hf_cache] = lambda: empty_hf_cache
     return TestClient(app)
 
@@ -2736,7 +2736,7 @@ git commit -m "feat(api): GET /api/public/models listing + detail endpoints"
 ### Task 1.7: Eval index service
 
 **Files:**
-- Create: `apps/api/src/kiki_cockpit/services/eval_index.py`, `apps/api/tests/unit/test_eval_index.py`, `apps/api/tests/fixtures/eval_results/sample_humaneval.json`
+- Create: `apps/api/src/ailiance_demo/services/eval_index.py`, `apps/api/tests/unit/test_eval_index.py`, `apps/api/tests/fixtures/eval_results/sample_humaneval.json`
 
 - [ ] **Step 1: Write `apps/api/tests/fixtures/eval_results/sample_humaneval.json`**
 
@@ -2774,7 +2774,7 @@ git commit -m "feat(api): GET /api/public/models listing + detail endpoints"
 """Tests for eval_index service."""
 from pathlib import Path
 
-from kiki_cockpit.services.eval_index import EvalIndex
+from ailiance_demo.services.eval_index import EvalIndex
 
 FIXTURES = Path(__file__).parent.parent / "fixtures" / "eval_results"
 
@@ -2842,7 +2842,7 @@ uv run pytest apps/api/tests/unit/test_eval_index.py -v
 ```
 Expected: FAIL with `ImportError`
 
-- [ ] **Step 5: Write `apps/api/src/kiki_cockpit/services/eval_index.py`**
+- [ ] **Step 5: Write `apps/api/src/ailiance_demo/services/eval_index.py`**
 
 ```python
 """Walk eval result JSON files, build in-memory index, expose summaries."""
@@ -2853,7 +2853,7 @@ from pathlib import Path
 
 import structlog
 
-from kiki_cockpit.models import EvalResult, EvalSummary
+from ailiance_demo.models import EvalResult, EvalSummary
 
 log = structlog.get_logger()
 
@@ -2922,17 +2922,17 @@ git commit -m "feat(api): EvalIndex — walk + parse + summarize eval results"
 ### Task 1.8: Wire eval endpoint + top-score on ModelCard
 
 **Files:**
-- Create: `apps/api/src/kiki_cockpit/routers/public/eval.py`, `apps/api/tests/integration/test_eval_endpoint.py`
-- Modify: `apps/api/src/kiki_cockpit/main.py` (eval index in lifespan + mount router)
-- Modify: `apps/api/src/kiki_cockpit/deps.py` (get_eval_index)
-- Modify: `apps/api/src/kiki_cockpit/services/hf_cache.py` (apply top eval to cards)
+- Create: `apps/api/src/ailiance_demo/routers/public/eval.py`, `apps/api/tests/integration/test_eval_endpoint.py`
+- Modify: `apps/api/src/ailiance_demo/main.py` (eval index in lifespan + mount router)
+- Modify: `apps/api/src/ailiance_demo/deps.py` (get_eval_index)
+- Modify: `apps/api/src/ailiance_demo/services/hf_cache.py` (apply top eval to cards)
 
-- [ ] **Step 1: Modify `apps/api/src/kiki_cockpit/deps.py`**
+- [ ] **Step 1: Modify `apps/api/src/ailiance_demo/deps.py`**
 
 Append:
 
 ```python
-from kiki_cockpit.services.eval_index import EvalIndex
+from ailiance_demo.services.eval_index import EvalIndex
 
 
 def get_eval_index(request: Request) -> EvalIndex:
@@ -2942,15 +2942,15 @@ def get_eval_index(request: Request) -> EvalIndex:
     return index
 ```
 
-- [ ] **Step 2: Write `apps/api/src/kiki_cockpit/routers/public/eval.py`**
+- [ ] **Step 2: Write `apps/api/src/ailiance_demo/routers/public/eval.py`**
 
 ```python
 """Public eval summary endpoint."""
 from fastapi import APIRouter, Depends, HTTPException
 
-from kiki_cockpit.deps import get_eval_index
-from kiki_cockpit.models import EvalSummary
-from kiki_cockpit.services.eval_index import EvalIndex
+from ailiance_demo.deps import get_eval_index
+from ailiance_demo.models import EvalSummary
+from ailiance_demo.services.eval_index import EvalIndex
 
 router = APIRouter(prefix="/api/public", tags=["public"])
 
@@ -2968,13 +2968,13 @@ def get_eval_summary(
     return summary
 ```
 
-- [ ] **Step 3: Modify `apps/api/src/kiki_cockpit/main.py`** — wire EvalIndex
+- [ ] **Step 3: Modify `apps/api/src/ailiance_demo/main.py`** — wire EvalIndex
 
 In the imports add:
 
 ```python
-from kiki_cockpit.routers.public import eval as public_eval
-from kiki_cockpit.services.eval_index import EvalIndex
+from ailiance_demo.routers.public import eval as public_eval
+from ailiance_demo.services.eval_index import EvalIndex
 ```
 
 In `lifespan()`, after creating `cache`:
@@ -2982,8 +2982,8 @@ In `lifespan()`, after creating `cache`:
 ```python
     eval_index = EvalIndex(
         roots=[
-            settings.eu_kiki_root / "eval" / "results",
-            settings.eu_kiki_root / "output" / "eval",
+            settings.ailiance_root / "eval" / "results",
+            settings.ailiance_root / "output" / "eval",
             settings.kiki_mac_tunner_root / "results",
         ],
     )
@@ -3008,7 +3008,7 @@ In `create_app()`, mount the router:
 Append:
 
 ```python
-from kiki_cockpit.services.eval_index import EvalIndex
+from ailiance_demo.services.eval_index import EvalIndex
 
 
 @pytest.fixture
@@ -3024,7 +3024,7 @@ def client_with_full_state(
 ) -> TestClient:
     app = create_app()
     empty_hf_cache._cards = [sample_card]
-    from kiki_cockpit.deps import get_hf_cache, get_eval_index
+    from ailiance_demo.deps import get_hf_cache, get_eval_index
     app.dependency_overrides[get_hf_cache] = lambda: empty_hf_cache
     app.dependency_overrides[get_eval_index] = lambda: empty_eval_index
     return TestClient(app)
@@ -3049,9 +3049,9 @@ import json
 
 from fastapi.testclient import TestClient
 
-from kiki_cockpit.main import create_app
-from kiki_cockpit.deps import get_eval_index, get_hf_cache
-from kiki_cockpit.services.eval_index import EvalIndex
+from ailiance_demo.main import create_app
+from ailiance_demo.deps import get_eval_index, get_hf_cache
+from ailiance_demo.services.eval_index import EvalIndex
 
 
 def test_eval_summary_returns_per_benchmark(tmp_path: Path, empty_hf_cache) -> None:
@@ -3106,10 +3106,10 @@ git commit -m "feat(api): GET /api/public/eval/{owner}/{name} endpoint with Eval
 
 ---
 
-### Task 1.9: Chat proxy service (forward SSE to eu-kiki gateway)
+### Task 1.9: Chat proxy service (forward SSE to ailiance gateway)
 
 **Files:**
-- Create: `apps/api/src/kiki_cockpit/services/chat_proxy.py`, `apps/api/tests/unit/test_chat_proxy.py`
+- Create: `apps/api/src/ailiance_demo/services/chat_proxy.py`, `apps/api/tests/unit/test_chat_proxy.py`
 
 - [ ] **Step 1: Write `apps/api/tests/unit/test_chat_proxy.py`** (test first)
 
@@ -3118,16 +3118,16 @@ git commit -m "feat(api): GET /api/public/eval/{owner}/{name} endpoint with Eval
 import httpx
 import pytest
 
-from kiki_cockpit.services.chat_proxy import (
+from ailiance_demo.services.chat_proxy import (
     ChatRequest,
     is_chat_eligible,
     stream_chat,
-    EU_KIKI_ALIASES,
+    AILIANCE_ALIASES,
 )
 
 
-def test_is_chat_eligible_returns_true_for_eu_kiki_aliases() -> None:
-    for alias in EU_KIKI_ALIASES:
+def test_is_chat_eligible_returns_true_for_ailiance_aliases() -> None:
+    for alias in AILIANCE_ALIASES:
         assert is_chat_eligible(alias) is True
 
 
@@ -3148,7 +3148,7 @@ async def test_stream_chat_forwards_sse_events() -> None:
     transport = httpx.MockTransport(server_handler)
 
     chat_req = ChatRequest(
-        model_id="eu-kiki/apertus-70b",
+        model_id="ailiance/apertus-70b",
         messages=[{"role": "user", "content": "hi"}],
         temperature=0.7,
     )
@@ -3175,10 +3175,10 @@ uv run pytest apps/api/tests/unit/test_chat_proxy.py -v
 ```
 Expected: FAIL `ImportError`
 
-- [ ] **Step 3: Write `apps/api/src/kiki_cockpit/services/chat_proxy.py`**
+- [ ] **Step 3: Write `apps/api/src/ailiance_demo/services/chat_proxy.py`**
 
 ```python
-"""Forward chat requests as SSE streams to the eu-kiki gateway."""
+"""Forward chat requests as SSE streams to the ailiance gateway."""
 from __future__ import annotations
 
 from collections.abc import AsyncIterator
@@ -3189,17 +3189,17 @@ from pydantic import BaseModel, Field
 
 log = structlog.get_logger()
 
-EU_KIKI_ALIASES: set[str] = {
-    "eu-kiki/apertus-70b",
-    "eu-kiki/devstral-24b",
-    "eu-kiki/eurollm-22b",
+AILIANCE_ALIASES: set[str] = {
+    "ailiance/apertus-70b",
+    "ailiance/devstral-24b",
+    "ailiance/eurollm-22b",
 }
 
 # Map our user-facing alias to the gateway's expected model param
 ALIAS_TO_GATEWAY_MODEL: dict[str, str] = {
-    "eu-kiki/apertus-70b": "apertus-70b",
-    "eu-kiki/devstral-24b": "devstral-24b",
-    "eu-kiki/eurollm-22b": "eurollm-22b",
+    "ailiance/apertus-70b": "apertus-70b",
+    "ailiance/devstral-24b": "devstral-24b",
+    "ailiance/eurollm-22b": "eurollm-22b",
 }
 
 
@@ -3217,7 +3217,7 @@ class ChatRequest(BaseModel):
 
 
 def is_chat_eligible(model_id: str) -> bool:
-    return model_id in EU_KIKI_ALIASES
+    return model_id in AILIANCE_ALIASES
 
 
 async def stream_chat(
@@ -3225,7 +3225,7 @@ async def stream_chat(
     gateway_url: str,
     http_transport: httpx.BaseTransport | None = None,
 ) -> AsyncIterator[bytes]:
-    """Forward to eu-kiki gateway, yield SSE chunks (raw bytes) 1:1."""
+    """Forward to ailiance gateway, yield SSE chunks (raw bytes) 1:1."""
     if not is_chat_eligible(req.model_id):
         raise ValueError(f"Model {req.model_id} is not chat-eligible (sprint 1)")
 
@@ -3272,7 +3272,7 @@ Expected: `3 passed`
 
 ```bash
 git add apps/api/
-git commit -m "feat(api): chat_proxy service — forward SSE to eu-kiki gateway"
+git commit -m "feat(api): chat_proxy service — forward SSE to ailiance gateway"
 ```
 
 ---
@@ -3280,20 +3280,20 @@ git commit -m "feat(api): chat_proxy service — forward SSE to eu-kiki gateway"
 ### Task 1.10: POST /api/public/chat endpoint (SSE)
 
 **Files:**
-- Create: `apps/api/src/kiki_cockpit/routers/public/chat.py`, `apps/api/tests/integration/test_chat_endpoint.py`
-- Modify: `apps/api/src/kiki_cockpit/main.py` (mount router)
+- Create: `apps/api/src/ailiance_demo/routers/public/chat.py`, `apps/api/tests/integration/test_chat_endpoint.py`
+- Modify: `apps/api/src/ailiance_demo/main.py` (mount router)
 
-- [ ] **Step 1: Write `apps/api/src/kiki_cockpit/routers/public/chat.py`**
+- [ ] **Step 1: Write `apps/api/src/ailiance_demo/routers/public/chat.py`**
 
 ```python
-"""POST /api/public/chat — SSE proxy to eu-kiki gateway."""
+"""POST /api/public/chat — SSE proxy to ailiance gateway."""
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import StreamingResponse
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 
-from kiki_cockpit.config import settings
-from kiki_cockpit.services.chat_proxy import (
+from ailiance_demo.config import settings
+from ailiance_demo.services.chat_proxy import (
     ChatRequest,
     is_chat_eligible,
     stream_chat,
@@ -3322,13 +3322,13 @@ async def chat(req: ChatRequest, request) -> StreamingResponse:  # noqa: ARG001
         )
 
     async def gen():
-        async for chunk in stream_chat(req, gateway_url=settings.eu_kiki_gateway_url):
+        async for chunk in stream_chat(req, gateway_url=settings.ailiance_gateway_url):
             yield chunk
 
     return StreamingResponse(gen(), media_type="text/event-stream")
 ```
 
-- [ ] **Step 2: Modify `apps/api/src/kiki_cockpit/main.py`** — mount chat router and slowapi
+- [ ] **Step 2: Modify `apps/api/src/ailiance_demo/main.py`** — mount chat router and slowapi
 
 Add imports:
 
@@ -3337,7 +3337,7 @@ from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
 from slowapi import _rate_limit_exceeded_handler
 
-from kiki_cockpit.routers.public import chat as public_chat
+from ailiance_demo.routers.public import chat as public_chat
 ```
 
 In `create_app()`, after CORS middleware:
@@ -3361,7 +3361,7 @@ And:
 from fastapi.testclient import TestClient
 
 
-def test_chat_returns_501_for_non_eu_kiki_model(client_with_full_state: TestClient) -> None:
+def test_chat_returns_501_for_non_ailiance_model(client_with_full_state: TestClient) -> None:
     response = client_with_full_state.post(
         "/api/public/chat",
         json={"model_id": "clemsail/micro-kiki-v3", "messages": [{"role": "user", "content": "hi"}]},
@@ -3384,7 +3384,7 @@ Expected: all green
 
 ```bash
 git add apps/api/
-git commit -m "feat(api): POST /api/public/chat — 501 for HF-only, SSE for EU-KIKI Live"
+git commit -m "feat(api): POST /api/public/chat — 501 for HF-only, SSE for AILIANCE Live"
 ```
 
 ---
@@ -3492,7 +3492,7 @@ describe('ModelCard', () => {
   });
 
   it('renders Try button as enabled for chat_eligible models', () => {
-    const card: Card = { ...baseCard, chat_eligible: true, chat_backend: 'eu_kiki_live' };
+    const card: Card = { ...baseCard, chat_eligible: true, chat_backend: 'ailiance_live' };
     render(<ModelCard card={card} />);
     const button = screen.getByRole('link', { name: /try/i });
     expect(button.getAttribute('href')).toContain('/chat/');
@@ -3970,7 +3970,7 @@ describe('useChatStream', () => {
     const { result } = renderHook(() => useChatStream());
 
     await act(async () => {
-      await result.current.send('eu-kiki/apertus-70b', [{ role: 'user', content: 'hi' }]);
+      await result.current.send('ailiance/apertus-70b', [{ role: 'user', content: 'hi' }]);
     });
 
     expect(result.current.assistantText).toBe('Hello');
@@ -4532,7 +4532,7 @@ function HomePage() {
         <h1 className="text-4xl font-bold">L'Électron Rare — Model Showcase</h1>
         <p className="mt-2 text-slate-600">
           24 fine-tuned LLMs published on HuggingFace + 3 EU-sovereign models served live.
-          Provenance, eval scores, and chat playground for the EU-KIKI Live stack.
+          Provenance, eval scores, and chat playground for the AILIANCE Live stack.
         </p>
         <div className="mt-4 flex gap-3">
           <Link to="/models" className="rounded bg-slate-900 px-4 py-2 text-white">
@@ -4583,7 +4583,7 @@ function AboutPage() {
       <p>
         Each model published with full provenance: base model, training method (LoRA / SFT),
         hyperparameters, datasets (HF-traceable, licensed Apache/MIT/CC-BY), hardware,
-        run SHA. See <a href="https://github.com/L-electron-Rare/eu-kiki/blob/main/docs/eu-ai-act-transparency.md">the EU-KIKI transparency document</a>.
+        run SHA. See <a href="https://github.com/L-electron-Rare/ailiance/blob/main/docs/eu-ai-act-transparency.md">the AILIANCE transparency document</a>.
       </p>
       <h2>Stack</h2>
       <ul>
@@ -4630,7 +4630,7 @@ export function Header() {
     <header className="border-b border-slate-200 bg-white">
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
         <Link to="/" className="font-bold text-lg">
-          kiki-cockpit
+          ailiance-demo
         </Link>
         <nav className="flex gap-4 text-sm">
           <Link to="/models" className="hover:underline">Models</Link>
@@ -4664,8 +4664,8 @@ export function Footer() {
         </p>
         <p className="mt-1">
           Source:{' '}
-          <a className="underline" href="https://github.com/L-electron-Rare/kiki-cockpit">
-            github.com/L-electron-Rare/kiki-cockpit
+          <a className="underline" href="https://github.com/L-electron-Rare/ailiance-demo">
+            github.com/L-electron-Rare/ailiance-demo
           </a>
         </p>
       </div>
@@ -4717,9 +4717,9 @@ git commit -m "feat(public): Header + Footer layout"
 ### Task 1.21: HF background refresh task
 
 **Files:**
-- Modify: `apps/api/src/kiki_cockpit/main.py`
+- Modify: `apps/api/src/ailiance_demo/main.py`
 
-- [ ] **Step 1: Modify `apps/api/src/kiki_cockpit/main.py`** — add asyncio task in lifespan
+- [ ] **Step 1: Modify `apps/api/src/ailiance_demo/main.py`** — add asyncio task in lifespan
 
 In `lifespan`, after `cache.refresh()`:
 
@@ -4756,7 +4756,7 @@ async def _periodic_refresh(cache: HFCache, interval_seconds: int) -> None:
 
 Run:
 ```bash
-uv run uvicorn kiki_cockpit.main:app --port 9100 &
+uv run uvicorn ailiance_demo.main:app --port 9100 &
 sleep 3
 curl http://127.0.0.1:9100/api/public/models | head -c 500
 kill %1
@@ -4786,7 +4786,7 @@ Expected: all green
 
 ```bash
 # Terminal 1
-uv run uvicorn kiki_cockpit.main:app --reload --port 9100
+uv run uvicorn ailiance_demo.main:app --reload --port 9100
 
 # Terminal 2
 pnpm --filter cockpit-public dev
@@ -4796,7 +4796,7 @@ Visit `http://localhost:5173/` — verify:
 - Homepage shows Featured cards
 - /models shows all cards with filters
 - /models/clemsail/micro-kiki-v3 shows detail page
-- /chat/eu-kiki/apertus-70b shows the chat UI (will fail to send if eu-kiki gateway is not running, but UI loads)
+- /chat/ailiance/apertus-70b shows the chat UI (will fail to send if ailiance gateway is not running, but UI loads)
 - /about renders
 
 - [ ] **Step 3: Tag**
@@ -4814,9 +4814,9 @@ Goal: admin app at `/`, `/training`, `/training/$id`, `/workers`, `/eval`. Tails
 ### Task 2.1: Tailscale auth dependency
 
 **Files:**
-- Create: `apps/api/src/kiki_cockpit/auth/__init__.py`, `apps/api/src/kiki_cockpit/auth/tailscale.py`, `apps/api/tests/unit/test_tailscale_auth.py`
+- Create: `apps/api/src/ailiance_demo/auth/__init__.py`, `apps/api/src/ailiance_demo/auth/tailscale.py`, `apps/api/tests/unit/test_tailscale_auth.py`
 
-- [ ] **Step 1: Write `apps/api/src/kiki_cockpit/auth/__init__.py`** (empty)
+- [ ] **Step 1: Write `apps/api/src/ailiance_demo/auth/__init__.py`** (empty)
 
 ```python
 ```
@@ -4829,7 +4829,7 @@ import pytest
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.testclient import TestClient
 
-from kiki_cockpit.auth.tailscale import require_tailscale_user
+from ailiance_demo.auth.tailscale import require_tailscale_user
 
 
 @pytest.fixture
@@ -4869,7 +4869,7 @@ uv run pytest apps/api/tests/unit/test_tailscale_auth.py -v
 ```
 Expected: FAIL `ImportError`
 
-- [ ] **Step 4: Write `apps/api/src/kiki_cockpit/auth/tailscale.py`**
+- [ ] **Step 4: Write `apps/api/src/ailiance_demo/auth/tailscale.py`**
 
 ```python
 """Tailscale-User header dependency.
@@ -4914,10 +4914,10 @@ git commit -m "feat(api): require_tailscale_user dependency for admin routes"
 ### Task 2.2: TrainingRun + WorkerStatus schemas
 
 **Files:**
-- Create: `apps/api/src/kiki_cockpit/models/training_run.py`, `apps/api/src/kiki_cockpit/models/worker_status.py`
-- Modify: `apps/api/src/kiki_cockpit/models/__init__.py`
+- Create: `apps/api/src/ailiance_demo/models/training_run.py`, `apps/api/src/ailiance_demo/models/worker_status.py`
+- Modify: `apps/api/src/ailiance_demo/models/__init__.py`
 
-- [ ] **Step 1: Write `apps/api/src/kiki_cockpit/models/training_run.py`**
+- [ ] **Step 1: Write `apps/api/src/ailiance_demo/models/training_run.py`**
 
 ```python
 """Pydantic schemas for training runs."""
@@ -4962,7 +4962,7 @@ class TrainingRunDetail(TrainingRun):
     raw_lines_tail: list[str] = Field(default_factory=list)
 ```
 
-- [ ] **Step 2: Write `apps/api/src/kiki_cockpit/models/worker_status.py`**
+- [ ] **Step 2: Write `apps/api/src/ailiance_demo/models/worker_status.py`**
 
 ```python
 """Pydantic schemas for worker status."""
@@ -4988,18 +4988,18 @@ class WorkerStatus(BaseModel):
     error: str | None = None
 ```
 
-- [ ] **Step 3: Modify `apps/api/src/kiki_cockpit/models/__init__.py`**
+- [ ] **Step 3: Modify `apps/api/src/ailiance_demo/models/__init__.py`**
 
 ```python
-from kiki_cockpit.models.eval_result import EvalResult, EvalSummary
-from kiki_cockpit.models.model_card import ChatBackend, ModelCard, ModelDetail, ModelStatus
-from kiki_cockpit.models.training_run import (
+from ailiance_demo.models.eval_result import EvalResult, EvalSummary
+from ailiance_demo.models.model_card import ChatBackend, ModelCard, ModelDetail, ModelStatus
+from ailiance_demo.models.training_run import (
     TrainingMetric,
     TrainingRun,
     TrainingRunDetail,
     TrainingRunStatus,
 )
-from kiki_cockpit.models.worker_status import WorkerHealth, WorkerStatus
+from ailiance_demo.models.worker_status import WorkerHealth, WorkerStatus
 
 __all__ = [
     "ChatBackend",
@@ -5020,7 +5020,7 @@ __all__ = [
 - [ ] **Step 4: Run typecheck on the API tree**
 
 ```bash
-uv run python -c "from kiki_cockpit.models import TrainingRun, WorkerStatus; print('ok')"
+uv run python -c "from ailiance_demo.models import TrainingRun, WorkerStatus; print('ok')"
 ```
 Expected: `ok`
 
@@ -5036,7 +5036,7 @@ git commit -m "feat(api): TrainingRun and WorkerStatus Pydantic schemas"
 ### Task 2.3: Log tail parser (mlx_lm format)
 
 **Files:**
-- Create: `apps/api/src/kiki_cockpit/services/log_tail.py`, `apps/api/tests/unit/test_log_tail.py`, `apps/api/tests/fixtures/training_logs/sample.log`
+- Create: `apps/api/src/ailiance_demo/services/log_tail.py`, `apps/api/tests/unit/test_log_tail.py`, `apps/api/tests/fixtures/training_logs/sample.log`
 
 - [ ] **Step 1: Write `apps/api/tests/fixtures/training_logs/sample.log`**
 
@@ -5055,7 +5055,7 @@ Iter 400: Train loss 0.479, Learning Rate 8.5e-05, It/sec 0.45, Tokens/sec 1018
 
 ```python
 """Tests for log_tail mlx_lm parser."""
-from kiki_cockpit.services.log_tail import parse_line
+from ailiance_demo.services.log_tail import parse_line
 
 
 def test_parses_train_iter_line() -> None:
@@ -5091,7 +5091,7 @@ uv run pytest apps/api/tests/unit/test_log_tail.py -v
 ```
 Expected: FAIL `ImportError`
 
-- [ ] **Step 4: Write `apps/api/src/kiki_cockpit/services/log_tail.py`**
+- [ ] **Step 4: Write `apps/api/src/ailiance_demo/services/log_tail.py`**
 
 ```python
 """Parse mlx_lm training log format. Reuses regex from KIKI-Mac_tunner/scripts/training_tui.py."""
@@ -5099,7 +5099,7 @@ from __future__ import annotations
 
 import re
 
-from kiki_cockpit.models import TrainingMetric
+from ailiance_demo.models import TrainingMetric
 
 _VAL_RE = re.compile(r"Iter (\d+): Val loss ([\d.eE+-]+), Val took ([\d.]+)s")
 _TRAIN_RE = re.compile(
@@ -5150,7 +5150,7 @@ git commit -m "feat(api): log_tail.parse_line for mlx_lm train/val iter lines"
 ### Task 2.4: TrainingRun discovery service
 
 **Files:**
-- Create: `apps/api/src/kiki_cockpit/services/training_runs.py`, `apps/api/tests/unit/test_training_runs.py`
+- Create: `apps/api/src/ailiance_demo/services/training_runs.py`, `apps/api/tests/unit/test_training_runs.py`
 
 - [ ] **Step 1: Write `apps/api/tests/unit/test_training_runs.py`** (test first)
 
@@ -5159,8 +5159,8 @@ git commit -m "feat(api): log_tail.parse_line for mlx_lm train/val iter lines"
 from datetime import datetime, UTC
 from pathlib import Path
 
-from kiki_cockpit.models import TrainingRunStatus
-from kiki_cockpit.services.training_runs import discover_runs, summarize_run
+from ailiance_demo.models import TrainingRunStatus
+from ailiance_demo.services.training_runs import discover_runs, summarize_run
 
 FIXTURE = Path(__file__).parent.parent / "fixtures" / "training_logs"
 
@@ -5216,7 +5216,7 @@ uv run pytest apps/api/tests/unit/test_training_runs.py -v
 ```
 Expected: FAIL `ImportError`
 
-- [ ] **Step 3: Write `apps/api/src/kiki_cockpit/services/training_runs.py`**
+- [ ] **Step 3: Write `apps/api/src/ailiance_demo/services/training_runs.py`**
 
 ```python
 """Discover training runs by walking log directories and parsing them."""
@@ -5228,8 +5228,8 @@ from pathlib import Path
 
 import structlog
 
-from kiki_cockpit.models import TrainingRun, TrainingRunStatus
-from kiki_cockpit.services.log_tail import parse_line
+from ailiance_demo.models import TrainingRun, TrainingRunStatus
+from ailiance_demo.services.log_tail import parse_line
 
 log = structlog.get_logger()
 
@@ -5309,10 +5309,10 @@ git commit -m "feat(api): training_runs.discover_runs + summarize_run"
 ### Task 2.5: GET /api/admin/training/runs endpoint
 
 **Files:**
-- Create: `apps/api/src/kiki_cockpit/routers/admin/training.py`, `apps/api/tests/integration/test_training_endpoint.py`
-- Modify: `apps/api/src/kiki_cockpit/main.py`, `apps/api/src/kiki_cockpit/deps.py`, `apps/api/src/kiki_cockpit/config.py`
+- Create: `apps/api/src/ailiance_demo/routers/admin/training.py`, `apps/api/tests/integration/test_training_endpoint.py`
+- Modify: `apps/api/src/ailiance_demo/main.py`, `apps/api/src/ailiance_demo/deps.py`, `apps/api/src/ailiance_demo/config.py`
 
-- [ ] **Step 1: Modify `apps/api/src/kiki_cockpit/config.py`** — add log roots
+- [ ] **Step 1: Modify `apps/api/src/ailiance_demo/config.py`** — add log roots
 
 Replace the body of `Settings` with the previous fields plus:
 
@@ -5320,7 +5320,7 @@ Replace the body of `Settings` with the previous fields plus:
     training_log_roots: list[Path] = Field(
         default_factory=lambda: [
             Path.home() / "Documents" / "Projets" / "KIKI-Mac_tunner" / "logs",
-            Path.home() / "Documents" / "Projets" / "eu-kiki" / "logs",
+            Path.home() / "Documents" / "Projets" / "ailiance" / "logs",
         ],
     )
     machine_label: str = "studio"
@@ -5334,7 +5334,7 @@ Replace the body of `Settings` with the previous fields plus:
     )
 ```
 
-- [ ] **Step 2: Modify `apps/api/src/kiki_cockpit/deps.py`** — add training runs accessor
+- [ ] **Step 2: Modify `apps/api/src/ailiance_demo/deps.py`** — add training runs accessor
 
 Append:
 
@@ -5346,16 +5346,16 @@ def get_training_runs_provider(request: Request):
     return provider
 ```
 
-- [ ] **Step 3: Write `apps/api/src/kiki_cockpit/routers/admin/training.py`**
+- [ ] **Step 3: Write `apps/api/src/ailiance_demo/routers/admin/training.py`**
 
 ```python
 """Admin training runs endpoints."""
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import StreamingResponse
 
-from kiki_cockpit.auth.tailscale import require_tailscale_user
-from kiki_cockpit.deps import get_training_runs_provider
-from kiki_cockpit.models import TrainingRun
+from ailiance_demo.auth.tailscale import require_tailscale_user
+from ailiance_demo.deps import get_training_runs_provider
+from ailiance_demo.models import TrainingRun
 
 router = APIRouter(
     prefix="/api/admin",
@@ -5394,7 +5394,7 @@ async def stream_training_logs(
 
 - [ ] **Step 4: Add a TrainingRunsProvider class**
 
-Create `apps/api/src/kiki_cockpit/services/training_runs_provider.py`:
+Create `apps/api/src/ailiance_demo/services/training_runs_provider.py`:
 
 ```python
 """Provider that ties discovery + log tailing into a unified interface."""
@@ -5407,9 +5407,9 @@ from pathlib import Path
 
 import structlog
 
-from kiki_cockpit.models import TrainingRun
-from kiki_cockpit.services.log_tail import parse_line
-from kiki_cockpit.services.training_runs import discover_runs
+from ailiance_demo.models import TrainingRun
+from ailiance_demo.services.log_tail import parse_line
+from ailiance_demo.services.training_runs import discover_runs
 
 log = structlog.get_logger()
 
@@ -5472,13 +5472,13 @@ class TrainingRunsProvider:
         return f"event: raw\ndata: {json.dumps({'line': line})}\n\n".encode()
 ```
 
-- [ ] **Step 5: Modify `apps/api/src/kiki_cockpit/main.py`** — wire provider and admin router
+- [ ] **Step 5: Modify `apps/api/src/ailiance_demo/main.py`** — wire provider and admin router
 
 Add imports:
 
 ```python
-from kiki_cockpit.routers.admin import training as admin_training
-from kiki_cockpit.services.training_runs_provider import TrainingRunsProvider
+from ailiance_demo.routers.admin import training as admin_training
+from ailiance_demo.services.training_runs_provider import TrainingRunsProvider
 ```
 
 In `lifespan()`, after `eval_index`:
@@ -5505,9 +5505,9 @@ from pathlib import Path
 
 from fastapi.testclient import TestClient
 
-from kiki_cockpit.deps import get_training_runs_provider, get_hf_cache, get_eval_index
-from kiki_cockpit.main import create_app
-from kiki_cockpit.services.training_runs_provider import TrainingRunsProvider
+from ailiance_demo.deps import get_training_runs_provider, get_hf_cache, get_eval_index
+from ailiance_demo.main import create_app
+from ailiance_demo.services.training_runs_provider import TrainingRunsProvider
 
 
 def test_list_runs_requires_tailscale_user(tmp_path: Path, empty_hf_cache, empty_eval_index) -> None:
@@ -5587,8 +5587,8 @@ git commit -m "feat(api): /api/admin/training/runs and SSE log tail (Tailscale-p
 ### Task 2.6: Workers status service + endpoint
 
 **Files:**
-- Create: `apps/api/src/kiki_cockpit/services/workers.py`, `apps/api/src/kiki_cockpit/routers/admin/workers.py`, `apps/api/tests/unit/test_workers.py`, `apps/api/tests/integration/test_workers_endpoint.py`
-- Modify: `apps/api/src/kiki_cockpit/main.py`, `apps/api/src/kiki_cockpit/deps.py`
+- Create: `apps/api/src/ailiance_demo/services/workers.py`, `apps/api/src/ailiance_demo/routers/admin/workers.py`, `apps/api/tests/unit/test_workers.py`, `apps/api/tests/integration/test_workers_endpoint.py`
+- Modify: `apps/api/src/ailiance_demo/main.py`, `apps/api/src/ailiance_demo/deps.py`
 
 - [ ] **Step 1: Write `apps/api/tests/unit/test_workers.py`** (test first)
 
@@ -5597,8 +5597,8 @@ git commit -m "feat(api): /api/admin/training/runs and SSE log tail (Tailscale-p
 import httpx
 import pytest
 
-from kiki_cockpit.models import WorkerHealth
-from kiki_cockpit.services.workers import ping_worker
+from ailiance_demo.models import WorkerHealth
+from ailiance_demo.services.workers import ping_worker
 
 
 @pytest.mark.asyncio
@@ -5637,7 +5637,7 @@ async def test_ping_worker_returns_down_on_connection_error() -> None:
     assert status.error is not None
 ```
 
-- [ ] **Step 2: Write `apps/api/src/kiki_cockpit/services/workers.py`**
+- [ ] **Step 2: Write `apps/api/src/ailiance_demo/services/workers.py`**
 
 ```python
 """Ping configured workers and aggregate their health."""
@@ -5650,7 +5650,7 @@ from datetime import datetime, UTC
 import httpx
 import structlog
 
-from kiki_cockpit.models import WorkerHealth, WorkerStatus
+from ailiance_demo.models import WorkerHealth, WorkerStatus
 
 log = structlog.get_logger()
 
@@ -5700,16 +5700,16 @@ async def ping_all(workers: list[dict]) -> list[WorkerStatus]:
     return await asyncio.gather(*tasks)
 ```
 
-- [ ] **Step 3: Write `apps/api/src/kiki_cockpit/routers/admin/workers.py`**
+- [ ] **Step 3: Write `apps/api/src/ailiance_demo/routers/admin/workers.py`**
 
 ```python
 """Admin workers status endpoint."""
 from fastapi import APIRouter, Depends
 
-from kiki_cockpit.auth.tailscale import require_tailscale_user
-from kiki_cockpit.config import settings
-from kiki_cockpit.models import WorkerStatus
-from kiki_cockpit.services.workers import ping_all
+from ailiance_demo.auth.tailscale import require_tailscale_user
+from ailiance_demo.config import settings
+from ailiance_demo.models import WorkerStatus
+from ailiance_demo.services.workers import ping_all
 
 router = APIRouter(
     prefix="/api/admin",
@@ -5723,12 +5723,12 @@ async def workers_status() -> list[WorkerStatus]:
     return await ping_all(settings.workers_to_check)
 ```
 
-- [ ] **Step 4: Modify `apps/api/src/kiki_cockpit/main.py`** — mount workers router
+- [ ] **Step 4: Modify `apps/api/src/ailiance_demo/main.py`** — mount workers router
 
 In imports:
 
 ```python
-from kiki_cockpit.routers.admin import workers as admin_workers
+from ailiance_demo.routers.admin import workers as admin_workers
 ```
 
 In `create_app()`:
@@ -5743,8 +5743,8 @@ In `create_app()`:
 """Tests for /api/admin/workers/status."""
 from fastapi.testclient import TestClient
 
-from kiki_cockpit.deps import get_hf_cache, get_eval_index
-from kiki_cockpit.main import create_app
+from ailiance_demo.deps import get_hf_cache, get_eval_index
+from ailiance_demo.main import create_app
 
 
 def test_workers_status_requires_tailscale(empty_hf_cache, empty_eval_index) -> None:
@@ -5794,19 +5794,19 @@ git commit -m "feat(api): /api/admin/workers/status with parallel pings"
 ### Task 2.7: Eval browser endpoint
 
 **Files:**
-- Create: `apps/api/src/kiki_cockpit/routers/admin/eval_browser.py`, `apps/api/tests/integration/test_eval_browser_endpoint.py`
-- Modify: `apps/api/src/kiki_cockpit/main.py`
+- Create: `apps/api/src/ailiance_demo/routers/admin/eval_browser.py`, `apps/api/tests/integration/test_eval_browser_endpoint.py`
+- Modify: `apps/api/src/ailiance_demo/main.py`
 
-- [ ] **Step 1: Write `apps/api/src/kiki_cockpit/routers/admin/eval_browser.py`**
+- [ ] **Step 1: Write `apps/api/src/ailiance_demo/routers/admin/eval_browser.py`**
 
 ```python
 """Admin endpoint to browse all eval results across machines/repos."""
 from fastapi import APIRouter, Depends
 
-from kiki_cockpit.auth.tailscale import require_tailscale_user
-from kiki_cockpit.deps import get_eval_index
-from kiki_cockpit.models import EvalResult
-from kiki_cockpit.services.eval_index import EvalIndex
+from ailiance_demo.auth.tailscale import require_tailscale_user
+from ailiance_demo.deps import get_eval_index
+from ailiance_demo.models import EvalResult
+from ailiance_demo.services.eval_index import EvalIndex
 
 router = APIRouter(
     prefix="/api/admin",
@@ -5823,10 +5823,10 @@ def list_eval_results(index: EvalIndex = Depends(get_eval_index)) -> list[EvalRe
     return sorted(flat, key=lambda r: r.timestamp, reverse=True)
 ```
 
-- [ ] **Step 2: Modify `apps/api/src/kiki_cockpit/main.py`** — mount eval_browser
+- [ ] **Step 2: Modify `apps/api/src/ailiance_demo/main.py`** — mount eval_browser
 
 ```python
-from kiki_cockpit.routers.admin import eval_browser as admin_eval_browser
+from ailiance_demo.routers.admin import eval_browser as admin_eval_browser
 ```
 
 ```python
@@ -5842,9 +5842,9 @@ from pathlib import Path
 
 from fastapi.testclient import TestClient
 
-from kiki_cockpit.deps import get_hf_cache, get_eval_index
-from kiki_cockpit.main import create_app
-from kiki_cockpit.services.eval_index import EvalIndex
+from ailiance_demo.deps import get_hf_cache, get_eval_index
+from ailiance_demo.main import create_app
+from ailiance_demo.services.eval_index import EvalIndex
 
 
 def test_eval_browser_requires_tailscale(empty_hf_cache, empty_eval_index) -> None:
@@ -6025,7 +6025,7 @@ export default defineConfig({
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>kiki-cockpit admin</title>
+    <title>ailiance-demo admin</title>
   </head>
   <body>
     <div id="root"></div>
@@ -6117,7 +6117,7 @@ function RootLayout() {
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
       <header className="bg-slate-900 text-slate-100 px-6 py-3">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <h1 className="font-bold">kiki-cockpit · admin</h1>
+          <h1 className="font-bold">ailiance-demo · admin</h1>
           <nav className="flex gap-4 text-sm">
             <Link to="/" className="hover:underline">Dashboard</Link>
             <Link to="/training" className="hover:underline">Training</Link>
@@ -6998,7 +6998,7 @@ Expected: all green
 
 ```bash
 # Terminal 1
-uv run uvicorn kiki_cockpit.main:app --reload --port 9100
+uv run uvicorn ailiance_demo.main:app --reload --port 9100
 
 # Terminal 2
 pnpm --filter cockpit-public dev    # 5173
@@ -7011,7 +7011,7 @@ Visit:
 - `http://localhost:5174/` — dashboard with 4 widgets (will show "0" / "—" if no data)
 - `/training` — list of runs
 - `/training/<id>` — detail with LossChart + LogTail (try with a real log)
-- `/workers` — grid (all "down" if eu-kiki gateway not running, that's expected)
+- `/workers` — grid (all "down" if ailiance gateway not running, that's expected)
 - `/eval` — table
 
 - [ ] **Step 3: Test Tailscale auth**
@@ -7059,7 +7059,7 @@ git tag -a sprint-2 -m "Sprint 2 — Admin monitoring read-only complete"
 
 **Type consistency:**
 - `ModelCard.chat_eligible: bool` defined in Task 1.1 → used in Task 1.13 (ModelCard.tsx checks `card.chat_eligible`) ✓
-- `ChatBackend` enum values (`eu_kiki_live`, `hf_external`) used consistently between Pydantic and TS ✓
+- `ChatBackend` enum values (`ailiance_live`, `hf_external`) used consistently between Pydantic and TS ✓
 - `TrainingMetric.split` ("train" | "val") used identically in log_tail.py and LossChart.tsx ✓
 - `WorkerHealth` enum (ok/warn/down) consistent ✓
 - API client `get`/`post` signatures defined Task 0.5, used Tasks 1.14, 1.15, 2.10, 2.14, 2.15 ✓
@@ -7068,7 +7068,7 @@ No issues found.
 
 ---
 
-**Plan complete and saved to `docs/superpowers/plans/2026-05-04-kiki-cockpit-sprints-0-1-2.md`. Two execution options:**
+**Plan complete and saved to `docs/superpowers/plans/2026-05-04-ailiance-demo-sprints-0-1-2.md`. Two execution options:**
 
 **1. Subagent-Driven (recommended)** — I dispatch a fresh subagent per task, review between tasks, fast iteration
 

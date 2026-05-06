@@ -1,4 +1,4 @@
-# Design — `kiki-cockpit` : frontend pour entraînement, évaluation et test des modèles
+# Design — `ailiance-demo` : frontend pour entraînement, évaluation et test des modèles
 
 **Date** : 2026-05-04
 **Auteur** : Brainstorming session (Claude Opus 4.7 + Clément Saillant)
@@ -11,7 +11,7 @@
 L'écosystème ML d'Électron Rare comprend aujourd'hui :
 
 - **`KIKI-Mac_tunner`** (public, GitHub) : MLX fine-tuning toolkit sur Mac Studio M3 Ultra (512 GB), distille Claude Opus dans Mistral Large 123B, Qwen3.5-122B-A10B, etc. Inclut une TUI terminal (`scripts/training_tui.py`) qui parse les logs `mlx_lm` en temps réel.
-- **`eu-kiki`** (privé, GitHub) : pipeline LLM EU-souverain — Apertus 70B + Devstral 24B + EuroLLM 22B, gateway FastAPI sur `:9200`, workers MLX sur `:9301/:9302/:9303`, conformité EU AI Act Art. 52/53. Suite d'évaluation reproductible (Lighteval, EvalPlus, MT-Bench + benchmarks maison) fraîchement poussée dans `eval/`.
+- **`ailiance`** (privé, GitHub) : pipeline LLM EU-souverain — Apertus 70B + Devstral 24B + EuroLLM 22B, gateway FastAPI sur `:9200`, workers MLX sur `:9301/:9302/:9303`, conformité EU AI Act Art. 52/53. Suite d'évaluation reproductible (Lighteval, EvalPlus, MT-Bench + benchmarks maison) fraîchement poussée dans `eval/`.
 - **24 modèles publiés sur HuggingFace** : 16 sous `clemsail/*` (compte perso) + 8 sous `electron-rare/*` (org), dont `micro-kiki-v3` (242 dl, 4♥), 10 adapters domaine SFT (KiCad, STM32, PlatformIO, IoT, FreeCAD, Power, EMC, SPICE, Embedded, DSP), et 6 versions récentes à 0 dl (model cards à compléter).
 - **Multi-machine via Tailscale** : studio (M3 Ultra, GPU principal), GrosMac (M-series), kxkm-ai (RTX 4090, Linux), electron-server (Linux, host), kx6tm-23 (Linux), tower (Linux).
 
@@ -50,8 +50,8 @@ Le projet est découpé en **7 sprints** (0-6). Ce design couvre **les sprints 0
 
 ### 3.2 Backend
 
-- **Nouveau service `kiki-cockpit` FastAPI** (Q4 = b) — séparé du gateway eu-kiki, tourne sur studio `:9100`
-- Le gateway eu-kiki garde sa responsabilité unique (router + inférence)
+- **Nouveau service `ailiance-demo` FastAPI** (Q4 = b) — séparé du gateway ailiance, tourne sur studio `:9100`
+- Le gateway ailiance garde sa responsabilité unique (router + inférence)
 - Le cockpit agrège des sources hétérogènes : HF API, logs training, eval results, status workers — c'est exactement le rôle d'un BFF (Backend For Frontend)
 
 ### 3.3 Frontend
@@ -91,14 +91,14 @@ Le projet est découpé en **7 sprints** (0-6). Ce design couvre **les sprints 0
 
 ## 4. Layout du projet
 
-Nouveau repo `L-electron-Rare/kiki-cockpit` (monorepo) :
+Nouveau repo `L-electron-Rare/ailiance-demo` (monorepo) :
 
 ```
-kiki-cockpit/
+ailiance-demo/
 ├── apps/
 │   ├── cockpit-public/         # Vite — vitrine + chat playground (sprint 1)
 │   ├── cockpit-admin/          # Vite — admin (sprint 2, créé seulement à sprint 2)
-│   └── api/                    # FastAPI service "kiki-cockpit" (studio:9100)
+│   └── api/                    # FastAPI service "ailiance-demo" (studio:9100)
 ├── packages/
 │   └── shared/                 # @cockpit/shared : types + UI primitives + API client
 ├── pnpm-workspace.yaml
@@ -113,21 +113,21 @@ kiki-cockpit/
 
 **Tooling** :
 - pnpm workspace (JS/TS)
-- uv project (Python, conforme à eu-kiki/KIKI-Mac_tunner)
+- uv project (Python, conforme à ailiance/KIKI-Mac_tunner)
 - biome (lint + format unique, ~10× plus rapide qu'eslint+prettier)
 - vitest + @testing-library/react (front)
 - pytest + httpx.AsyncClient (back)
 
 ---
 
-## 5. Backend — `apps/api/` (kiki-cockpit FastAPI)
+## 5. Backend — `apps/api/` (ailiance-demo FastAPI)
 
 ### 5.1 Structure modules
 
 ```
-apps/api/src/kiki_cockpit/
+apps/api/src/ailiance_demo/
 ├── main.py                       # FastAPI app, monte routers, CORS, middleware
-├── config.py                     # paths : ~/KIKI-Mac_tunner, ~/eu-kiki, etc.
+├── config.py                     # paths : ~/KIKI-Mac_tunner, ~/ailiance, etc.
 ├── deps.py                       # FastAPI Depends — auth, file watchers
 ├── routers/
 │   ├── public/
@@ -141,7 +141,7 @@ apps/api/src/kiki_cockpit/
 ├── services/
 │   ├── hf_sync.py                # HF API client + cache TTL 10 min
 │   ├── featured.py               # parse featured.yaml (file-watched)
-│   ├── eval_index.py             # walk eu-kiki/eval/results/, parse JSON
+│   ├── eval_index.py             # walk ailiance/eval/results/, parse JSON
 │   ├── training_runs.py          # découvre logs studio + GrosMac
 │   ├── log_tail.py               # tail -F + parse mlx_lm (réutilise training_tui.py)
 │   ├── workers.py                # ping :9200/:9301/:9302/:9303
@@ -158,7 +158,7 @@ apps/api/src/kiki_cockpit/
 | GET | `/api/public/models` | `ModelCard[]` — auto-sync HF + featured, paginé/filtrable |
 | GET | `/api/public/models/{owner}/{name}` | `ModelDetail` — provenance, datasets, scores, liens |
 | GET | `/api/public/eval/{owner}/{name}` | `EvalSummary` — scores agrégés par benchmark |
-| POST | `/api/public/chat` | **SSE** `text/event-stream` — proxy stream tokens depuis eu-kiki |
+| POST | `/api/public/chat` | **SSE** `text/event-stream` — proxy stream tokens depuis ailiance |
 | GET | `/api/public/healthz` | liveness |
 
 ### 5.3 Endpoints — sprint 2 (admin)
@@ -168,7 +168,7 @@ apps/api/src/kiki_cockpit/
 | GET | `/api/admin/training/runs` | `TrainingRun[]` — actifs + 50 derniers |
 | GET | `/api/admin/training/runs/{id}` | détail config + métriques historisées |
 | GET | `/api/admin/training/runs/{id}/logs` | **SSE** tail logs |
-| GET | `/api/admin/workers/status` | health 4 workers + gateway eu-kiki |
+| GET | `/api/admin/workers/status` | health 4 workers + gateway ailiance |
 | GET | `/api/admin/eval/results` | listing eval results (toutes machines) |
 | GET | `/api/admin/healthz` | liveness |
 
@@ -177,13 +177,13 @@ apps/api/src/kiki_cockpit/
 | Source | Quoi | Fraicheur |
 |---|---|---|
 | HF API (`huggingface.co/api/...`) | model metadata, downloads, last-modified | TTL 10 min en mémoire + fallback JSON |
-| `~/kiki-cockpit/featured.yaml` | curation manuelle | watchdog instant |
-| `~/eu-kiki/eval/results/**/*.json` | scores benchmarks | watchdog instant |
+| `~/ailiance-demo/featured.yaml` | curation manuelle | watchdog instant |
+| `~/ailiance/eval/results/**/*.json` | scores benchmarks | watchdog instant |
 | `~/KIKI-Mac_tunner/results/**/*.json` | scores benchmarks (legacy path) | watchdog instant |
 | `~/KIKI-Mac_tunner/logs/*.log` | training logs mlx_lm | tail -F sur demande |
-| `~/eu-kiki/output/eval/**/*` | eval data (legacy) | au boot + watchdog |
-| eu-kiki gateway `http://localhost:9200` | inférence chat + status workers | live |
-| `~/eu-kiki/output/router/router.safetensors` | métadonnées routeur | au boot |
+| `~/ailiance/output/eval/**/*` | eval data (legacy) | au boot + watchdog |
+| ailiance gateway `http://localhost:9200` | inférence chat + status workers | live |
+| `~/ailiance/output/router/router.safetensors` | métadonnées routeur | au boot |
 
 ### 5.5 Schéma `EvalResult` (cible)
 
@@ -200,7 +200,7 @@ class EvalResult(BaseModel):
     config: dict               # hyperparams, prompt template, seed
 ```
 
-L'implémentation s'alignera sur le format réel d'`eu-kiki/eval/runners/result_writer.py` (à lire en début de sprint 0). Le schéma ci-dessus est la cible.
+L'implémentation s'alignera sur le format réel d'`ailiance/eval/runners/result_writer.py` (à lire en début de sprint 0). Le schéma ci-dessus est la cible.
 
 ### 5.6 Format `featured.yaml`
 
@@ -275,20 +275,20 @@ src/
 
 | Catégorie | Modèles | Bouton "Try it" |
 |---|---|---|
-| **EU-KIKI Live Stack** (3) | Apertus 70B, Devstral 24B, EuroLLM 22B (servis sur eu-kiki gateway `:9200`, Jina auto-routing vers les 32 adapters EU) | ✅ Chat local SSE via cockpit |
+| **AILIANCE Live Stack** (3) | Apertus 70B, Devstral 24B, EuroLLM 22B (servis sur ailiance gateway `:9200`, Jina auto-routing vers les 32 adapters EU) | ✅ Chat local SSE via cockpit |
 | **HF Published** (24) | `clemsail/*` + `electron-rare/*` (Qwen / Mistral Large / Brainstacks adapters non servis localement en sprint 1) | 🔗 "Try on HuggingFace" → deep-link vers `huggingface.co/{owner}/{name}` (HF Inference embed gratuit) |
 
 Le serving local des `clemsail/*` arrive en sprint 6 (load adapter dynamique sur worker MLX).
 
 ### 6.3.1 Mapping `model_id` → endpoint inférence
 
-Le `model_id` est l'ID HF canonique (`{owner}/{name}`). Pour les EU-KIKI Live, on utilise un alias :
+Le `model_id` est l'ID HF canonique (`{owner}/{name}`). Pour les AILIANCE Live, on utilise un alias :
 
 | Card affichée | `model_id` API | Backend |
 |---|---|---|
-| Apertus 70B (EU-KIKI) | `eu-kiki/apertus-70b` | gateway `:9200` → worker `:9301` |
-| Devstral 24B (EU-KIKI) | `eu-kiki/devstral-24b` | gateway `:9200` → worker `:9302` |
-| EuroLLM 22B (EU-KIKI) | `eu-kiki/eurollm-22b` | gateway `:9200` → worker `:9303` |
+| Apertus 70B (AILIANCE) | `ailiance/apertus-70b` | gateway `:9200` → worker `:9301` |
+| Devstral 24B (AILIANCE) | `ailiance/devstral-24b` | gateway `:9200` → worker `:9302` |
+| EuroLLM 22B (AILIANCE) | `ailiance/eurollm-22b` | gateway `:9200` → worker `:9303` |
 | Micro-KIKI v3 | `clemsail/micro-kiki-v3` | HF deep-link (sprint 1) |
 | ... 23 autres HF | `{owner}/{name}` | HF deep-link (sprint 1) |
 
@@ -381,7 +381,7 @@ HF API ──(every 10min, background task)──→ hf_sync.py
                                                 ↓
                                           cache mémoire (TTL 60min)
                                                 ↓
-~/.cache/kiki-cockpit/hf-models.json ←──── snapshot disque (cold-start fallback)
+~/.cache/ailiance-demo/hf-models.json ←──── snapshot disque (cold-start fallback)
                                                 ↑
 featured.yaml ──(watchdog)──→ merge featured flag + headline + ordre
                                                 ↓
@@ -390,7 +390,7 @@ featured.yaml ──(watchdog)──→ merge featured flag + headline + ordre
 
 ### 9.2 Indexation eval results
 
-- Walk `~/eu-kiki/eval/results/**/*.json` + `~/KIKI-Mac_tunner/results/**/*.json` au boot
+- Walk `~/ailiance/eval/results/**/*.json` + `~/KIKI-Mac_tunner/results/**/*.json` au boot
 - Parse → `EvalResult` Pydantic
 - Index en mémoire : `model_id → [EvalResult, ...]`
 - Watchdog incrémental (file-add/modify) reload juste les nouveaux
@@ -428,13 +428,13 @@ Découverte runs actifs : process listing + mtime sur `*.log` < 5 min.
 Browser POST /api/public/chat  {model_id, messages, params}
         ↓
 chat_proxy.py routing :
-  - model_id ∈ {eu-kiki/apertus-70b, eu-kiki/devstral-24b, eu-kiki/eurollm-22b}
-      →  forward eu-kiki gateway :9200 (avec routing Jina activé)
+  - model_id ∈ {ailiance/apertus-70b, ailiance/devstral-24b, ailiance/eurollm-22b}
+      →  forward ailiance gateway :9200 (avec routing Jina activé)
   - sinon (clemsail/* ou electron-rare/* HF-only)
       →  HTTP 501 Not Implemented + payload {"hf_url": "https://huggingface.co/{owner}/{name}"}
          (le frontend redirige avant même d'appeler ; cet endpoint sert de garde)
         ↓
-eu-kiki gateway :9200 → MLX worker → tokens stream
+ailiance gateway :9200 → MLX worker → tokens stream
         ↓
 chat_proxy.py relays SSE chunks 1:1
         ↓
@@ -443,7 +443,7 @@ Browser EventSource → useChatStream → bulles markdown progressif
 
 **Cancel mid-stream** : `AbortController` browser → `Connection: close` → cockpit close gateway connection → MLX worker stop à la prochaine itération.
 
-**Note** : le frontend connaît la liste des modèles chat-eligibles (les 3 `eu-kiki/*` aliases) via l'endpoint `GET /api/public/models` qui inclut un flag `chat_eligible: bool` par modèle. Le bouton "Try it" du frontend est conditionnel sur ce flag — il devient un lien externe HF si `false`. L'endpoint `/api/public/chat` ne devrait jamais être appelé pour un modèle non-éligible, mais retourne 501 par défense en profondeur.
+**Note** : le frontend connaît la liste des modèles chat-eligibles (les 3 `ailiance/*` aliases) via l'endpoint `GET /api/public/models` qui inclut un flag `chat_eligible: bool` par modèle. Le bouton "Try it" du frontend est conditionnel sur ce flag — il devient un lien externe HF si `false`. L'endpoint `/api/public/chat` ne devrait jamais être appelé pour un modèle non-éligible, mais retourne 501 par défense en profondeur.
 
 ### 9.5 Workers status (sprint 2)
 
@@ -466,7 +466,7 @@ toutes les 5s :
 | `/api/public/*` | aucune | CORS `*`, rate-limit 30 req/min/IP via `slowapi` sur `POST /chat` |
 | `/api/admin/*` | header `X-Tailscale-User` non vide | injecté par nginx d'electron-server qui valide Tailscale en amont |
 | Studio `:9100` | firewall macOS | `pfctl` n'accepte que depuis l'IP Tailscale d'electron-server (à régler en deploy) |
-| Admin frontend (par ex. `admin.ml.saillant.cc`) | nginx Tailscale-only (Funnel désactivé) | un visiteur Internet ne résout même pas le DNS |
+| Admin frontend (par ex. `admin.ailiance.fr`) | nginx Tailscale-only (Funnel désactivé) | un visiteur Internet ne résout même pas le DNS |
 
 Sprint 2 : un seul `Depends(require_tailscale_user)` sur le router admin. Pas de rôles — quiconque est dans le tailnet = admin. Si invité ponctuel un jour, le tailnet ACL gère, pas le code.
 
@@ -519,7 +519,7 @@ Sprint 2 : un seul `Depends(require_tailscale_user)` sur le router admin. Pas de
 ## 14. Critères d'acceptation
 
 ### Sprint 0 — Foundation
-- [ ] Repo `kiki-cockpit/` initialisé avec layout monorepo (apps/, packages/, configs)
+- [ ] Repo `ailiance-demo/` initialisé avec layout monorepo (apps/, packages/, configs)
 - [ ] `apps/api/` : FastAPI minimal qui boote, expose `/api/public/healthz` et OpenAPI
 - [ ] `pnpm gen:api-types` produit `packages/shared/src/api/types.ts` à partir d'OpenAPI
 - [ ] CI : lint + typecheck + test passent sur PR
@@ -531,7 +531,7 @@ Sprint 2 : un seul `Depends(require_tailscale_user)` sur le router admin. Pas de
 - [ ] `featured.yaml` curé, vitrine montre les featured en homepage
 - [ ] Filtres galerie opérationnels (domaine + base + statut + recherche), URL-stateful
 - [ ] Page détail modèle : provenance + datasets + eval scores + liens HF/GitHub
-- [ ] Chat playground fonctionnel pour les 3 modèles EU-KIKI Live (`eu-kiki/apertus-70b`, `eu-kiki/devstral-24b`, `eu-kiki/eurollm-22b`) — proxy SSE → eu-kiki gateway `:9200`
+- [ ] Chat playground fonctionnel pour les 3 modèles AILIANCE Live (`ailiance/apertus-70b`, `ailiance/devstral-24b`, `ailiance/eurollm-22b`) — proxy SSE → ailiance gateway `:9200`
 - [ ] Pour les 24 modèles HF non servis localement : bouton "Try on HuggingFace" qui deep-link vers `huggingface.co/{owner}/{name}`
 - [ ] Endpoint `GET /api/public/models` expose un flag `chat_eligible` par modèle
 - [ ] Cancel mid-stream fonctionnel sur les modèles chat-eligibles
@@ -576,7 +576,7 @@ Sprint 2 : un seul `Depends(require_tailscale_user)` sur le router admin. Pas de
 
 ## 17. Décisions différées
 
-- Domaine public exact (`ml.saillant.cc` ? autre ?) → décision deploy
+- Domaine public exact (`ailiance.fr` ? autre ?) → décision deploy
 - Mécanique exacte d'injection `X-Tailscale-User` (Tailscale Funnel module nginx, ou auth_request, ou Tailscale Serve) → décision deploy
 - Mécanique reverse proxy electron-server → studio (Tailscale natif vs nginx upstream) → décision deploy
 - DNS split (admin sous `admin.*` vs path `/admin/*`) → décision deploy

@@ -3,7 +3,7 @@ import pytest
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.testclient import TestClient
 
-from kiki_cockpit.auth.tailscale import require_tailscale_user
+from ailiance_demo.auth.tailscale import require_tailscale_user
 
 
 @pytest.fixture

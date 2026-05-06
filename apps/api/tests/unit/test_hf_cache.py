@@ -4,8 +4,8 @@ from pathlib import Path
 import httpx
 import pytest
 
-from kiki_cockpit.services.hf_cache import HFCache
-from kiki_cockpit.services.featured import FeaturedConfig, FeaturedEntry, DeprecatedEntry
+from ailiance_demo.services.hf_cache import HFCache
+from ailiance_demo.services.featured import FeaturedConfig, FeaturedEntry, DeprecatedEntry
 
 
 def make_handler(responses: dict[str, list[dict]]):
@@ -16,7 +16,7 @@ def make_handler(responses: dict[str, list[dict]]):
 
 
 @pytest.mark.asyncio
-async def test_hfcache_refresh_merges_owners_and_marks_eu_kiki() -> None:
+async def test_hfcache_refresh_merges_owners_and_marks_ailiance() -> None:
     responses = {
         "clemsail": [{"id": "clemsail/micro-kiki-v3", "downloads": 242}],
         "electron-rare": [{"id": "electron-rare/mascarade-iot", "downloads": 6}],
@@ -24,7 +24,7 @@ async def test_hfcache_refresh_merges_owners_and_marks_eu_kiki() -> None:
     transport = httpx.MockTransport(make_handler(responses))
     cache = HFCache(
         owners=["clemsail", "electron-rare"],
-        eu_kiki_aliases={"eu-kiki/apertus-70b"},
+        ailiance_aliases={"ailiance/apertus-70b"},
         featured=FeaturedConfig(),
         cache_dir=Path("/tmp/test-cache-refresh"),
         http_transport=transport,
@@ -47,7 +47,7 @@ async def test_hfcache_applies_featured_rank_and_headline() -> None:
     )
     cache = HFCache(
         owners=["clemsail"],
-        eu_kiki_aliases=set(),
+        ailiance_aliases=set(),
         featured=featured,
         cache_dir=Path("/tmp/test-cache-featured"),
         http_transport=transport,
@@ -75,7 +75,7 @@ async def test_hfcache_filters_deprecated() -> None:
     )
     cache = HFCache(
         owners=["electron-rare"],
-        eu_kiki_aliases=set(),
+        ailiance_aliases=set(),
         featured=featured,
         cache_dir=Path("/tmp/test-cache-deprecated"),
         http_transport=transport,

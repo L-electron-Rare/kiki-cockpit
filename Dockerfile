@@ -24,7 +24,7 @@ COPY pyproject.toml uv.lock ./
 COPY apps/api ./apps/api
 COPY featured.yaml ./featured.yaml
 COPY scripts ./scripts
-RUN uv sync --frozen --no-dev --package kiki-cockpit-api
+RUN uv sync --frozen --no-dev --package ailiance-demo-api
 ENV PATH="/repo/.venv/bin:${PATH}"
 RUN bash scripts/gen-api-types.sh
 
@@ -75,7 +75,7 @@ WORKDIR /app
 # uv workspace: copy root + member that we want, then sync only that package
 COPY pyproject.toml uv.lock ./
 COPY apps/api ./apps/api
-RUN uv sync --frozen --no-dev --package kiki-cockpit-api
+RUN uv sync --frozen --no-dev --package ailiance-demo-api
 
 # Bring runtime config that the api reads at startup
 COPY featured.yaml ./featured.yaml
@@ -87,4 +87,4 @@ ENV PATH="/app/.venv/bin:${PATH}" \
 EXPOSE 9100
 HEALTHCHECK --interval=30s --timeout=3s --start-period=15s \
   CMD curl -fsS http://127.0.0.1:9100/api/public/healthz || exit 1
-CMD ["uvicorn", "kiki_cockpit.main:app", "--host", "0.0.0.0", "--port", "9100", "--proxy-headers", "--forwarded-allow-ips", "*"]
+CMD ["uvicorn", "ailiance_demo.main:app", "--host", "0.0.0.0", "--port", "9100", "--proxy-headers", "--forwarded-allow-ips", "*"]

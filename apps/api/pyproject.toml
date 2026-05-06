@@ -1,7 +1,7 @@
 [project]
-name = "kiki-cockpit-api"
+name = "ailiance-demo-api"
 version = "0.0.0"
-description = "FastAPI service for kiki-cockpit"
+description = "FastAPI service for ailiance-demo"
 requires-python = ">=3.12"
 dependencies = [
   "fastapi>=0.115.0",
@@ -30,4 +30,4 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/kiki_cockpit"]
+packages = ["src/ailiance_demo"]

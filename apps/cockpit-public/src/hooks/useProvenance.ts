@@ -1,14 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 
-const RAW_BASE = 'https://raw.githubusercontent.com/L-electron-Rare/eu-kiki/main/docs/provenance';
+const RAW_BASE = 'https://raw.githubusercontent.com/L-electron-Rare/ailiance/main/docs/provenance';
 
 const PROVENANCE_FILES: Record<string, string> = {
-  'eu-kiki/apertus-70b': 'apertus-70b-instruct-2509.json',
-  'eu-kiki/devstral-24b': 'devstral-small-2-24b-instruct-2512.json',
-  'eu-kiki/eurollm-22b': 'eurollm-22b-instruct-2512.json',
-  'eu-kiki/gemma3-4b': 'gemma-3-4b-it.json',
-  'eu-kiki/qwen3-next-80b-a3b-instruct': 'qwen3-next-80b-a3b-instruct.json',
-  'eu-kiki/auto': 'auto-router-minilm.json',
+  'ailiance/apertus-70b': 'apertus-70b-instruct-2509.json',
+  'ailiance/devstral-24b': 'devstral-small-2-24b-instruct-2512.json',
+  'ailiance/eurollm-22b': 'eurollm-22b-instruct-2512.json',
+  'ailiance/gemma3-4b': 'gemma-3-4b-it.json',
+  'ailiance/qwen3-next-80b-a3b-instruct': 'qwen3-next-80b-a3b-instruct.json',
+  'ailiance/auto': 'auto-router-minilm.json',
 };
 
 export function useProvenance(modelId: string) {

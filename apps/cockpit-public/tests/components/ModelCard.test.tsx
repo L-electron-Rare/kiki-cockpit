@@ -50,7 +50,7 @@ describe('ModelCard', () => {
   });
 
   it('renders Try button as enabled for chat_eligible models', () => {
-    const card: Card = { ...baseCard, chat_eligible: true, chat_backend: 'eu_kiki_live' };
+    const card: Card = { ...baseCard, chat_eligible: true, chat_backend: 'ailiance_live' };
     render(<ModelCard card={card} />);
     const button = screen.getByRole('link', { name: /try/i });
     expect(button.getAttribute('href')).toContain('/chat/');
