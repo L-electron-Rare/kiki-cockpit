@@ -76,6 +76,27 @@ _LIVE_DETAILS: dict[str, dict] = {
         "license": "apache-2.0",
         "kind": ModelKind.QUANTIZED,
     },
+    "eu-kiki/qwen3-next-80b-a3b-instruct": {
+        "display_name": "Qwen3-Next 80B A3B Instruct",
+        "base_model": "Qwen/Qwen3-Next-80B-A3B-Instruct",
+        "domain": "reasoning",
+        "description": (
+            "Qwen3-Next 80B sparse MoE (3B active per token) — Q4_K_M GGUF "
+            "served by llama.cpp on kxkm-ai (NVIDIA RTX 4090 24 GB). MoE "
+            "expert offload: attention layers on GPU, ffn experts in CPU "
+            "RAM via --override-tensor. Reachable from the gateway via "
+            "autossh tunnel (electron-server:8002 → kxkm-ai:18888)."
+        ),
+        "headline": "80B MoE / 3B active · Q4_K_M · RTX 4090 + RAM offload",
+        "parameters": 80_000_000_000,
+        "disk_size_bytes": 48_410_988_384,
+        "memory_gb": 50.0,  # ~6 GB VRAM (attention + KV q8_0) + ~44 GB RAM (experts)
+        "quantization": "Q4_K_M",
+        "host": "kxkm-ai (NVIDIA RTX 4090 24 GB + 64 GB RAM)",
+        "architecture": "gguf",
+        "license": "apache-2.0",
+        "kind": ModelKind.QUANTIZED,
+    },
     "eu-kiki/gemma3-4b": {
         "display_name": "Gemma 3 4B IT",
         "base_model": "google/gemma-3-4b-it",

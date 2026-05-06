@@ -7,6 +7,7 @@ const PROVENANCE_FILES: Record<string, string> = {
   'eu-kiki/devstral-24b': 'devstral-small-2-24b-instruct-2512.json',
   'eu-kiki/eurollm-22b': 'eurollm-22b-instruct-2512.json',
   'eu-kiki/gemma3-4b': 'gemma3-4b-it.json',
+  'eu-kiki/qwen3-next-80b-a3b-instruct': 'qwen3-next-80b-a3b-instruct.json',
   'eu-kiki/auto': 'auto-router-minilm.json',
 };
 

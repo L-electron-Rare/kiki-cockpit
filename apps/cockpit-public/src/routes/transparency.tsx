@@ -53,6 +53,16 @@ const ENTRIES: ProvenanceLink[] = [
     notes: 'Light-weight worker — runs on tower (NVIDIA Quadro P2000 5 GB).',
   },
   {
+    alias: 'eu-kiki/qwen3-next-80b-a3b-instruct',
+    display: 'Qwen3-Next 80B A3B Instruct',
+    base: 'Qwen/Qwen3-Next-80B-A3B-Instruct',
+    provider: 'Qwen (Alibaba Cloud)',
+    license: 'Apache-2.0',
+    provenance_url:
+      'https://github.com/L-electron-Rare/eu-kiki/blob/main/docs/provenance/qwen3-next-80b-a3b-instruct.json',
+    notes: 'MoE 80B / 3B active. Runs on kxkm-ai (RTX 4090) via llama.cpp with expert offload to RAM.',
+  },
+  {
     alias: 'eu-kiki/auto',
     display: 'Auto-router (MiniLM + MLP head)',
     base: 'sentence-transformers/all-MiniLM-L6-v2 + internal head',
