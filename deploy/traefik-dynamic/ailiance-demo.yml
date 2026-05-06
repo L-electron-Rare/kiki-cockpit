@@ -13,7 +13,7 @@
 http:
   routers:
     kiki-public:
-      rule: 'Host(`ailiance.fr`)'
+      rule: 'Host(`ailiance.fr`) || Host(`www.ailiance.fr`)'
       entryPoints: [websecure]
       service: kiki-public
       priority: 1

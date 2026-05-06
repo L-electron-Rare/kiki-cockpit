@@ -17,11 +17,12 @@ This mirrors the ailiance worker pattern: each machine exposes its data over HTT
 | Record | Type | Mode | Target |
 |---|---|---|---|
 | `ailiance.fr` | CNAME | proxied (orange) | `<TUNNEL_ID>.cfargotunnel.com` |
+| `www.ailiance.fr` | CNAME | proxied (orange) | `<TUNNEL_ID>.cfargotunnel.com` |
 | `admin.ailiance.fr` | A | DNS-only (grey) | electron-server Tailscale IP (`100.78.191.52`) |
 
 The public host goes through Cloudflare Tunnel (`cloudflared` already running on
 electron-server, serving every other `*.saillant.cc` subdomain). The tunnel's
-ingress must include a rule for `ailiance.fr` → `https://localhost:443`
+ingress must include rules for `ailiance.fr` and `www.ailiance.fr` → `https://localhost:443`
 (noTLSVerify: true) — managed in the Cloudflare Zero Trust dashboard or via API.
 
 The grey-cloud admin record makes the admin host reachable **only from the tailnet**:
