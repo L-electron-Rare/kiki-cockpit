@@ -11,6 +11,9 @@ export function Header() {
           <Link to="/models" className="hover:underline">
             Models
           </Link>
+          <Link to="/status" className="hover:underline">
+            Status
+          </Link>
           <Link to="/transparency" className="hover:underline">
             Transparency
           </Link>
