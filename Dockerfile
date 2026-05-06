@@ -42,7 +42,7 @@ FROM nginx:1.27-alpine AS public
 COPY deploy/nginx/spa.conf /etc/nginx/conf.d/default.conf
 COPY --from=public-build /repo/apps/cockpit-public/dist /usr/share/nginx/html
 EXPOSE 80
-HEALTHCHECK --interval=30s --timeout=3s CMD wget -qO- http://localhost/ >/dev/null || exit 1
+HEALTHCHECK --interval=30s --timeout=3s CMD wget -qO- http://127.0.0.1/ >/dev/null || exit 1
 
 # --- cockpit-admin build ----------------------------------------------------
 FROM node-base AS admin-build
@@ -58,7 +58,7 @@ FROM nginx:1.27-alpine AS admin
 COPY deploy/nginx/spa.conf /etc/nginx/conf.d/default.conf
 COPY --from=admin-build /repo/apps/cockpit-admin/dist /usr/share/nginx/html
 EXPOSE 80
-HEALTHCHECK --interval=30s --timeout=3s CMD wget -qO- http://localhost/ >/dev/null || exit 1
+HEALTHCHECK --interval=30s --timeout=3s CMD wget -qO- http://127.0.0.1/ >/dev/null || exit 1
 
 # --- api: FastAPI service ---------------------------------------------------
 FROM python:3.12-slim AS api
