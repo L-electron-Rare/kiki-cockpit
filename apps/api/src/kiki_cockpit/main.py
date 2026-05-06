@@ -19,6 +19,7 @@ from kiki_cockpit.routers.public import health as public_health
 from kiki_cockpit.routers.public import models as public_models
 from kiki_cockpit.routers.public import eval as public_eval
 from kiki_cockpit.routers.public import chat as public_chat
+from kiki_cockpit.routers.public import status as public_status
 from kiki_cockpit.services.featured import load_featured
 from kiki_cockpit.services.hf_cache import HFCache
 from kiki_cockpit.services.eval_index import EvalIndex
@@ -119,6 +120,7 @@ def create_app() -> FastAPI:
     app.include_router(public_models.router)
     app.include_router(public_eval.router)
     app.include_router(public_chat.router)
+    app.include_router(public_status.router)
     app.include_router(admin_health.router)
     app.include_router(admin_training.router)
     app.include_router(admin_workers.router)
