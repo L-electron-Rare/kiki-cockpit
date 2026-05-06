@@ -11,7 +11,7 @@ class WorkerHealth(str, Enum):
     DOWN = "down"
 
 
-class WorkerStatus(BaseModel):
+class AdminWorkerStatus(BaseModel):
     name: str
     url: str
     health: WorkerHealth

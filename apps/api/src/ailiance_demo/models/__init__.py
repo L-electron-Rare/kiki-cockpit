@@ -12,7 +12,7 @@ from ailiance_demo.models.training_run import (
     TrainingRunDetail,
     TrainingRunStatus,
 )
-from ailiance_demo.models.worker_status import WorkerHealth, WorkerStatus
+from ailiance_demo.models.worker_status import WorkerHealth, AdminWorkerStatus
 
 __all__ = [
     "ChatBackend",
@@ -27,5 +27,5 @@ __all__ = [
     "TrainingRunDetail",
     "TrainingRunStatus",
     "WorkerHealth",
-    "WorkerStatus",
+    "AdminWorkerStatus",
 ]

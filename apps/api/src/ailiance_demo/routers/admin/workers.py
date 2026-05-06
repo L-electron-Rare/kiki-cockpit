@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends
 
 from ailiance_demo.auth.tailscale import require_tailscale_user
 from ailiance_demo.config import settings
-from ailiance_demo.models import WorkerStatus
+from ailiance_demo.models import AdminWorkerStatus
 from ailiance_demo.services.workers import ping_all
 
 router = APIRouter(
@@ -13,6 +13,6 @@ router = APIRouter(
 )
 
 
-@router.get("/workers/status", response_model=list[WorkerStatus])
-async def workers_status() -> list[WorkerStatus]:
+@router.get("/workers/status", response_model=list[AdminWorkerStatus])
+async def workers_status() -> list[AdminWorkerStatus]:
     return await ping_all(settings.workers_to_check)

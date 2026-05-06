@@ -8,7 +8,7 @@ from datetime import datetime, UTC
 import httpx
 import structlog
 
-from ailiance_demo.models import WorkerHealth, WorkerStatus
+from ailiance_demo.models import WorkerHealth, AdminWorkerStatus
 
 log = structlog.get_logger()
 
@@ -18,7 +18,7 @@ async def ping_worker(
     url: str,
     transport: httpx.BaseTransport | None = None,
     timeout_s: float = 1.0,
-) -> WorkerStatus:
+) -> AdminWorkerStatus:
     kwargs: dict = {"timeout": timeout_s}
     if transport is not None:
         kwargs["transport"] = transport
@@ -43,7 +43,7 @@ async def ping_worker(
     except httpx.HTTPError as exc:
         error = str(exc)
 
-    return WorkerStatus(
+    return AdminWorkerStatus(
         name=name,
         url=url,
         health=health,
@@ -53,6 +53,6 @@ async def ping_worker(
     )
 
 
-async def ping_all(workers: list[dict]) -> list[WorkerStatus]:
+async def ping_all(workers: list[dict]) -> list[AdminWorkerStatus]:
     tasks = [ping_worker(name=w["name"], url=w["url"]) for w in workers]
     return await asyncio.gather(*tasks)

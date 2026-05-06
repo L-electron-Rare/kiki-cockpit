@@ -13,7 +13,18 @@ mkdir -p "$(dirname "$OUT")"
 # resolver (already synced via `uv sync` in upstream Dockerfile stage); uv run
 # can take 30+ s to re-resolve in restricted networks during Docker builds.
 cd "$ROOT"
-python -m uvicorn ailiance_demo.main:app --host 127.0.0.1 --port 9199 &
+# Prefer a venv python that already has ailiance_demo installed (Docker
+# build, local .venv); fall back to `uv run` for fresh checkouts.
+if [ -x "$ROOT/.venv/bin/python" ]; then
+  PY="$ROOT/.venv/bin/python"
+elif [ -x "$ROOT/apps/api/.venv/bin/python" ]; then
+  PY="$ROOT/apps/api/.venv/bin/python"
+fi
+if [ -n "${PY:-}" ]; then
+  "$PY" -m uvicorn ailiance_demo.main:app --host 127.0.0.1 --port 9199 &
+else
+  uv run --no-sync uvicorn ailiance_demo.main:app --host 127.0.0.1 --port 9199 &
+fi
 API_PID=$!
 trap 'kill $API_PID 2>/dev/null || true' EXIT
 
