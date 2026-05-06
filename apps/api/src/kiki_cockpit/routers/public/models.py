@@ -76,24 +76,22 @@ _LIVE_DETAILS: dict[str, dict] = {
         "license": "apache-2.0",
         "kind": ModelKind.QUANTIZED,
     },
-    "eu-kiki/qwen3-next-80b-a3b-instruct": {
-        "display_name": "Qwen3-Next 80B A3B Instruct",
-        "base_model": "Qwen/Qwen3-Next-80B-A3B-Instruct",
-        "domain": "reasoning",
+    "eu-kiki/gemma3-4b": {
+        "display_name": "Gemma 3 4B IT",
+        "base_model": "google/gemma-3-4b-it",
+        "domain": "general",
         "description": (
-            "Qwen3-Next 80B sparse MoE (3B active per token) — official Qwen "
-            "release pinned to commit 4c8630c. Q4_K_M served by llama.cpp on "
-            "RTX 4090 with MoE expert offload (experts in RAM, attention on "
-            "GPU). Provenance: docs/provenance/qwen3-next-80b-a3b-instruct.json"
+            "Google DeepMind Gemma 3 4B Instruction-Tuned — small, fast, "
+            "multilingual. Runs on tower (NVIDIA Quadro P2000, 5 GB VRAM)."
         ),
-        "headline": "80B MoE / 3B active · Q4_K_M · MoE offload · KXKM-AI",
-        "parameters": 80_000_000_000,
-        "disk_size_bytes": 48_410_988_384,
-        "memory_gb": 50.0,  # ~7 GB VRAM (attention + KV) + ~45 GB RAM (experts)
-        "quantization": "Q4_K_M",
-        "host": "kxkm-ai (RTX 4090 + 62 GB RAM, MoE-offload)",
-        "architecture": "gguf",
-        "license": "apache-2.0",
+        "headline": "4B params · BF16 · NVIDIA Quadro P2000",
+        "parameters": 4_000_000_000,
+        "disk_size_bytes": 8 * _GIB,
+        "memory_gb": 8.0,
+        "quantization": "BF16",
+        "host": "tower (NVIDIA Quadro P2000 5 GB)",
+        "architecture": "transformers",
+        "license": "gemma-terms",
         "kind": ModelKind.QUANTIZED,
     },
     "eu-kiki/auto": {
@@ -101,11 +99,12 @@ _LIVE_DETAILS: dict[str, dict] = {
         "base_model": "MiniLM L6 v2 + 2-layer MLP",
         "domain": "router",
         "description": (
-            "Domain router classifies your prompt over 34 domains and forwards "
+            "Domain router classifies your prompt over 32 domains and forwards "
             "to the best worker (Apertus 70B / Devstral 24B / EuroLLM 22B / "
-            "Qwen 35B / Gemma 3 4B). Decision shown above each reply."
+            "Gemma 3 4B). Trained on the AI-Act-traceable clean corpus "
+            "(router-v6, 2026-05-06). Decision shown above each reply."
         ),
-        "headline": "MiniLM 384d · 34 domains · top1=65 % top3=86 %",
+        "headline": "MiniLM 384d · 32 domains · top1=87.7 % top3=98 %",
         "parameters": 22_700_000,  # MiniLM L6 v2 ≈ 22.7M
         "disk_size_bytes": 90_000_000 + 432_000,  # ST model + safetensors head
         "memory_gb": 0.2,

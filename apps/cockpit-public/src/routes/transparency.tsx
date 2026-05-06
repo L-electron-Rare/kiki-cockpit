@@ -43,13 +43,14 @@ const ENTRIES: ProvenanceLink[] = [
       'https://github.com/L-electron-Rare/eu-kiki/blob/main/docs/provenance/eurollm-22b-instruct-2512.json',
   },
   {
-    alias: 'eu-kiki/qwen3-next-80b-a3b-instruct',
-    display: 'Qwen3-Next 80B A3B Instruct',
-    base: 'Qwen/Qwen3-Next-80B-A3B-Instruct-GGUF',
-    provider: 'Qwen (Alibaba Cloud)',
-    license: 'Apache-2.0',
+    alias: 'eu-kiki/gemma3-4b',
+    display: 'Gemma 3 4B IT',
+    base: 'google/gemma-3-4b-it',
+    provider: 'Google DeepMind',
+    license: 'Gemma Terms of Use',
     provenance_url:
-      'https://github.com/L-electron-Rare/eu-kiki/blob/main/docs/provenance/qwen3-next-80b-a3b-instruct.json',
+      'https://github.com/L-electron-Rare/eu-kiki/blob/main/docs/provenance/gemma3-4b-it.json',
+    notes: 'Light-weight worker — runs on tower (NVIDIA Quadro P2000 5 GB).',
   },
   {
     alias: 'eu-kiki/auto',

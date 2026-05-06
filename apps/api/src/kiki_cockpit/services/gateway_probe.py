@@ -21,7 +21,6 @@ WORKERS = [
     {"id": "devstral", "label": "Devstral 24B", "url": "http://macm1:9302", "host": "macm1"},
     {"id": "eurollm", "label": "EuroLLM 22B", "url": "http://studio:9303", "host": "studio"},
     {"id": "gemma3", "label": "Gemma 3 4B", "url": "http://tower:9304", "host": "tower"},
-    {"id": "qwen3-next", "label": "Qwen3-Next 80B", "url": "http://localhost:8002", "host": "kxkm-ai"},
 ]
 
 # Light, mutable cache. The router endpoint sets _cache when it refreshes.
