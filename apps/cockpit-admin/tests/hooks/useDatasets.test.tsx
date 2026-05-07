@@ -24,7 +24,7 @@ describe('useDatasets', () => {
     ]);
     const { result } = renderHook(() => useDatasets(), { wrapper });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.data?.[0].domain).toBe('electronics-hw');
+    expect(result.current.data?.[0]?.domain).toBe('electronics-hw');
     expect(mockFetch).toHaveBeenCalledWith(
       '/api/admin/datasets',
       expect.objectContaining({ signal: expect.anything() }),

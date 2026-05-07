@@ -23,6 +23,9 @@ function RootLayout() {
             <Link to="/eval" className="hover:underline">
               Eval
             </Link>
+            <Link to="/datasets" className="hover:underline">
+              Datasets
+            </Link>
           </nav>
         </div>
       </header>
