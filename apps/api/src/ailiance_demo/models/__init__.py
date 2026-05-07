@@ -1,3 +1,4 @@
+from ailiance_demo.models.benchmark import BenchmarkRun
 from ailiance_demo.models.eval_result import EvalResult, EvalSummary
 from ailiance_demo.models.model_card import (
     ChatBackend,
@@ -24,6 +25,7 @@ from ailiance_demo.models.dataset import (
 )
 
 __all__ = [
+    "BenchmarkRun",
     "ChatBackend",
     "EvalResult",
     "EvalSummary",

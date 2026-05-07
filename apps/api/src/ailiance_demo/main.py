@@ -11,6 +11,7 @@ from slowapi.middleware import SlowAPIMiddleware
 from slowapi import _rate_limit_exceeded_handler
 
 from ailiance_demo.config import settings
+from ailiance_demo.routers.admin import benchmarks as admin_benchmarks
 from ailiance_demo.routers.admin import dataset_flags as admin_dataset_flags
 from ailiance_demo.routers.admin import datasets as admin_datasets
 from ailiance_demo.routers.admin import eval_browser as admin_eval_browser
@@ -123,6 +124,7 @@ def create_app() -> FastAPI:
     app.include_router(public_eval.router)
     app.include_router(public_chat.router)
     app.include_router(public_status.router)
+    app.include_router(admin_benchmarks.router)
     app.include_router(admin_datasets.router)
     app.include_router(admin_dataset_flags.router)
     app.include_router(admin_health.router)

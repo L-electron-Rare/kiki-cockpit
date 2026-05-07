@@ -1,0 +1,207 @@
+# Curated from eu-kiki/eval/results/SUMMARY.md (2026-05-04 + 2026-05-06).
+# Refresh: edit this file, redeploy api. Each row is one bench run.
+benchmarks:
+  - run_id: devstral-base-humanevalplus
+    benchmark: HumanEval+
+    model: ailiance/devstral-24b
+    adapter: "(base)"
+    score: 82.90
+    score_unit: "%"
+    delta_vs_base: 0
+    n_samples: 164
+    date: "2026-05-04"
+    host: kx6tm-23 Linux
+    verdict: reference
+    notes: "HE base 87.20% / HE+ 82.90% (EvalPlus Linux)"
+  - run_id: devstral-python-fused-humanevalplus
+    benchmark: HumanEval+
+    model: ailiance/devstral-24b
+    adapter: python
+    score: 81.10
+    score_unit: "%"
+    delta_vs_base: -1.80
+    n_samples: 164
+    date: "2026-05-04"
+    host: kx6tm-23 Linux
+    verdict: loss
+    notes: "HE base 86.00% / HE+ 81.10%"
+  - run_id: devstral-cpp-fused-humanevalplus
+    benchmark: HumanEval+
+    model: ailiance/devstral-24b
+    adapter: cpp
+    score: 85.98
+    score_unit: "%"
+    delta_vs_base: -1.22
+    n_samples: 164
+    date: "2026-05-04"
+    host: Studio (custom)
+    verdict: slight loss
+    notes: "Custom subprocess scorer (no EvalPlus extra-tests)"
+  - run_id: devstral-rust-fused-humanevalplus
+    benchmark: HumanEval+
+    model: ailiance/devstral-24b
+    adapter: rust
+    score: 86.59
+    score_unit: "%"
+    delta_vs_base: -0.61
+    n_samples: 164
+    date: "2026-05-04"
+    host: Studio (custom)
+    verdict: best on custom
+    notes: "Best HE base of the fused set"
+  - run_id: qwen36-base-gsm8k
+    benchmark: GSM8K 5-shot
+    model: Qwen3.6-35B-A3B-MLX-4bit
+    adapter: "(base)"
+    score: 94.5
+    score_unit: "%"
+    delta_vs_base: 0
+    n_samples: 200
+    date: "2026-05-04"
+    host: Studio
+    verdict: reference
+    notes: "189/200 saturated"
+  - run_id: qwen36-reasoning-gsm8k
+    benchmark: GSM8K 5-shot
+    model: Qwen3.6-35B-A3B-MLX-4bit
+    adapter: reasoning v4-sota
+    score: 94.5
+    score_unit: "%"
+    delta_vs_base: 0
+    n_samples: 200
+    date: "2026-05-04"
+    host: Studio
+    verdict: neutral
+    notes: "189/200 — adapter does not transfer to GSM8K"
+  - run_id: qwen36-math-gsm8k
+    benchmark: GSM8K 5-shot
+    model: Qwen3.6-35B-A3B-MLX-4bit
+    adapter: math v4-sota
+    score: 90.0
+    score_unit: "%"
+    delta_vs_base: -4.5
+    n_samples: 200
+    date: "2026-05-04"
+    host: Studio
+    verdict: loss
+    notes: "180/200 — adapter NOISES on saturated bench"
+  - run_id: devstral-base-mtbench-full
+    benchmark: MT-Bench
+    model: ailiance/devstral-24b
+    adapter: "(base)"
+    score: 8.892
+    score_unit: "/10"
+    delta_vs_base: 0
+    n_samples: 37
+    date: "2026-05-04"
+    host: Studio
+    verdict: smoke only
+    notes: "37/160 turns parseable; judge: Mistral-Medium-3.5-128B"
+  - run_id: qwen36-base-kicad-dsl-v3
+    benchmark: KIKI-DSL v3
+    model: Qwen3.6-35B-A3B-MLX-4bit
+    adapter: "(base)"
+    score: 73.3
+    score_unit: "% pass"
+    delta_vs_base: 0
+    n_samples: 15
+    date: "2026-05-04"
+    host: Studio
+    verdict: reference
+    notes: "v3 = 15 prompts (10 IC-named + 5 SPICE-pure)"
+  - run_id: qwen36-reasoning-on-kicad-dsl-v3
+    benchmark: KIKI-DSL v3
+    model: Qwen3.6-35B-A3B-MLX-4bit
+    adapter: reasoning
+    score: 86.7
+    score_unit: "% pass"
+    delta_vs_base: 13.4
+    n_samples: 15
+    date: "2026-05-04"
+    host: Studio
+    verdict: 🥇 confirmed cognitive winner
+    notes: "v1: 90% → v3: 86.7%"
+  - run_id: qwen36-math-on-kicad-dsl-v3
+    benchmark: KIKI-DSL v3
+    model: Qwen3.6-35B-A3B-MLX-4bit
+    adapter: math
+    score: 80.0
+    score_unit: "% pass"
+    delta_vs_base: 6.7
+    n_samples: 15
+    date: "2026-05-04"
+    host: Studio
+    verdict: 🥈 confirmed, BEST avg (0.726)
+    notes: "v1: 70% → v3: 80%"
+  - run_id: qwen36-chat-fr-on-kicad-dsl-v3
+    benchmark: KIKI-DSL v3
+    model: Qwen3.6-35B-A3B-MLX-4bit
+    adapter: chat-fr
+    score: 73.3
+    score_unit: "% pass"
+    delta_vs_base: 0
+    n_samples: 15
+    date: "2026-05-04"
+    host: Studio
+    verdict: ⚠️ artifact — v1 win was test-set-specific
+    notes: "v1: +10 → v3: NEUTRAL"
+  - run_id: qwen36-spice-sim-on-kicad-dsl-v3
+    benchmark: KIKI-DSL v3
+    model: Qwen3.6-35B-A3B-MLX-4bit
+    adapter: spice-sim
+    score: 53.3
+    score_unit: "% pass"
+    delta_vs_base: -20.0
+    n_samples: 15
+    date: "2026-05-04"
+    host: Studio
+    verdict: 📉 niche only
+    notes: "Q14/Q15 perfect 1.00 but loses elsewhere"
+  - run_id: qwen36-kicad-dsl-on-kicad-dsl-v3
+    benchmark: KIKI-DSL v3
+    model: Qwen3.6-35B-A3B-MLX-4bit
+    adapter: kicad-dsl
+    score: 46.7
+    score_unit: "% pass"
+    delta_vs_base: -26.6
+    n_samples: 15
+    date: "2026-05-04"
+    host: Studio
+    verdict: ❌ degrades
+    notes: "Negative transfer; -27 vs base"
+  - run_id: qwen36-security-on-kicad-dsl-v3
+    benchmark: KIKI-DSL v3
+    model: Qwen3.6-35B-A3B-MLX-4bit
+    adapter: security
+    score: 80.0
+    score_unit: "% pass"
+    delta_vs_base: 6.7
+    n_samples: 15
+    date: "2026-05-04"
+    host: Studio
+    verdict: win confirmed (smaller)
+    notes: "v1: +10 → v3: +6.7"
+  - run_id: qwen36-kicad-pcb-on-kicad-dsl-v3
+    benchmark: KIKI-DSL v3
+    model: Qwen3.6-35B-A3B-MLX-4bit
+    adapter: kicad-pcb
+    score: 66.6
+    score_unit: "% pass"
+    delta_vs_base: -6.7
+    n_samples: 15
+    date: "2026-05-04"
+    host: Studio
+    verdict: hidden negative-transfer
+    notes: "v1 looked 0 → v3 -6.7 on SPICE-pure"
+  - run_id: router-v6
+    benchmark: Router classification
+    model: MiniLM-L6-v2 + 2-layer MLP
+    adapter: 32-domain head
+    score: 87.7
+    score_unit: "% top-1"
+    delta_vs_base: 22.2
+    n_samples: 1991
+    date: "2026-05-06"
+    host: electron-server
+    verdict: deployed prod
+    notes: "top-3: 98.7% (+13.4 vs v5); 9 967 rows curated"

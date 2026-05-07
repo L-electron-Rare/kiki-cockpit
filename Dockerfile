@@ -79,6 +79,7 @@ RUN uv sync --frozen --no-dev --package ailiance-demo-api
 
 # Bring runtime config that the api reads at startup
 COPY featured.yaml ./featured.yaml
+COPY apps/api/benchmarks.yaml ./apps/api/benchmarks.yaml
 
 ENV PATH="/app/.venv/bin:${PATH}" \
     COCKPIT_HOST=0.0.0.0 \

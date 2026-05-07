@@ -8,6 +8,7 @@ from fastapi import Request
 from ailiance_demo.config import settings
 from ailiance_demo.services.hf_cache import HFCache
 from ailiance_demo.services.eval_index import EvalIndex
+from ailiance_demo.services.benchmarks import BenchmarksService
 from ailiance_demo.services.datasets import DatasetsService
 from ailiance_demo.services.dataset_flags import DatasetFlagsService
 
@@ -31,6 +32,11 @@ def get_training_runs_provider(request: Request):
     if provider is None:
         raise RuntimeError("training_runs provider not initialized")
     return provider
+
+
+@lru_cache(maxsize=1)
+def get_benchmarks_service() -> BenchmarksService:
+    return BenchmarksService(yaml_path=settings.benchmarks_yaml_path)
 
 
 @lru_cache(maxsize=1)

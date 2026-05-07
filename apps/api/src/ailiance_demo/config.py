@@ -28,6 +28,9 @@ class Settings(BaseSettings):
     # Featured config
     featured_path: Path = Path("featured.yaml")
 
+    # Benchmarks config
+    benchmarks_yaml_path: Path = Path(__file__).parent.parent.parent / "benchmarks.yaml"
+
     # Cache
     cache_dir: Path = Path.home() / ".cache" / "ailiance-demo"
 
