@@ -13,6 +13,7 @@ from ailiance_demo.models.training_run import (
     TrainingRunStatus,
 )
 from ailiance_demo.models.worker_status import WorkerHealth, AdminWorkerStatus
+from ailiance_demo.models.dataset import DatasetDetail, DatasetSample, DatasetSummary
 
 __all__ = [
     "ChatBackend",
@@ -28,4 +29,7 @@ __all__ = [
     "TrainingRunStatus",
     "WorkerHealth",
     "AdminWorkerStatus",
+    "DatasetDetail",
+    "DatasetSample",
+    "DatasetSummary",
 ]
