@@ -9,7 +9,7 @@ function RootLayout() {
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
       <header className="bg-slate-900 text-slate-100 px-6 py-3">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <h1 className="font-bold">ailiance-demo · admin</h1>
+          <h1 className="font-bold">AILIANCE LLM Workflow · admin</h1>
           <nav className="flex gap-4 text-sm">
             <Link to="/" className="hover:underline">
               Dashboard

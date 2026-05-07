@@ -14,4 +14,4 @@ class HealthResponse(BaseModel):
 @router.get("/api/public/healthz", response_model=HealthResponse)
 async def healthz() -> HealthResponse:
     from ailiance_demo import __version__
-    return HealthResponse(status="ok", service="ailiance-demo", version=__version__)
+    return HealthResponse(status="ok", service="ailiance-llm-workflow", version=__version__)

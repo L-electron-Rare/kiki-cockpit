@@ -46,7 +46,7 @@ async def _periodic_refresh(cache: HFCache, interval_seconds: int) -> None:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
-    log.info("startup", service="ailiance-demo", port=settings.port)
+    log.info("startup", service="ailiance-llm-workflow", port=settings.port)
 
     featured = load_featured(settings.featured_path)
     cache = HFCache(
@@ -99,7 +99,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
 
 def create_app() -> FastAPI:
     app = FastAPI(
-        title="ailiance-demo",
+        title="AILIANCE LLM Workflow",
         version="0.0.0",
         description="Frontend backend for KIKI training/eval/test",
         lifespan=lifespan,
