@@ -44,6 +44,7 @@ class Settings(BaseSettings):
             Path.home() / "Documents" / "Projets" / "ailiance" / "data" / "hf-traced",
         ],
     )
+    dataset_flags_dir: Path = Path("/dataset-flags")
     machine_label: str = "studio"
     workers_to_check: list[dict] = Field(
         default_factory=lambda: [

@@ -9,6 +9,7 @@ from ailiance_demo.config import settings
 from ailiance_demo.services.hf_cache import HFCache
 from ailiance_demo.services.eval_index import EvalIndex
 from ailiance_demo.services.datasets import DatasetsService
+from ailiance_demo.services.dataset_flags import DatasetFlagsService
 
 
 def get_hf_cache(request: Request) -> HFCache:
@@ -35,6 +36,11 @@ def get_training_runs_provider(request: Request):
 @lru_cache(maxsize=1)
 def get_datasets_service() -> DatasetsService:
     return DatasetsService(roots=settings.datasets_root)
+
+
+@lru_cache(maxsize=1)
+def get_dataset_flags_service() -> DatasetFlagsService:
+    return DatasetFlagsService(flags_dir=settings.dataset_flags_dir)
 
 
 from ailiance_demo.services.training_launcher import (
