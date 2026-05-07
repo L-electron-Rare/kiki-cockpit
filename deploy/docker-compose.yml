@@ -51,6 +51,8 @@ services:
       - "host.docker.internal:host-gateway"
     volumes:
       - /home/electron/training-logs:/training-logs:ro
+      - /home/electron/datasets:/datasets:ro
+      - /home/electron/.ssh:/root/.ssh:ro
     networks:
       - traefik
       - default
