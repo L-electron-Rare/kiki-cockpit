@@ -57,7 +57,7 @@ services:
       - "traefik.docker.network=traefik"
       - "traefik.http.services.kiki-api.loadbalancer.server.port=9100"
       # public host: /api → api
-      - "traefik.http.routers.kiki-api-public.rule=(Host(`ailiance.fr`) || Host(`www.ailiance.fr`)) && PathPrefix(`/api`)"
+      - "traefik.http.routers.kiki-api-public.rule=(Host(`ailiance.fr`) || Host(`www.ailiance.fr`) || Host(`ml.saillant.cc`)) && PathPrefix(`/api`)"
       - "traefik.http.routers.kiki-api-public.entrypoints=websecure"
       - "traefik.http.routers.kiki-api-public.tls.certresolver=${TRAEFIK_CERTRESOLVER:-letsencrypt}"
       - "traefik.http.routers.kiki-api-public.service=kiki-api"
@@ -91,7 +91,7 @@ services:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik"
       - "traefik.http.services.kiki-public.loadbalancer.server.port=80"
-      - "traefik.http.routers.kiki-public.rule=Host(`ailiance.fr`) || Host(`www.ailiance.fr`)"
+      - "traefik.http.routers.kiki-public.rule=Host(`ailiance.fr`) || Host(`www.ailiance.fr`) || Host(`ml.saillant.cc`)"
       - "traefik.http.routers.kiki-public.entrypoints=websecure"
       - "traefik.http.routers.kiki-public.tls.certresolver=${TRAEFIK_CERTRESOLVER:-letsencrypt}"
       - "traefik.http.routers.kiki-public.service=kiki-public"

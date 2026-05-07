@@ -13,7 +13,7 @@
 http:
   routers:
     kiki-public:
-      rule: 'Host(`ailiance.fr`) || Host(`www.ailiance.fr`)'
+      rule: 'Host(`ailiance.fr`) || Host(`www.ailiance.fr`) || Host(`ml.saillant.cc`)'
       entryPoints: [websecure]
       service: kiki-public
       priority: 1
