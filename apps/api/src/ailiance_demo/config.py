@@ -38,6 +38,12 @@ class Settings(BaseSettings):
             Path.home() / "Documents" / "Projets" / "ailiance" / "logs",
         ],
     )
+    datasets_root: list[Path] = Field(
+        default_factory=lambda: [
+            Path("/datasets"),
+            Path.home() / "Documents" / "Projets" / "ailiance" / "data" / "hf-traced",
+        ],
+    )
     machine_label: str = "studio"
     workers_to_check: list[dict] = Field(
         default_factory=lambda: [

@@ -1,10 +1,14 @@
 """FastAPI dependencies."""
 from __future__ import annotations
 
+from functools import lru_cache
+
 from fastapi import Request
 
+from ailiance_demo.config import settings
 from ailiance_demo.services.hf_cache import HFCache
 from ailiance_demo.services.eval_index import EvalIndex
+from ailiance_demo.services.datasets import DatasetsService
 
 
 def get_hf_cache(request: Request) -> HFCache:
@@ -26,3 +30,8 @@ def get_training_runs_provider(request: Request):
     if provider is None:
         raise RuntimeError("training_runs provider not initialized")
     return provider
+
+
+@lru_cache(maxsize=1)
+def get_datasets_service() -> DatasetsService:
+    return DatasetsService(roots=settings.datasets_root)
