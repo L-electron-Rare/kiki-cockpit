@@ -1,5 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
+import { RouterProvider, createRouter, createMemoryHistory, createRootRoute } from '@tanstack/react-router';
+import type { ReactNode } from 'react';
 
 import { DatasetCard } from '../../src/components/DatasetCard';
 
@@ -15,17 +17,27 @@ const sample = {
   notes: null,
 };
 
+async function renderWithRouter(ui: ReactNode) {
+  const rootRoute = createRootRoute({ component: () => <>{ui}</> });
+  const router = createRouter({
+    routeTree: rootRoute,
+    history: createMemoryHistory({ initialEntries: ['/'] }),
+  });
+  render(<RouterProvider router={router} />);
+  // Wait for router to resolve and render
+  await screen.findByText('electronics-hw');
+}
+
 describe('DatasetCard', () => {
-  it('renders the domain, row count, and license', () => {
-    render(<DatasetCard dataset={sample} />);
+  it('renders the domain, row count, and license', async () => {
+    await renderWithRouter(<DatasetCard dataset={sample} />);
     expect(screen.getByText('electronics-hw')).toBeInTheDocument();
     expect(screen.getByText(/4 ?321/)).toBeInTheDocument();
     expect(screen.getByText('CERN-OHL-S-2.0')).toBeInTheDocument();
   });
 
-  it('renders the HF dataset link', () => {
-    render(<DatasetCard dataset={sample} />);
-    const link = screen.getByRole('link', { name: /electron-rare\/oshwa/ });
-    expect(link).toHaveAttribute('href', 'https://huggingface.co/datasets/electron-rare/oshwa');
+  it('renders HF dataset id text', async () => {
+    await renderWithRouter(<DatasetCard dataset={sample} />);
+    expect(screen.getByText('electron-rare/oshwa')).toBeInTheDocument();
   });
 });

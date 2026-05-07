@@ -15,6 +15,7 @@ import { Route as TrainingIndexRouteImport } from './routes/training.index'
 import { Route as EvalIndexRouteImport } from './routes/eval.index'
 import { Route as DatasetsIndexRouteImport } from './routes/datasets.index'
 import { Route as TrainingIdRouteImport } from './routes/training.$id'
+import { Route as DatasetsDomainRouteImport } from './routes/datasets.$domain'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -46,9 +47,15 @@ const TrainingIdRoute = TrainingIdRouteImport.update({
   path: '/training/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DatasetsDomainRoute = DatasetsDomainRouteImport.update({
+  id: '/datasets/$domain',
+  path: '/datasets/$domain',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/datasets/$domain': typeof DatasetsDomainRoute
   '/training/$id': typeof TrainingIdRoute
   '/datasets/': typeof DatasetsIndexRoute
   '/eval/': typeof EvalIndexRoute
@@ -57,6 +64,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/datasets/$domain': typeof DatasetsDomainRoute
   '/training/$id': typeof TrainingIdRoute
   '/datasets': typeof DatasetsIndexRoute
   '/eval': typeof EvalIndexRoute
@@ -66,6 +74,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/datasets/$domain': typeof DatasetsDomainRoute
   '/training/$id': typeof TrainingIdRoute
   '/datasets/': typeof DatasetsIndexRoute
   '/eval/': typeof EvalIndexRoute
@@ -76,16 +85,25 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/datasets/$domain'
     | '/training/$id'
     | '/datasets/'
     | '/eval/'
     | '/training/'
     | '/workers/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/training/$id' | '/datasets' | '/eval' | '/training' | '/workers'
+  to:
+    | '/'
+    | '/datasets/$domain'
+    | '/training/$id'
+    | '/datasets'
+    | '/eval'
+    | '/training'
+    | '/workers'
   id:
     | '__root__'
     | '/'
+    | '/datasets/$domain'
     | '/training/$id'
     | '/datasets/'
     | '/eval/'
@@ -95,6 +113,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DatasetsDomainRoute: typeof DatasetsDomainRoute
   TrainingIdRoute: typeof TrainingIdRoute
   DatasetsIndexRoute: typeof DatasetsIndexRoute
   EvalIndexRoute: typeof EvalIndexRoute
@@ -146,11 +165,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TrainingIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/datasets/$domain': {
+      id: '/datasets/$domain'
+      path: '/datasets/$domain'
+      fullPath: '/datasets/$domain'
+      preLoaderRoute: typeof DatasetsDomainRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DatasetsDomainRoute: DatasetsDomainRoute,
   TrainingIdRoute: TrainingIdRoute,
   DatasetsIndexRoute: DatasetsIndexRoute,
   EvalIndexRoute: EvalIndexRoute,
