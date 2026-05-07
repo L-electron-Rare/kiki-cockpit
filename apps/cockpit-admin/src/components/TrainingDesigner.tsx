@@ -18,7 +18,7 @@ export function TrainingDesigner({ onClose, onLaunched }: Props) {
   const datasets = useDatasets();
   const launch = useLaunchTraining();
 
-  const [baseModel, setBaseModel] = useState(BASE_MODELS[1].id);
+  const [baseModel, setBaseModel] = useState<string>(BASE_MODELS[1]?.id ?? BASE_MODELS[0]?.id ?? '');
   const [domain, setDomain] = useState('');
   const [iters, setIters] = useState(2000);
   const [loraRank, setLoraRank] = useState(32);

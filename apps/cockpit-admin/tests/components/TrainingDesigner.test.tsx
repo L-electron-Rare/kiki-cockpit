@@ -43,8 +43,10 @@ describe('TrainingDesigner', () => {
     fireEvent.click(screen.getByRole('button', { name: /launch/i }));
 
     await waitFor(() => expect(mockPost).toHaveBeenCalled());
-    expect(mockPost.mock.calls[0][0]).toBe('/api/admin/training/launch');
-    expect(mockPost.mock.calls[0][1].dataset_domain).toBe('electronics-hw');
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    expect(mockPost.mock.calls[0]?.[0]).toBe('/api/admin/training/launch');
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    expect((mockPost.mock.calls[0]?.[1] as { dataset_domain: string }).dataset_domain).toBe('electronics-hw');
     await waitFor(() => expect(onLaunched).toHaveBeenCalledWith('electronics-hw-1'));
   });
 });
