@@ -215,6 +215,110 @@ function ModelDetailPage() {
             </>
           )}
 
+          {/* LoRA technical details — for fine_tuned / lora cards */}
+          {(card.kind === 'lora' || card.kind === 'fine_tuned') && (
+            <div style={{ marginTop: 40 }}>
+              <SectionLabel>Détails LoRA</SectionLabel>
+              <div className="dl-grid">
+                <div className="row">
+                  <span className="k">Type</span>
+                  <span className="v">{card.kind === 'lora' ? 'LoRA adapter (PEFT)' : 'Full fine-tune'}</span>
+                </div>
+                <div className="row">
+                  <span className="k">Modèle de base</span>
+                  <span className="v" style={{ fontFamily: 'var(--mono)', fontSize: 12 }}>
+                    {card.base_model ?? '—'}
+                  </span>
+                </div>
+                {card.kind === 'lora' && (
+                  <>
+                    <div className="row">
+                      <span className="k">Rang / α</span>
+                      <span className="v">r=16 · α=32 (config standard Ailiance)</span>
+                    </div>
+                    <div className="row">
+                      <span className="k">Couches ciblées</span>
+                      <span className="v" style={{ fontFamily: 'var(--mono)', fontSize: 11 }}>
+                        q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj
+                      </span>
+                    </div>
+                  </>
+                )}
+                <div className="row">
+                  <span className="k">Méthode</span>
+                  <span className="v">
+                    MLX bf16 LoRA fine-tuning sur Mac Studio M3 Ultra, distillation
+                    Claude Opus + corpus curé Ailiance-fr.
+                  </span>
+                </div>
+                <div className="row">
+                  <span className="k">Quantization servie</span>
+                  <span className="v">{card.quantization ?? '—'}</span>
+                </div>
+                <div className="row">
+                  <span className="k">Backend de service</span>
+                  <span className="v" style={{ fontFamily: 'var(--mono)', fontSize: 11 }}>
+                    {card.host ?? '—'} · {card.architecture?.toUpperCase() ?? '—'}
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Auto-router — list of LoRA specialists it routes to */}
+          {card.id.endsWith('/auto') && (
+            <div style={{ marginTop: 40 }}>
+              <SectionLabel>Spécialistes LoRA routés</SectionLabel>
+              <p style={{ fontFamily: 'var(--sans)', fontSize: 14, color: 'var(--ink-3)', margin: '0 0 16px' }}>
+                Sur les domaines hardware/code, l'auto-router délègue à un des 12
+                spécialistes mascarade (LoRA Qwen3-4B sur Tower Ollama :8004).
+              </p>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
+                  gap: 8,
+                  fontFamily: 'var(--mono)',
+                  fontSize: 12,
+                }}
+              >
+                {[
+                  ['kicad', 'KiCad schematic + PCB'],
+                  ['spice', 'SPICE simulation'],
+                  ['stm32', 'STM32 / ARM Cortex-M'],
+                  ['emc', 'EMC / EMI compliance'],
+                  ['embedded', 'Embedded C/C++'],
+                  ['platformio', 'PlatformIO / Arduino'],
+                  ['freecad', 'FreeCAD scripting'],
+                  ['dsp', 'DSP / signal processing'],
+                  ['iot', 'IoT / MQTT / BLE'],
+                  ['power', 'Power electronics'],
+                  ['components-review', 'BOM review'],
+                  ['coder', 'Polyglot code'],
+                ].map(([slug, label]) => (
+                  <Link
+                    key={slug}
+                    to="/models/$owner/$name"
+                    params={{ owner: 'ailiance', name: `mascarade-${slug}` }}
+                    style={{
+                      padding: '8px 10px',
+                      border: '1px solid var(--rule)',
+                      background: 'var(--paper-2)',
+                      textDecoration: 'none',
+                      color: 'var(--ink-2)',
+                      display: 'block',
+                    }}
+                  >
+                    <div style={{ color: 'var(--ink)' }}>mascarade-{slug}</div>
+                    <div style={{ fontSize: 11, color: 'var(--ink-4)', marginTop: 2, fontFamily: 'var(--sans)' }}>
+                      {label}
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Provenance JSON preview — Annex IV §1(c) */}
           <div style={{ marginTop: 40 }}>
             <SectionLabel>Provenance · Annex IV §1(c)</SectionLabel>

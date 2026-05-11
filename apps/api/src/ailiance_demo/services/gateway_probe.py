@@ -277,10 +277,13 @@ async def _ssh_probe_gpu(host: str) -> dict | None:
             "temperature.gpu --format=csv,noheader,nounits"
         )
     else:
-        # Apple Silicon — Device Utilization % is in ioreg AGXAccelerator
+        # Apple Silicon — Device Utilization % is in ioreg AGXAccelerator.
+        # Avoid awk + nested quotes (subprocess quoting headaches): use grep +
+        # sed + tr instead, all single-quote-friendly.
         remote_cmd = (
-            "ioreg -rc AGXAccelerator -d 1 2>/dev/null | "
-            "awk -F'[<>{}=]+' '/Device Utilization %/ {print $4; exit}'"
+            "ioreg -rc AGXAccelerator -d 1 2>/dev/null "
+            "| grep -m1 'Device Utilization %' "
+            "| sed 's/.*= *//' | tr -d ' \"'"
         )
     import asyncio
     cmd = [
