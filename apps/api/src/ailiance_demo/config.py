@@ -22,7 +22,7 @@ class Settings(BaseSettings):
     # HF
     hf_api_base: str = "https://huggingface.co/api"
     hf_token: str | None = None
-    hf_owners: list[str] = Field(default_factory=lambda: ["clemsail", "electron-rare"])
+    hf_owners: list[str] = Field(default_factory=lambda: ["Ailiance-fr"])
     hf_sync_interval_seconds: int = 600  # 10 min
 
     # Featured config

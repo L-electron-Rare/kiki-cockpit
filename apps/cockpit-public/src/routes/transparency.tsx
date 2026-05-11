@@ -20,7 +20,7 @@ const ENTRIES: ProvenanceEntry[] = [
     provider: 'Swiss AI Initiative (EPFL/ETHZ/CSCS)',
     license: 'Apache-2.0',
     provenanceUrl:
-      'https://github.com/L-electron-Rare/ailiance/blob/main/docs/provenance/apertus-70b-instruct-2509.json',
+      'https://github.com/ailiance/ailiance/blob/main/docs/provenance/apertus-70b-instruct-2509.json',
   },
   {
     alias: 'ailiance/devstral-24b',
@@ -28,7 +28,7 @@ const ENTRIES: ProvenanceEntry[] = [
     provider: 'Mistral AI',
     license: 'Apache-2.0',
     provenanceUrl:
-      'https://github.com/L-electron-Rare/ailiance/blob/main/docs/provenance/devstral-small-2-24b-instruct-2512.json',
+      'https://github.com/ailiance/ailiance/blob/main/docs/provenance/devstral-small-2-24b-instruct-2512.json',
   },
   {
     alias: 'ailiance/eurollm-22b',
@@ -36,7 +36,7 @@ const ENTRIES: ProvenanceEntry[] = [
     provider: 'Utter Project (consortium EU)',
     license: 'Apache-2.0',
     provenanceUrl:
-      'https://github.com/L-electron-Rare/ailiance/blob/main/docs/provenance/eurollm-22b-instruct-2512.json',
+      'https://github.com/ailiance/ailiance/blob/main/docs/provenance/eurollm-22b-instruct-2512.json',
   },
   {
     alias: 'ailiance/gemma3-4b',
@@ -44,7 +44,7 @@ const ENTRIES: ProvenanceEntry[] = [
     provider: 'Google DeepMind',
     license: 'Gemma Terms',
     provenanceUrl:
-      'https://github.com/L-electron-Rare/ailiance/blob/main/docs/provenance/gemma3-4b-it.json',
+      'https://github.com/ailiance/ailiance/blob/main/docs/provenance/gemma3-4b-it.json',
     notes: 'Worker léger · NVIDIA Quadro P2000 5 GB',
   },
   {
@@ -53,7 +53,7 @@ const ENTRIES: ProvenanceEntry[] = [
     provider: 'Qwen · Alibaba Cloud',
     license: 'Apache-2.0',
     provenanceUrl:
-      'https://github.com/L-electron-Rare/ailiance/blob/main/docs/provenance/qwen3-next-80b-a3b-instruct.json',
+      'https://github.com/ailiance/ailiance/blob/main/docs/provenance/qwen3-next-80b-a3b-instruct.json',
     notes: 'MoE 80B / 3B actif · RTX 4090 + RAM offload',
   },
   {
@@ -62,7 +62,7 @@ const ENTRIES: ProvenanceEntry[] = [
     provider: "Microsoft + L'Électron Rare",
     license: 'Apache-2.0',
     provenanceUrl:
-      'https://github.com/L-electron-Rare/ailiance/blob/main/docs/provenance/auto-router-minilm.json',
+      'https://github.com/ailiance/ailiance/blob/main/docs/provenance/auto-router-minilm.json',
     notes: 'Classifier 32 domaines · chain v0.3',
   },
 ];
@@ -110,7 +110,7 @@ function TransparencyPage() {
           <p>
             Six alias gateway. Chacun pointe vers un fichier JSON de provenance Annex IV §1(c)
             publié dans{' '}
-            <code>L-electron-Rare/ailiance/docs/provenance/</code>.
+            <code>ailiance/ailiance/docs/provenance/</code>.
           </p>
 
           <table className="prov-table">
@@ -158,12 +158,8 @@ function TransparencyPage() {
           <h2>Adaptateurs LoRA publiés</h2>
           <p>
             Environ 25 adaptateurs spécialisés sous{' '}
-            <a href="https://huggingface.co/clemsail" target="_blank" rel="noopener noreferrer">
-              clemsail
-            </a>{' '}
-            et{' '}
-            <a href="https://huggingface.co/electron-rare" target="_blank" rel="noopener noreferrer">
-              electron-rare
+            <a href="https://huggingface.co/Ailiance-fr" target="_blank" rel="noopener noreferrer">
+              Ailiance-fr
             </a>
             . Chaque adaptateur expose une model card déclarant son modèle de base, un résumé des
             données d'entraînement, et un usage prévu — conformément aux obligations de l'Article 53
@@ -240,7 +236,7 @@ function TransparencyPage() {
           <p>
             Les politiques par domaine vivent dans{' '}
             <a
-              href="https://github.com/L-electron-Rare/ailiance/blob/main/configs/chain_policies.yaml"
+              href="https://github.com/ailiance/ailiance/blob/main/configs/chain_policies.yaml"
               target="_blank"
               rel="noopener noreferrer"
             >

@@ -298,7 +298,7 @@ function HomePage() {
             </h2>
             <div>
               <p style={{ color: 'var(--ink-3)', fontSize: 17, lineHeight: 1.5, margin: '0 0 24px' }}>
-                <code className="mono">L-electron-Rare/ailiance</code> contient la gateway, le
+                <code className="mono">ailiance/ailiance</code> contient la gateway, le
                 router, les politiques de chaîne et le dossier de transparence.{' '}
                 <code className="mono">ailiance-demo</code> contient ce site. Les LoRA et
                 distillations sont sur HuggingFace. Tout sous Apache-2.0.
@@ -306,7 +306,7 @@ function HomePage() {
               <div style={{ display: 'flex', gap: 12 }}>
                 <a
                   className="btn"
-                  href="https://github.com/L-electron-Rare/ailiance"
+                  href="https://github.com/ailiance/ailiance"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -314,7 +314,7 @@ function HomePage() {
                 </a>
                 <a
                   className="btn ghost"
-                  href="https://huggingface.co/clemsail"
+                  href="https://huggingface.co/Ailiance-fr"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

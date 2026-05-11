@@ -16,14 +16,14 @@ def test_list_models_returns_cards(client_with_cache: TestClient) -> None:
         "ailiance/gemma3-4b",
         "ailiance/qwen3-next-80b-a3b-instruct",
         "ailiance/auto",
-        "clemsail/micro-kiki-v3",
+        "Ailiance-fr/micro-kiki-v3",
     }.issubset(ids)
-    hf_card = next(c for c in cards if c["id"] == "clemsail/micro-kiki-v3")
+    hf_card = next(c for c in cards if c["id"] == "Ailiance-fr/micro-kiki-v3")
     assert hf_card["chat_eligible"] is False
 
 
 def test_get_model_returns_single_card(client_with_cache: TestClient) -> None:
-    response = client_with_cache.get("/api/public/models/clemsail/micro-kiki-v3")
+    response = client_with_cache.get("/api/public/models/Ailiance-fr/micro-kiki-v3")
 
     assert response.status_code == 200
     card = response.json()
@@ -31,6 +31,6 @@ def test_get_model_returns_single_card(client_with_cache: TestClient) -> None:
 
 
 def test_get_model_404_when_unknown(client_with_cache: TestClient) -> None:
-    response = client_with_cache.get("/api/public/models/clemsail/does-not-exist")
+    response = client_with_cache.get("/api/public/models/Ailiance-fr/does-not-exist")
 
     assert response.status_code == 404

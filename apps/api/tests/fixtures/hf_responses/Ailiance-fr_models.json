@@ -1,8 +1,8 @@
 [
   {
-    "id": "clemsail/micro-kiki-v3",
-    "modelId": "clemsail/micro-kiki-v3",
-    "author": "clemsail",
+    "id": "Ailiance-fr/micro-kiki-v3",
+    "modelId": "Ailiance-fr/micro-kiki-v3",
+    "author": "Ailiance-fr",
     "downloads": 242,
     "likes": 4,
     "lastModified": "2026-04-26T12:34:56.000Z",
@@ -10,9 +10,9 @@
     "library_name": "transformers"
   },
   {
-    "id": "clemsail/kiki-stm32-sft",
-    "modelId": "clemsail/kiki-stm32-sft",
-    "author": "clemsail",
+    "id": "Ailiance-fr/kiki-stm32-sft",
+    "modelId": "Ailiance-fr/kiki-stm32-sft",
+    "author": "Ailiance-fr",
     "downloads": 79,
     "likes": 0,
     "lastModified": "2026-04-20T08:00:00.000Z",

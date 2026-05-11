@@ -48,7 +48,7 @@ class DatasetRef(BaseModel):
 
 class ModelCard(BaseModel):
     """Listing-level summary of a model."""
-    id: str = Field(description="HF-style id, owner/name, e.g. 'clemsail/micro-kiki-v3'")
+    id: str = Field(description="HF-style id, owner/name, e.g. 'Ailiance-fr/micro-kiki-v3'")
     owner: str
     name: str
     display_name: str

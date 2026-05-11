@@ -1,5 +1,5 @@
 {
-  "model_id": "clemsail/micro-kiki-v3",
+  "model_id": "Ailiance-fr/micro-kiki-v3",
   "benchmark": "GSM8K",
   "metric": "accuracy",
   "score": 0.62,

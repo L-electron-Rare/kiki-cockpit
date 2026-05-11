@@ -11,14 +11,14 @@ def test_load_featured_parses_all_sections() -> None:
 
     assert isinstance(cfg, FeaturedConfig)
     assert len(cfg.featured) == 2
-    assert cfg.featured[0].id == "clemsail/micro-kiki-v3"
+    assert cfg.featured[0].id == "Ailiance-fr/micro-kiki-v3"
     assert cfg.featured[0].rank == 1
     assert cfg.featured[0].headline.startswith("242 dl")
 
-    assert "electron-rare/kiki-stm32-sft-v1" in cfg.deprecated
-    assert cfg.deprecated["electron-rare/kiki-stm32-sft-v1"].superseded_by == "clemsail/kiki-stm32-sft"
+    assert "Ailiance-fr/kiki-stm32-sft-v1" in cfg.deprecated
+    assert cfg.deprecated["Ailiance-fr/kiki-stm32-sft-v1"].superseded_by == "Ailiance-fr/kiki-stm32-sft"
 
-    assert cfg.aliases["clemsail/micro-kiki-v3"] == "Micro-Ailiance v3"
+    assert cfg.aliases["Ailiance-fr/micro-kiki-v3"] == "Micro-KIKI v3"
 
 
 def test_load_featured_missing_file_returns_empty(tmp_path: Path) -> None:
@@ -32,8 +32,8 @@ def test_load_featured_missing_file_returns_empty(tmp_path: Path) -> None:
 def test_get_for_id_returns_featured_metadata() -> None:
     cfg = load_featured(FIXTURE)
 
-    entry = cfg.featured_for_id("clemsail/micro-kiki-v3")
+    entry = cfg.featured_for_id("Ailiance-fr/micro-kiki-v3")
     assert entry is not None
     assert entry.rank == 1
 
-    assert cfg.featured_for_id("clemsail/unknown") is None
+    assert cfg.featured_for_id("Ailiance-fr/unknown") is None

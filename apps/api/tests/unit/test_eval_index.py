@@ -10,7 +10,7 @@ def test_eval_index_walks_directory_and_indexes_by_model() -> None:
     index = EvalIndex(roots=[FIXTURES])
     index.refresh()
 
-    summaries = index.summary_for("clemsail/micro-kiki-v3")
+    summaries = index.summary_for("Ailiance-fr/micro-kiki-v3")
     assert summaries is not None
     assert "HumanEval+" in summaries.by_benchmark
     assert "GSM8K" in summaries.by_benchmark
@@ -55,7 +55,7 @@ def test_eval_index_top_score_picks_highest() -> None:
     index = EvalIndex(roots=[FIXTURES])
     index.refresh()
 
-    top = index.top_score_for("clemsail/micro-kiki-v3")
+    top = index.top_score_for("Ailiance-fr/micro-kiki-v3")
     assert top is not None
     assert top[0] == "HumanEval+"
     assert top[1] == 0.78

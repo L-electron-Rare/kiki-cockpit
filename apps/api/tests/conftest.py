@@ -24,8 +24,8 @@ def empty_hf_cache(tmp_path: Path) -> HFCache:
 @pytest.fixture
 def sample_card() -> ModelCard:
     return ModelCard(
-        id="clemsail/micro-kiki-v3",
-        owner="clemsail",
+        id="Ailiance-fr/micro-kiki-v3",
+        owner="Ailiance-fr",
         name="micro-kiki-v3",
         display_name="Micro-Ailiance v3",
         status=ModelStatus.FEATURED,
@@ -33,7 +33,7 @@ def sample_card() -> ModelCard:
         chat_eligible=False,
         downloads=242,
         likes=4,
-        hf_url="https://huggingface.co/clemsail/micro-kiki-v3",
+        hf_url="https://huggingface.co/Ailiance-fr/micro-kiki-v3",
     )
 
 

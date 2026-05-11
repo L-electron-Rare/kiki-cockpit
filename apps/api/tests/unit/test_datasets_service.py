@@ -13,7 +13,7 @@ def datasets_root(tmp_path: Path) -> Path:
     (elec / "MANIFEST.json").write_text(
         json.dumps(
             {
-                "hf_dataset_id": "electron-rare/oshwa",
+                "hf_dataset_id": "Ailiance-fr/oshwa",
                 "license": "CERN-OHL-S-2.0",
                 "download_date": "2026-04-26",
                 "n_source_rows": 12345,

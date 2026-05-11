@@ -17,8 +17,8 @@ vi.mock('@tanstack/react-router', () => ({
 type Card = components['schemas']['ModelCard'];
 
 const baseCard: Card = {
-  id: 'clemsail/micro-kiki-v3',
-  owner: 'clemsail',
+  id: 'Ailiance-fr/micro-kiki-v3',
+  owner: 'Ailiance-fr',
   name: 'micro-kiki-v3',
   display_name: 'Micro-Ailiance v3',
   status: 'featured',
@@ -26,7 +26,7 @@ const baseCard: Card = {
   chat_eligible: false,
   downloads: 242,
   likes: 4,
-  hf_url: 'https://huggingface.co/clemsail/micro-kiki-v3',
+  hf_url: 'https://huggingface.co/Ailiance-fr/micro-kiki-v3',
   description: null,
   base_model: null,
   domain: null,
@@ -59,6 +59,6 @@ describe('ModelCard', () => {
   it('renders external HF link when not chat_eligible', () => {
     render(<ModelCard card={baseCard} />);
     const link = screen.getByRole('link', { name: /huggingface/i });
-    expect(link.getAttribute('href')).toBe('https://huggingface.co/clemsail/micro-kiki-v3');
+    expect(link.getAttribute('href')).toBe('https://huggingface.co/Ailiance-fr/micro-kiki-v3');
   });
 });

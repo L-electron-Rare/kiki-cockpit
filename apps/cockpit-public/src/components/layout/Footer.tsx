@@ -56,23 +56,23 @@ export function Footer() {
             <h5>Code</h5>
             <ul>
               <li>
-                <a href="https://github.com/L-electron-Rare/ailiance">
+                <a href="https://github.com/ailiance/ailiance">
                   ailiance (gateway)
                 </a>
               </li>
               <li>
-                <a href="https://github.com/L-electron-Rare/ailiance-demo">
+                <a href="https://github.com/ailiance/ailiance-demo">
                   ailiance-demo
                 </a>
               </li>
               <li>
-                <a href="https://huggingface.co/clemsail">
-                  huggingface · clemsail
+                <a href="https://huggingface.co/Ailiance-fr">
+                  huggingface · Ailiance-fr
                 </a>
               </li>
               <li>
-                <a href="https://huggingface.co/electron-rare">
-                  huggingface · electron-rare
+                <a href="https://github.com/ailiance">
+                  github · ailiance
                 </a>
               </li>
             </ul>

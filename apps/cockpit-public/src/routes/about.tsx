@@ -114,14 +114,14 @@ function AboutPage() {
           <h2>Sister projects</h2>
           <ul>
             <li>
-              <a href="https://github.com/L-electron-Rare/ailiance" target="_blank" rel="noopener noreferrer">
+              <a href="https://github.com/ailiance/ailiance" target="_blank" rel="noopener noreferrer">
                 ailiance
               </a>{' '}
               — la gateway LLM elle-même (workers, router-v6, dossier EU AI Act).
             </li>
             <li>
-              <a href="https://github.com/L-electron-Rare/agent-kiki" target="_blank" rel="noopener noreferrer">
-                agent-kiki
+              <a href="https://github.com/ailiance/ailiance-agent" target="_blank" rel="noopener noreferrer">
+                ailiance-agent
               </a>{' '}
               — agent de code (CLI <code>aki</code> + extension VS Code) qui pointe sur cette
               gateway par défaut.
