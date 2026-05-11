@@ -1,5 +1,6 @@
 import { ChatPlayground } from '@/components/ChatPlayground/ChatPlayground';
 import { useModels } from '@/hooks/useModels';
+import { useStatus } from '@/hooks/useStatus';
 import type { components } from '@cockpit/shared';
 import { Link, createFileRoute } from '@tanstack/react-router';
 import { useMemo } from 'react';
@@ -9,15 +10,6 @@ type ModelCard = components['schemas']['ModelCard'];
 export const Route = createFileRoute('/models/')({
   component: ModelsPage,
 });
-
-// Mini fleet panel — single source of truth for status while /api/public/status n'est pas câblé.
-const FLEET = [
-  { id: 'ailiance/apertus-70b', host: 'studio', port: 9301, role: 'souverain', up: true },
-  { id: 'ailiance/devstral-24b', host: 'macm1', port: 9302, role: 'code', up: true },
-  { id: 'ailiance/eurollm-22b', host: 'studio', port: 9303, role: 'multilingue', up: true },
-  { id: 'ailiance/gemma3-4b', host: 'tower', port: 9304, role: 'fallback', up: true },
-  { id: 'ailiance/qwen3-next-80b', host: 'kxkm-ai', port: 8002, role: 'raisonnement', up: true },
-];
 
 // Bench origine vs tuné — extrait iact-bench v0.2.0. À remplacer par fetch /api/public/bench plus tard.
 const BENCH = [
@@ -104,7 +96,10 @@ function ModelsPage() {
     [cards],
   );
 
-  const upCount = FLEET.filter((b) => b.up).length;
+  const { data: status, isLoading: statusLoading, error: statusError } = useStatus();
+  const workers = status?.workers ?? [];
+  const upCount = status?.healthy_count ?? 0;
+  const totalCount = status?.total_count ?? workers.length;
 
   return (
     <main>
@@ -144,75 +139,145 @@ function ModelsPage() {
         </div>
       </section>
 
-      {/* Chemin de la requête */}
+      {/* Auto-router par domaine — flow moderne */}
       <section className="wrap block">
         <div className="block-head">
-          <h2>Le chemin d'une requête.</h2>
+          <h2>L'auto-router, par domaine.</h2>
           <p className="lede">
-            Une requête <code className="mono">POST /api/public/chat</code> traverse exactement six
-            étapes avant de rentrer en SSE — sandbox validator inclus pour les domaines hardware.
+            Le prompt entre. Un classifier embeddings le situe sur l'un des 32 domaines. Le routeur
+            ouvre la politique YAML correspondante et choisit le spécialiste. Sur les domaines
+            hardware, la sortie passe par un validator Docker sandboxé avant retour utilisateur.
           </p>
         </div>
-        <pre className="ascii">{`
-   ┌────────┐         ┌──────────┐         ┌─────────────┐         ┌──────────────────┐
-   │  user  │ ──HTTPS─│Cloudflare│──HTTPS──│   Traefik   │ ──HTTP──│  ailiance-demo   │
-   └────────┘         └──────────┘         │ ratelimit 30│         │  /api/public/chat│
-                                            │   req/min   │         │  slowapi 30/min  │
-                                            └─────────────┘         └────────┬─────────┘
-                                                                             │
-                                                                             ▼
-   ┌────────────────────────────────────────────────────────────────────────────┐
-   │                ailiance gateway · :9300 · router v0.3                      │
-   │                                                                            │
-   │   classify → policy → llm → validator (sandboxed) → reflector → return     │
-   └─────────────┬──────────────────────┬───────────────────┬───────────────────┘
-                 ▼                      ▼                   ▼
-          ┌──────────────┐       ┌──────────────┐    ┌──────────────┐
-          │   studio     │       │    macm1     │    │   kxkm-ai    │
-          │ apertus 70B  │       │ devstral 24B │    │ qwen3 80B    │
-          │ eurollm 22B  │       │              │    │  (autossh)   │
-          └──────────────┘       └──────────────┘    └──────────────┘
-`}</pre>
+
+        <div className="router-flow">
+          <RouterStep
+            num="1"
+            title="Prompt utilisateur"
+            sub="« Génère le schéma KiCad d'un convertisseur boost 12V→24V »"
+            tone="muted"
+          />
+          <RouterArrow label="POST /api/public/chat" />
+          <RouterStep
+            num="2"
+            title="Classifier Jina v3 + MLP"
+            sub="32 domaines prédits · cache L1 hash + L2 cosinus sémantique"
+            tone="accent"
+            chips={['kicad', 'spice', 'stm32', 'emc', 'embedded', 'code', 'math', '…']}
+          />
+          <RouterArrow label="domaine ∈ HARDWARE_DOMAINS ?" />
+          <div className="router-branch">
+            <div className="router-branch-col">
+              <span className="kicker" style={{ margin: '0 0 8px' }}>
+                Branche hardware
+              </span>
+              <RouterStep
+                num="3a"
+                title="Spécialiste mascarade-*"
+                sub="LoRA Qwen3-4B fine-tunée sur le domaine (kicad / spice / stm32 / emc / embedded / power…) · Tower Ollama :8004"
+                tone="hardware"
+              />
+              <RouterArrow label="sortie LLM" small />
+              <RouterStep
+                num="4a"
+                title="Validator Docker sandboxé"
+                sub="--network=none --read-only --cap-drop=ALL · KiCad DRC, ngspice, g++, shellcheck, tsc, FreeCAD scripting…"
+                tone="validator"
+              />
+              <RouterArrow label="exit ≠ 0 → reflector retry" small />
+            </div>
+            <div className="router-branch-col">
+              <span className="kicker" style={{ margin: '0 0 8px' }}>
+                Branche directe
+              </span>
+              <RouterStep
+                num="3b"
+                title="Backend généraliste"
+                sub="Apertus 70B (souverain) · Qwen3-Next 80B (raisonnement) · EuroLLM 22B (multilingue) · Devstral 24B (code) · Gemma 4 (fallback)"
+                tone="direct"
+              />
+              <RouterArrow label="sortie directe" small />
+              <div className="router-step ghost">
+                <div className="num">—</div>
+                <div>
+                  <div className="title">Pas de validator</div>
+                  <div className="sub">
+                    Math, traduction et généraliste restent en politique <code>direct</code>{' '}
+                    (1-shot).
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <RouterArrow label="NDJSON audit trail · SSE retour utilisateur" />
+          <RouterStep
+            num="5"
+            title="Réponse streamée à l'utilisateur"
+            sub="Audit-grade : prompt_hash, output_hash, seed, validator_image_digest tous loggés en NDJSON pour rejouabilité Annex IV"
+            tone="muted"
+          />
+        </div>
       </section>
 
-      {/* Statut intégré — gateway + backends UP/DOWN */}
+      {/* Statut intégré — live fetch /api/public/status, refresh 15s */}
       <section className="wrap block">
         <div className="block-head">
           <h2>Statut de la flotte.</h2>
           <p className="lede">
-            Gateway et workers actifs.{' '}
-            <strong>
-              {upCount} / {FLEET.length}
-            </strong>{' '}
-            healthy. Refresh manuel — pour la page complète d'observabilité voir le dossier Annex
-            IV.
+            Gateway et workers actifs, sondés en direct via{' '}
+            <code className="mono">/api/public/status</code> toutes les 15 secondes.{' '}
+            {statusLoading ? (
+              <em>chargement…</em>
+            ) : statusError ? (
+              <em>probe indisponible</em>
+            ) : (
+              <>
+                <strong>
+                  {upCount} / {totalCount}
+                </strong>{' '}
+                healthy.
+              </>
+            )}
           </p>
         </div>
         <div className="fleet">
           <div className="fleet-head">
             <span className="live">
-              <span className="dot" /> gateway :9300 · router v0.3
+              <span className="dot" /> gateway :9300 · router v0.3 · live probe
             </span>
             <span>
-              {upCount} / {FLEET.length} healthy
+              {upCount} / {totalCount} healthy
             </span>
           </div>
-          {FLEET.map((w) => (
+          {workers.map((w) => (
             <div className="worker-row" key={w.id}>
-              <span className="dot" style={{ background: w.up ? 'var(--ok)' : 'var(--bad)' }} />
+              <span
+                className="dot"
+                style={{ background: w.healthy ? 'var(--ok)' : 'var(--bad)' }}
+              />
               <div>
-                <div className="id">{w.id}</div>
+                <div className="id">{w.label}</div>
                 <div className="host">
-                  {w.host}:{w.port}
+                  {w.host} · {w.id}
                 </div>
               </div>
               <div>
-                <div className="label">role</div>
-                <div className="val">{w.role}</div>
+                <div className="label">latence</div>
+                <div className="val tnum">
+                  {w.latency_ms != null ? `${w.latency_ms.toFixed(0)} ms` : '—'}
+                </div>
+              </div>
+              <div>
+                <div className="label">uptime</div>
+                <div className="val tnum">
+                  {w.uptime_s > 0 ? `${Math.floor(w.uptime_s / 3600)} h` : '—'}
+                </div>
               </div>
               <div>
                 <div className="label">état</div>
-                <div className="val">{w.up ? 'UP' : 'DOWN'}</div>
+                <div className="val" style={{ color: w.healthy ? 'var(--ok)' : 'var(--bad)' }}>
+                  {w.healthy ? 'UP' : 'DOWN'}
+                </div>
               </div>
             </div>
           ))}
@@ -333,5 +398,52 @@ function ModelsPage() {
         <ChatPlayground modelId="ailiance" modelDisplayName="Auto-router · ailiance" />
       </section>
     </main>
+  );
+}
+
+type StepTone = 'muted' | 'accent' | 'hardware' | 'validator' | 'direct';
+
+function RouterStep({
+  num,
+  title,
+  sub,
+  tone = 'muted',
+  chips,
+}: {
+  num: string;
+  title: string;
+  sub: string;
+  tone?: StepTone;
+  chips?: string[];
+}) {
+  return (
+    <div className={`router-step tone-${tone}`}>
+      <div className="num">{num}</div>
+      <div className="body">
+        <div className="title">{title}</div>
+        <div className="sub">{sub}</div>
+        {chips && (
+          <div className="chips">
+            {chips.map((c) => (
+              <span key={c} className="chip-sm">
+                {c}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function RouterArrow({ label, small }: { label: string; small?: boolean }) {
+  return (
+    <div className={`router-arrow${small ? ' small' : ''}`}>
+      <span className="line" />
+      <span className="label">{label}</span>
+      <span className="head" aria-hidden>
+        ▾
+      </span>
+    </div>
   );
 }
