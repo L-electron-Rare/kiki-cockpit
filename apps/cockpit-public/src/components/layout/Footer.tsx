@@ -21,13 +21,7 @@ export function Footer() {
             <h5>Produit</h5>
             <ul>
               <li>
-                <Link to="/models">Catalogue de modèles</Link>
-              </li>
-              <li>
-                <Link to="/chat">Playground</Link>
-              </li>
-              <li>
-                <Link to="/status">Statut de la flotte</Link>
+                <Link to="/models">Modèles (playground + statut)</Link>
               </li>
               <li>
                 <Link to="/about">À propos</Link>
@@ -38,7 +32,7 @@ export function Footer() {
             <h5>Conformité</h5>
             <ul>
               <li>
-                <Link to="/transparency">Transparence · AI Act</Link>
+                <Link to="/transparency">Démarche Qualité IA Act</Link>
               </li>
               {/* TODO: wire to real URLs (provenance bundle, iact-bench, log policy doc) */}
               <li>
