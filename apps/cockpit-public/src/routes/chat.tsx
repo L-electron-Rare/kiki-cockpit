@@ -18,16 +18,30 @@ function PlaygroundPage() {
   const models = useModels();
   const [selected, setSelected] = useState<SelectedModel | null>(null);
 
-  const chatEligible =
-    models.data?.filter((m) => m.chat_eligible) ?? [];
+  // Place the auto-router first, then the rest (chat_eligible).
+  const chatEligible = (models.data?.filter((m) => m.chat_eligible) ?? []).slice().sort((a, b) => {
+    if (a.id.endsWith('/auto')) return -1;
+    if (b.id.endsWith('/auto')) return 1;
+    return (a.featured_rank ?? 999) - (b.featured_rank ?? 999);
+  });
 
-  // Default to first featured, then first eligible
+  // Default to the auto-router; fallback to first featured / first eligible.
   const defaultModel =
-    chatEligible.find((m) => m.status === 'featured') ?? chatEligible[0] ?? null;
+    chatEligible.find((m) => m.id.endsWith('/auto')) ??
+    chatEligible.find((m) => m.status === 'featured') ??
+    chatEligible[0] ??
+    null;
 
-  const active: SelectedModel | null = selected ?? (defaultModel
-    ? { owner: defaultModel.owner, name: defaultModel.name, id: defaultModel.id, displayName: defaultModel.display_name }
-    : null);
+  const active: SelectedModel | null =
+    selected ??
+    (defaultModel
+      ? {
+          owner: defaultModel.owner,
+          name: defaultModel.name,
+          id: defaultModel.id,
+          displayName: defaultModel.display_name,
+        }
+      : null);
 
   return (
     <main>
@@ -42,12 +56,21 @@ function PlaygroundPage() {
 
       <section className="wrap" style={{ paddingBottom: 80 }}>
         {models.isLoading && (
-          <p style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--ink-4)', paddingTop: 24 }}>
+          <p
+            style={{
+              fontFamily: 'var(--mono)',
+              fontSize: 12,
+              color: 'var(--ink-4)',
+              paddingTop: 24,
+            }}
+          >
             Chargement des modèles…
           </p>
         )}
         {models.isError && (
-          <p style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--bad)', paddingTop: 24 }}>
+          <p
+            style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--bad)', paddingTop: 24 }}
+          >
             Impossible de charger la liste des modèles.
             {/* TODO: wire to /api/public/models error handling */}
           </p>
@@ -72,7 +95,12 @@ function PlaygroundPage() {
                         key={m.id}
                         type="button"
                         onClick={() =>
-                          setSelected({ owner: m.owner, name: m.name, id: m.id, displayName: m.display_name })
+                          setSelected({
+                            owner: m.owner,
+                            name: m.name,
+                            id: m.id,
+                            displayName: m.display_name,
+                          })
                         }
                         style={{
                           textAlign: 'left',

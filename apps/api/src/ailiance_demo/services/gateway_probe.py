@@ -131,6 +131,23 @@ WORKERS = [
 # the request counter into a tokens_today figure on the UI.
 AVG_TOKENS_PER_REQUEST = 280
 
+# SSH probe targets per physical host. Used to fetch live GPU stats via
+# `nvidia-smi` (Linux/NVIDIA) or `ioreg` (Apple Silicon). The api container
+# has openssh-client and /root/.ssh mounted RO from /home/electron/.ssh.
+_HOST_PROBES: dict[str, dict[str, str]] = {
+    "studio": {"ssh": "studio", "kind": "apple"},
+    "macm1": {"ssh": "macm1", "kind": "apple"},
+    "tower": {"ssh": "clems@tower", "kind": "nvidia"},
+    "kxkm-ai": {"ssh": "kxkm@10.2.0.237", "kind": "nvidia"},
+}
+
+
+def _host_for_worker(w: dict) -> str | None:
+    """Strip parenthetical context from the worker host (e.g.
+    'kxkm-ai (RTX 4090, autossh tunnel)' -> 'kxkm-ai')."""
+    host = w.get("host", "")
+    return host.split(" ")[0].split("(")[0].strip() or None
+
 # Light, mutable cache. The router endpoint sets _cache when it refreshes.
 _cache: dict[str, tuple[float, object]] = {}
 TTL_SECONDS = 10.0
@@ -245,6 +262,79 @@ async def _fetch_served_models(client: httpx.AsyncClient, w: dict) -> list[str] 
     return fallback
 
 
+async def _ssh_probe_gpu(host: str) -> dict | None:
+    """SSH to the physical host and snapshot the GPU. Linux: nvidia-smi.
+    Apple Silicon: ioreg AGXAccelerator. Returns {load_pct, vram_used_mb,
+    vram_total_mb, temp_c} or None on failure (host down, no ssh keys, etc.)."""
+    probe = _HOST_PROBES.get(host)
+    if not probe:
+        return None
+    ssh_target = probe["ssh"]
+    kind = probe["kind"]
+    if kind == "nvidia":
+        remote_cmd = (
+            "nvidia-smi --query-gpu=utilization.gpu,memory.used,memory.total,"
+            "temperature.gpu --format=csv,noheader,nounits"
+        )
+    else:
+        # Apple Silicon — Device Utilization % is in ioreg AGXAccelerator
+        remote_cmd = (
+            "ioreg -rc AGXAccelerator -d 1 2>/dev/null | "
+            "awk -F'[<>{}=]+' '/Device Utilization %/ {print $4; exit}'"
+        )
+    import asyncio
+    cmd = [
+        "ssh", "-o", "ConnectTimeout=3", "-o", "BatchMode=yes",
+        "-o", "StrictHostKeyChecking=no", "-o", "UserKnownHostsFile=/dev/null",
+        ssh_target, remote_cmd,
+    ]
+    try:
+        proc = await asyncio.create_subprocess_exec(
+            *cmd,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+        )
+        stdout, _ = await asyncio.wait_for(proc.communicate(), timeout=4.0)
+    except (asyncio.TimeoutError, FileNotFoundError, OSError):
+        return None
+    if proc.returncode != 0:
+        return None
+    out = stdout.decode("utf-8", "replace").strip()
+    if not out:
+        return None
+    if kind == "nvidia":
+        # "12, 8234, 24576, 45"
+        try:
+            util, used, total, temp = (s.strip() for s in out.splitlines()[0].split(","))
+            return {
+                "load_pct": float(util),
+                "vram_used_mb": int(float(used)),
+                "vram_total_mb": int(float(total)),
+                "temp_c": float(temp),
+            }
+        except (ValueError, IndexError):
+            return None
+    # apple
+    try:
+        return {"load_pct": float(out.split()[0]), "vram_used_mb": None,
+                "vram_total_mb": None, "temp_c": None}
+    except (ValueError, IndexError):
+        return None
+
+
+async def _gather_host_probes() -> dict[str, dict]:
+    """Probe every distinct physical host once per cache cycle. Cached."""
+    cached = _cache_get("host_probes")
+    if isinstance(cached, dict):
+        return cached  # type: ignore[return-value]
+    import asyncio
+    hosts = list(_HOST_PROBES.keys())
+    results = await asyncio.gather(*[_ssh_probe_gpu(h) for h in hosts])
+    probes = {h: r for h, r in zip(hosts, results) if r is not None}
+    _cache_set("host_probes", probes)
+    return probes
+
+
 async def _fetch_llamacpp_tokens(client: httpx.AsyncClient, w: dict) -> int | None:
     """Read llamacpp:tokens_predicted_total from a llama.cpp /metrics endpoint."""
     try:
@@ -263,12 +353,18 @@ async def _fetch_llamacpp_tokens(client: httpx.AsyncClient, w: dict) -> int | No
 
 
 async def _probe_one(
-    client: httpx.AsyncClient, w: dict, request_counts: dict[str, int]
+    client: httpx.AsyncClient,
+    w: dict,
+    request_counts: dict[str, int],
+    host_probes: dict[str, dict] | None = None,
 ) -> WorkerStatus:
     started = time.monotonic()
     # Live served_models + (optional) tokens from the worker itself
     served_models_live = await _fetch_served_models(client, w)
     tokens_live = await _fetch_llamacpp_tokens(client, w)
+    # Live GPU stats from the host (shared across workers on the same host)
+    host_key = _host_for_worker(w)
+    gpu_probe = (host_probes or {}).get(host_key) if host_key else None
     static_md = {
         "gpu": w.get("gpu"),
         "vram_gb": w.get("vram_gb"),
@@ -307,6 +403,13 @@ async def _probe_one(
             tokens_field = _tokens_today_estimate(body, healthy)
         if tokens_field is None:
             tokens_field = tokens_lifetime
+        # Prefer SSH probe over /health-reported load_pct
+        if gpu_probe and gpu_probe.get("load_pct") is not None:
+            final_load_pct = float(gpu_probe["load_pct"])
+        elif isinstance(load_pct, (int, float)):
+            final_load_pct = float(load_pct)
+        else:
+            final_load_pct = None
         return WorkerStatus(
             id=w["id"],
             label=w["label"],
@@ -316,7 +419,7 @@ async def _probe_one(
             model_loaded=bool(body.get("model_loaded", body.get("router_loaded", False))),
             uptime_s=int(body.get("uptime_s", 0)),
             error=None,
-            load_pct=float(load_pct) if isinstance(load_pct, (int, float)) else None,
+            load_pct=final_load_pct,
             tokens_today=tokens_field,
             kwh_per_day=_energy_per_day(static_md["tdp_w"], healthy),
             **static_md,
@@ -337,7 +440,7 @@ async def _probe_one(
             model_loaded=False,
             uptime_s=0,
             error=None if fallback_healthy else str(exc)[:120],
-            load_pct=None,
+            load_pct=float(gpu_probe["load_pct"]) if gpu_probe else None,
             tokens_today=tokens_live if tokens_live is not None else tokens_lifetime,
             kwh_per_day=_energy_per_day(static_md["tdp_w"], healthy=fallback_healthy),
             **static_md,
@@ -345,15 +448,18 @@ async def _probe_one(
 
 
 async def fetch_workers_status(gateway_url: str) -> list[WorkerStatus]:
-    """Probe every worker we know about. Cached 30 s."""
+    """Probe every worker we know about. Cached 10 s."""
     cached = _cache_get("workers")
     if isinstance(cached, list):
         return cached  # type: ignore[return-value]
     async with httpx.AsyncClient() as client:
         request_counts = await _fetch_gateway_request_counts(client, gateway_url)
+        host_probes = await _gather_host_probes()
         results = []
         for w in WORKERS:
-            results.append(await _probe_one(client, w, request_counts))
+            results.append(
+                await _probe_one(client, w, request_counts, host_probes)
+            )
     _cache_set("workers", results)
     return results
 
