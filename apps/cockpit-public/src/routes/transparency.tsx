@@ -44,7 +44,7 @@ const ENTRIES: ProvenanceEntry[] = [
     provider: 'Google DeepMind',
     license: 'Gemma Terms',
     provenanceUrl:
-      'https://github.com/ailiance/ailiance/blob/main/docs/provenance/gemma3-4b-it.json',
+      'https://github.com/ailiance/ailiance/blob/main/docs/provenance/gemma-3-4b-it.json',
     notes: 'Worker léger · NVIDIA Quadro P2000 5 GB',
   },
   {
@@ -62,7 +62,7 @@ const ENTRIES: ProvenanceEntry[] = [
     provider: 'Jina AI + Ailiance software',
     license: 'Apache-2.0',
     provenanceUrl:
-      'https://github.com/ailiance/ailiance/blob/main/docs/provenance/auto-router.json',
+      'https://github.com/ailiance/ailiance/blob/main/docs/provenance/auto-router-minilm.json',
     notes: 'Classifier 32 domaines · chain v0.3',
   },
 ];
@@ -250,15 +250,17 @@ function TransparencyPage() {
             </li>
           </ul>
           <p>
-            Les scripts de vérification sont publiés dans{' '}
+            Les scripts de construction et d'audit des corpus sont publiés dans{' '}
             <a
-              href="https://github.com/ailiance/ailiance/tree/main/scripts/data_audit"
+              href="https://github.com/ailiance/ailiance/tree/main/scripts"
               target="_blank"
               rel="noopener noreferrer"
             >
-              ailiance/scripts/data_audit/
+              ailiance/scripts/
             </a>{' '}
-            et exécutés en CI à chaque mise à jour de corpus.
+            (par exemple <code>augment_router_data.py</code>, <code>build_hf_datasets.py</code>,{' '}
+            <code>calibrate_threshold.py</code>, <code>fix_provenance.py</code>) et exécutés en CI à
+            chaque mise à jour de corpus.
           </p>
 
           {/* 6. Mécanisme d'incidents */}
