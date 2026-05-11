@@ -43,7 +43,9 @@ _LIVE_DETAILS: dict[str, dict] = {
         "architecture": "mlx",
         "license": "modified-mit",
         "kind": ModelKind.QUANTIZED,
-        "hf_url": "https://huggingface.co/mistralai/Mistral-Medium-3.5-128B-Instruct",
+        # mistralai/Mistral-Medium-3.5* is gated (401 unauth). Point to the
+        # public org page so visitors land somewhere meaningful.
+        "hf_url": "https://huggingface.co/mistralai",
     },
     "ailiance/gemma4-e4b-curriculum": {
         "display_name": "Gemma 4 E4B + ailiance curriculum LoRA",
@@ -169,7 +171,8 @@ _LIVE_DETAILS: dict[str, dict] = {
         "architecture": "gguf",
         "license": "apache-2.0",
         "kind": ModelKind.QUANTIZED,
-        "hf_url": "https://huggingface.co/ibm-granite/granite-4.1-30B-instruct",
+        # ibm-granite/granite-4.1-30B-instruct is gated. Point to the org.
+        "hf_url": "https://huggingface.co/ibm-granite",
     },
     "ailiance/ministral-14b": {
         "display_name": "Ministral 3 14B Instruct",
