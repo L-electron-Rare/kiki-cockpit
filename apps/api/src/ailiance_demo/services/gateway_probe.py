@@ -277,16 +277,18 @@ async def _ssh_probe_gpu(host: str) -> dict | None:
             "temperature.gpu --format=csv,noheader,nounits"
         )
     else:
-        # Apple Silicon — PerformanceStatistics is a one-line dict.
-        # macOS ships BSD awk (no gawk match-with-capture), so use sed three
-        # times and join with commas. Each sed prints just the integer or
-        # nothing when the key is missing.
+        # Apple Silicon — drive ioreg through a Python one-liner. Avoids the
+        # shell-quoting pain of sed/awk with embedded regex when the command
+        # transits a zsh ssh login on the remote. macOS ships Python 3 by
+        # default since Catalina.
         remote_cmd = (
-            "ioreg -rc AGXAccelerator -d 1 2>/dev/null > /tmp/.agx; "
-            "U=$(sed -n 's/.*\"Device Utilization %\"=\\([0-9][0-9]*\\).*/\\1/p' /tmp/.agx | head -n1); "
-            "M=$(sed -n 's/.*\"In use system memory (driver)\"=\\([0-9][0-9]*\\).*/\\1/p' /tmp/.agx | head -n1); "
-            "A=$(sed -n 's/.*\"Alloc system memory\"=\\([0-9][0-9]*\\).*/\\1/p' /tmp/.agx | head -n1); "
-            "echo \"${U:-0},${M:-0},${A:-0}\""
+            "python3 -c 'import re,subprocess as s;"
+            "o=s.check_output([\"ioreg\",\"-rc\",\"AGXAccelerator\",\"-d\",\"1\"]).decode();"
+            "u=re.search(r\"\\\"Device Utilization %\\\"=(\\d+)\",o);"
+            "m=re.search(r\"\\\"In use system memory \\(driver\\)\\\"=(\\d+)\",o);"
+            "a=re.search(r\"\\\"Alloc system memory\\\"=(\\d+)\",o);"
+            "print(\",\".join(g.group(1) if g else \"0\" for g in [u,m,a]))"
+            "'"
         )
     import asyncio
     cmd = [
