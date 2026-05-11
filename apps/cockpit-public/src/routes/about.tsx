@@ -9,7 +9,7 @@ function AboutPage() {
     <article className="max-w-3xl mx-auto prose">
       <h1>About this showcase</h1>
       <p>
-        L'Électron Rare's LLM fleet is fine-tuned on Apple Silicon (Mac Studio M3 Ultra, 512 GB
+        Ailiance's LLM fleet is fine-tuned on Apple Silicon (Mac Studio M3 Ultra, 512 GB
         unified memory) using MLX. We distill Claude Opus reasoning into open-source models and
         publish provenance-traceable adapters under Apache-2.0.
       </p>
@@ -17,7 +17,7 @@ function AboutPage() {
       <p>
         Each model published with full provenance: base model, training method (LoRA / SFT),
         hyperparameters, datasets (HF-traceable, licensed Apache/MIT/CC-BY), hardware, run SHA. See{' '}
-        <a href="https://github.com/L-electron-Rare/ailiance/blob/main/docs/eu-ai-act-transparency.md">
+        <a href="https://github.com/ailiance/ailiance/blob/main/docs/eu-ai-act-transparency.md">
           the AILIANCE transparency document
         </a>
         .

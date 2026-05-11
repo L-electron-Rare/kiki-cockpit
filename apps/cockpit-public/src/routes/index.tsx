@@ -16,7 +16,7 @@ function HomePage() {
   return (
     <div className="max-w-6xl mx-auto space-y-8">
       <section>
-        <h1 className="text-4xl font-bold">L'Électron Rare — Model Showcase</h1>
+        <h1 className="text-4xl font-bold">Ailiance — Model Showcase</h1>
         <p className="mt-2 text-slate-600">
           24 fine-tuned LLMs published on HuggingFace + 3 EU-sovereign models served live.
           Provenance, eval scores, and chat playground for the AILIANCE Live stack.

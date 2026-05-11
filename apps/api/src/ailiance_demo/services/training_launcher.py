@@ -40,10 +40,10 @@ _ADAPTER_ROOT_PER_HOST: dict[str, str] = {
 }
 _HF_BASE_PER_MODEL: dict[str, str] = {
     "ailiance/mistral-medium-3.5-128b": (
-        "/Users/clems/KIKI-Mac_tunner/models/Mistral-Medium-3.5-128B-MLX-Q8"
+        "/Users/clems/ailiance-mac-tuner/models/Mistral-Medium-3.5-128B-MLX-Q8"
     ),
     "ailiance/gemma4-e4b-curriculum": "lmstudio-community/gemma-4-E4B-it-MLX-4bit",
-    "ailiance/eurollm-22b": "/Users/clems/KIKI-Mac_tunner/models/EuroLLM-22B-Instruct-2512",
+    "ailiance/eurollm-22b": "/Users/clems/ailiance-mac-tuner/models/EuroLLM-22B-Instruct-2512",
 }
 
 

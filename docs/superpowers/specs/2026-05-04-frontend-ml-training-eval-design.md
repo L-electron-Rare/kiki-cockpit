@@ -10,7 +10,7 @@
 
 L'écosystème ML d'Électron Rare comprend aujourd'hui :
 
-- **`KIKI-Mac_tunner`** (public, GitHub) : MLX fine-tuning toolkit sur Mac Studio M3 Ultra (512 GB), distille Claude Opus dans Mistral Large 123B, Qwen3.5-122B-A10B, etc. Inclut une TUI terminal (`scripts/training_tui.py`) qui parse les logs `mlx_lm` en temps réel.
+- **`ailiance-mac-tuner`** (public, GitHub) : MLX fine-tuning toolkit sur Mac Studio M3 Ultra (512 GB), distille Claude Opus dans Mistral Large 123B, Qwen3.5-122B-A10B, etc. Inclut une TUI terminal (`scripts/training_tui.py`) qui parse les logs `mlx_lm` en temps réel.
 - **`ailiance`** (privé, GitHub) : pipeline LLM EU-souverain — Apertus 70B + Devstral 24B + EuroLLM 22B, gateway FastAPI sur `:9200`, workers MLX sur `:9301/:9302/:9303`, conformité EU AI Act Art. 52/53. Suite d'évaluation reproductible (Lighteval, EvalPlus, MT-Bench + benchmarks maison) fraîchement poussée dans `eval/`.
 - **24 modèles publiés sur HuggingFace** : 16 sous `clemsail/*` (compte perso) + 8 sous `electron-rare/*` (org), dont `micro-kiki-v3` (242 dl, 4♥), 10 adapters domaine SFT (KiCad, STM32, PlatformIO, IoT, FreeCAD, Power, EMC, SPICE, Embedded, DSP), et 6 versions récentes à 0 dl (model cards à compléter).
 - **Multi-machine via Tailscale** : studio (M3 Ultra, GPU principal), GrosMac (M-series), kxkm-ai (RTX 4090, Linux), electron-server (Linux, host), kx6tm-23 (Linux), tower (Linux).
@@ -62,7 +62,7 @@ Le projet est découpé en **7 sprints** (0-6). Ce design couvre **les sprints 0
   - `cockpit-public` (vitrine + chat) — bundle public, déployé Internet
   - `cockpit-admin` (tout l'admin) — Tailscale-only, isolé du bundle public
   - Package partagé `@cockpit/shared` (types, primitives UI, hooks API, design tokens)
-- **UI** : Radix primitives + Tailwind, copiés dans `@cockpit/shared/ui/primitives/` (pattern shadcn/ui), pas d'import du package `@finefab/ui` interne
+- **UI** : Radix primitives + Tailwind, copiés dans `@cockpit/shared/ui/primitives/` (pattern shadcn/ui), pas d'import du package `@ailiance/ui` interne
 
 ### 3.4 Modèles exposés (vitrine)
 
@@ -91,7 +91,7 @@ Le projet est découpé en **7 sprints** (0-6). Ce design couvre **les sprints 0
 
 ## 4. Layout du projet
 
-Nouveau repo `L-electron-Rare/ailiance-demo` (monorepo) :
+Nouveau repo `ailiance/ailiance-demo` (monorepo) :
 
 ```
 ailiance-demo/
@@ -113,7 +113,7 @@ ailiance-demo/
 
 **Tooling** :
 - pnpm workspace (JS/TS)
-- uv project (Python, conforme à ailiance/KIKI-Mac_tunner)
+- uv project (Python, conforme à ailiance/ailiance-mac-tuner)
 - biome (lint + format unique, ~10× plus rapide qu'eslint+prettier)
 - vitest + @testing-library/react (front)
 - pytest + httpx.AsyncClient (back)
@@ -127,7 +127,7 @@ ailiance-demo/
 ```
 apps/api/src/ailiance_demo/
 ├── main.py                       # FastAPI app, monte routers, CORS, middleware
-├── config.py                     # paths : ~/KIKI-Mac_tunner, ~/ailiance, etc.
+├── config.py                     # paths : ~/ailiance-mac-tuner, ~/ailiance, etc.
 ├── deps.py                       # FastAPI Depends — auth, file watchers
 ├── routers/
 │   ├── public/
@@ -179,8 +179,8 @@ apps/api/src/ailiance_demo/
 | HF API (`huggingface.co/api/...`) | model metadata, downloads, last-modified | TTL 10 min en mémoire + fallback JSON |
 | `~/ailiance-demo/featured.yaml` | curation manuelle | watchdog instant |
 | `~/ailiance/eval/results/**/*.json` | scores benchmarks | watchdog instant |
-| `~/KIKI-Mac_tunner/results/**/*.json` | scores benchmarks (legacy path) | watchdog instant |
-| `~/KIKI-Mac_tunner/logs/*.log` | training logs mlx_lm | tail -F sur demande |
+| `~/ailiance-mac-tuner/results/**/*.json` | scores benchmarks (legacy path) | watchdog instant |
+| `~/ailiance-mac-tuner/logs/*.log` | training logs mlx_lm | tail -F sur demande |
 | `~/ailiance/output/eval/**/*` | eval data (legacy) | au boot + watchdog |
 | ailiance gateway `http://localhost:9200` | inférence chat + status workers | live |
 | `~/ailiance/output/router/router.safetensors` | métadonnées routeur | au boot |
@@ -208,7 +208,7 @@ L'implémentation s'alignera sur le format réel d'`ailiance/eval/runners/result
 featured:
   - id: clemsail/micro-kiki-v3
     rank: 1
-    headline: "242 dl, 4♥ — la variante KIKI la plus adoptée"
+    headline: "242 dl, 4♥ — la variante Ailiance la plus adoptée"
   - id: clemsail/kiki-kicad-sft
     rank: 2
     headline: "Premier LLM open KiCad-fluent — 94 dl"
@@ -219,7 +219,7 @@ deprecated:
     note: "v1 vide, utiliser clemsail/* à la place"
 
 aliases:
-  clemsail/micro-kiki-v3: "Micro-KIKI v3"
+  clemsail/micro-kiki-v3: "Micro-Ailiance v3"
 ```
 
 ---
@@ -289,7 +289,7 @@ Le `model_id` est l'ID HF canonique (`{owner}/{name}`). Pour les AILIANCE Live, 
 | Apertus 70B (AILIANCE) | `ailiance/apertus-70b` | gateway `:9200` → worker `:9301` |
 | Devstral 24B (AILIANCE) | `ailiance/devstral-24b` | gateway `:9200` → worker `:9302` |
 | EuroLLM 22B (AILIANCE) | `ailiance/eurollm-22b` | gateway `:9200` → worker `:9303` |
-| Micro-KIKI v3 | `clemsail/micro-kiki-v3` | HF deep-link (sprint 1) |
+| Micro-Ailiance v3 | `clemsail/micro-kiki-v3` | HF deep-link (sprint 1) |
 | ... 23 autres HF | `{owner}/{name}` | HF deep-link (sprint 1) |
 
 ### 6.4 UX — galerie + filtres
@@ -390,7 +390,7 @@ featured.yaml ──(watchdog)──→ merge featured flag + headline + ordre
 
 ### 9.2 Indexation eval results
 
-- Walk `~/ailiance/eval/results/**/*.json` + `~/KIKI-Mac_tunner/results/**/*.json` au boot
+- Walk `~/ailiance/eval/results/**/*.json` + `~/ailiance-mac-tuner/results/**/*.json` au boot
 - Parse → `EvalResult` Pydantic
 - Index en mémoire : `model_id → [EvalResult, ...]`
 - Watchdog incrémental (file-add/modify) reload juste les nouveaux
@@ -398,7 +398,7 @@ featured.yaml ──(watchdog)──→ merge featured flag + headline + ordre
 
 ### 9.3 Training log tail (sprint 2)
 
-Réutilise les regex de `KIKI-Mac_tunner/scripts/training_tui.py` :
+Réutilise les regex de `ailiance-mac-tuner/scripts/training_tui.py` :
 
 ```python
 re.match(r'Iter (\d+): Val loss ([\d.]+), Val took ([\d.]+)s', line)

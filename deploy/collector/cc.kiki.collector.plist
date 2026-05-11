@@ -4,19 +4,19 @@
 
   IMPORTANT: code MUST live OUTSIDE ~/Documents — modern macOS TCC blocks
   daemons from user data directories ("Current directory does not exist" in
-  the log) even when the daemon runs as that user. We use /opt/kiki-collector/.
+  the log) even when the daemon runs as that user. We use /opt/ailiance-collector/.
 
   One-time setup on studio:
-    sudo mkdir -p /opt/kiki-collector
-    sudo chown clems:staff /opt/kiki-collector
-    rsync -az ~/Documents/Projets/kiki-cockpit/deploy/collector/ /opt/kiki-collector/
-    cd /opt/kiki-collector && ~/.local/bin/uv sync
+    sudo mkdir -p /opt/ailiance-collector
+    sudo chown clems:staff /opt/ailiance-collector
+    rsync -az ~/Documents/Projets/ailiance-cockpit/deploy/collector/ /opt/ailiance-collector/
+    cd /opt/ailiance-collector && ~/.local/bin/uv sync
 
-    sudo cp /opt/kiki-collector/cc.kiki.collector.plist /Library/LaunchDaemons/
-    sudo chown root:wheel /Library/LaunchDaemons/cc.kiki.collector.plist
-    sudo chmod 644       /Library/LaunchDaemons/cc.kiki.collector.plist
-    sudo launchctl bootout   system/cc.kiki.collector 2>/dev/null
-    sudo launchctl bootstrap system /Library/LaunchDaemons/cc.kiki.collector.plist
+    sudo cp /opt/ailiance-collector/cc.ailiance.collector.plist /Library/LaunchDaemons/
+    sudo chown root:wheel /Library/LaunchDaemons/cc.ailiance.collector.plist
+    sudo chmod 644       /Library/LaunchDaemons/cc.ailiance.collector.plist
+    sudo launchctl bootout   system/cc.ailiance.collector 2>/dev/null
+    sudo launchctl bootstrap system /Library/LaunchDaemons/cc.ailiance.collector.plist
 
   Verify:
     curl http://localhost:9150/healthz
@@ -24,22 +24,22 @@
     tail -f ~/Library/Logs/kiki-collector.log
 
   Reload after editing the plist:
-    sudo cp /opt/kiki-collector/cc.kiki.collector.plist /Library/LaunchDaemons/
-    sudo launchctl bootout   system/cc.kiki.collector
-    sudo launchctl bootstrap system /Library/LaunchDaemons/cc.kiki.collector.plist
+    sudo cp /opt/ailiance-collector/cc.ailiance.collector.plist /Library/LaunchDaemons/
+    sudo launchctl bootout   system/cc.ailiance.collector
+    sudo launchctl bootstrap system /Library/LaunchDaemons/cc.ailiance.collector.plist
 -->
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>cc.kiki.collector</string>
+    <string>cc.ailiance.collector</string>
 
     <key>ProgramArguments</key>
     <array>
         <string>/Users/clems/.local/bin/uv</string>
         <string>run</string>
         <string>--directory</string>
-        <string>/opt/kiki-collector</string>
+        <string>/opt/ailiance-collector</string>
         <string>uvicorn</string>
         <string>kiki_collector.main:app</string>
         <string>--host</string>
@@ -54,7 +54,7 @@
     <string>staff</string>
 
     <key>WorkingDirectory</key>
-    <string>/opt/kiki-collector</string>
+    <string>/opt/ailiance-collector</string>
 
     <key>EnvironmentVariables</key>
     <dict>

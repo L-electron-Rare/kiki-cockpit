@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
 
     # Paths to sibling repos (read-only sources)
-    kiki_mac_tunner_root: Path = Path.home() / "Documents" / "Projets" / "KIKI-Mac_tunner"
+    kiki_mac_tunner_root: Path = Path.home() / "Documents" / "Projets" / "ailiance-mac-tuner"
     ailiance_root: Path = Path.home() / "Documents" / "Projets" / "ailiance"
 
     # ailiance gateway
@@ -37,7 +37,7 @@ class Settings(BaseSettings):
     # Training runs
     training_log_roots: list[Path] = Field(
         default_factory=lambda: [
-            Path.home() / "Documents" / "Projets" / "KIKI-Mac_tunner" / "logs",
+            Path.home() / "Documents" / "Projets" / "ailiance-mac-tuner" / "logs",
             Path.home() / "Documents" / "Projets" / "ailiance" / "logs",
         ],
     )

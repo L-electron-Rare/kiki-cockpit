@@ -623,7 +623,7 @@ Visit `https://ailiance.fr/models`, type `apertus` in the search box — expect 
 ```typescript
 import { useQuery } from '@tanstack/react-query';
 
-const RAW_BASE = 'https://raw.githubusercontent.com/L-electron-Rare/ailiance/main/docs/provenance';
+const RAW_BASE = 'https://raw.githubusercontent.com/ailiance/ailiance/main/docs/provenance';
 
 const PROVENANCE_FILES: Record<string, string> = {
   'ailiance/apertus-70b': 'apertus-70b-instruct-2509.json',
@@ -713,7 +713,7 @@ function ModelDetailPage() {
         <section className="mt-10">
           <h2 className="text-lg font-semibold">Provenance (EU AI Act §53)</h2>
           <p className="text-xs text-slate-500 mt-1">
-            Sourced from <a className="underline" href={`https://github.com/L-electron-Rare/ailiance/blob/main/docs/provenance/`}>github.com/L-electron-Rare/ailiance/docs/provenance</a>
+            Sourced from <a className="underline" href={`https://github.com/ailiance/ailiance/blob/main/docs/provenance/`}>github.com/ailiance/ailiance/docs/provenance</a>
           </p>
           <pre className="mt-3 overflow-x-auto rounded bg-slate-50 p-3 text-xs leading-snug">
             {JSON.stringify(provenance.data, null, 2)}

@@ -47,7 +47,7 @@ class Settings(BaseSettings):
     # Roots scanned for training logs (file globs *.log, *.jsonl).
     training_log_roots: list[Path] = Field(
         default_factory=lambda: [
-            Path.home() / "Documents" / "Projets" / "KIKI-Mac_tunner" / "logs",
+            Path.home() / "Documents" / "Projets" / "ailiance-mac-tuner" / "logs",
             Path.home() / "Documents" / "Projets" / "ailiance" / "logs",
         ],
     )

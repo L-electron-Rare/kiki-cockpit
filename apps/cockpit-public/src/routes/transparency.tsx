@@ -22,7 +22,7 @@ const ENTRIES: ProvenanceLink[] = [
     provider: 'Swiss AI Initiative (EPFL/ETHZ/CSCS)',
     license: 'Apache-2.0',
     provenance_url:
-      'https://github.com/L-electron-Rare/ailiance/blob/main/docs/provenance/apertus-70b-instruct-2509.json',
+      'https://github.com/ailiance/ailiance/blob/main/docs/provenance/apertus-70b-instruct-2509.json',
   },
   {
     alias: 'ailiance/devstral-24b',
@@ -31,7 +31,7 @@ const ENTRIES: ProvenanceLink[] = [
     provider: 'Mistral AI',
     license: 'Apache-2.0',
     provenance_url:
-      'https://github.com/L-electron-Rare/ailiance/blob/main/docs/provenance/devstral-small-2-24b-instruct-2512.json',
+      'https://github.com/ailiance/ailiance/blob/main/docs/provenance/devstral-small-2-24b-instruct-2512.json',
   },
   {
     alias: 'ailiance/eurollm-22b',
@@ -40,7 +40,7 @@ const ENTRIES: ProvenanceLink[] = [
     provider: 'Utter Project (EU consortium)',
     license: 'Apache-2.0',
     provenance_url:
-      'https://github.com/L-electron-Rare/ailiance/blob/main/docs/provenance/eurollm-22b-instruct-2512.json',
+      'https://github.com/ailiance/ailiance/blob/main/docs/provenance/eurollm-22b-instruct-2512.json',
   },
   {
     alias: 'ailiance/gemma3-4b',
@@ -49,7 +49,7 @@ const ENTRIES: ProvenanceLink[] = [
     provider: 'Google DeepMind',
     license: 'Gemma Terms of Use',
     provenance_url:
-      'https://github.com/L-electron-Rare/ailiance/blob/main/docs/provenance/gemma3-4b-it.json',
+      'https://github.com/ailiance/ailiance/blob/main/docs/provenance/gemma3-4b-it.json',
     notes: 'Light-weight worker — runs on tower (NVIDIA Quadro P2000 5 GB).',
   },
   {
@@ -59,7 +59,7 @@ const ENTRIES: ProvenanceLink[] = [
     provider: 'Qwen (Alibaba Cloud)',
     license: 'Apache-2.0',
     provenance_url:
-      'https://github.com/L-electron-Rare/ailiance/blob/main/docs/provenance/qwen3-next-80b-a3b-instruct.json',
+      'https://github.com/ailiance/ailiance/blob/main/docs/provenance/qwen3-next-80b-a3b-instruct.json',
     notes:
       'MoE 80B / 3B active. Runs on kxkm-ai (RTX 4090) via llama.cpp with expert offload to RAM.',
   },
@@ -67,10 +67,10 @@ const ENTRIES: ProvenanceLink[] = [
     alias: 'ailiance/auto',
     display: 'Auto-router (MiniLM + MLP head)',
     base: 'sentence-transformers/all-MiniLM-L6-v2 + internal head',
-    provider: "Microsoft (encoder) + L'Électron Rare (head)",
+    provider: "Microsoft (encoder) + Ailiance (head)",
     license: 'Apache-2.0',
     provenance_url:
-      'https://github.com/L-electron-Rare/ailiance/blob/main/docs/provenance/auto-router-minilm.json',
+      'https://github.com/ailiance/ailiance/blob/main/docs/provenance/auto-router-minilm.json',
     notes:
       'Routing classifier + chain dispatcher. As of router v0.3 (May 2026) it also auto-engages the Deliberation chain (LLM → sandboxed validator → reflector retry) when the classified domain has a non-direct policy in chain_policies.yaml. See "Router v0.3 — agentic chain" below.',
   },
@@ -81,7 +81,7 @@ const ENTRIES: ProvenanceLink[] = [
     provider: 'Google',
     license: 'Gemma Terms',
     provenance_url:
-      'https://github.com/L-electron-Rare/ailiance/blob/main/docs/provenance/gemma-3-4b-it.json',
+      'https://github.com/ailiance/ailiance/blob/main/docs/provenance/gemma-3-4b-it.json',
     notes:
       'Health-gated fallback: if the classified worker is unreachable, the gateway routes to Gemma rather than 500. Also the canonical home for short generalist domains (general, quick, summarize, classification, tldr).',
   },
@@ -93,7 +93,7 @@ function TransparencyPage() {
       <h1>Transparency &amp; provenance</h1>
 
       <p>
-        This site is operated by <strong>L'Électron Rare</strong> as a public showcase of an
+        This site is operated by <strong>Ailiance</strong> as a public showcase of an
         EU-sovereign LLM stack. It is subject to the EU Artificial Intelligence Act (Regulation (EU)
         2024/1689). The disclosures below cover Article 50 (transparency for users) and Annex IV
         (technical documentation).
@@ -166,13 +166,13 @@ function TransparencyPage() {
 
       <h2>Training data &amp; copyright</h2>
       <p>
-        Adapters are trained on a mix of L'Électron Rare in-house corpora (synthetic distillation
+        Adapters are trained on a mix of Ailiance in-house corpora (synthetic distillation
         from Claude Opus reasoning traces, public technical documentation, manually curated prompts)
         and licensed open datasets. We do not knowingly train on scraped copyrighted material;
         opt-out signals (robots.txt, ai.txt) are respected for any web data. The full per-dataset
         breakdown lives in{' '}
         <a
-          href="https://github.com/L-electron-Rare/ailiance/tree/main/docs/transparency"
+          href="https://github.com/ailiance/ailiance/tree/main/docs/transparency"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -260,7 +260,7 @@ function TransparencyPage() {
       <p>
         Per-domain policies live in{' '}
         <a
-          href="https://github.com/L-electron-Rare/ailiance/blob/main/configs/chain_policies.yaml"
+          href="https://github.com/ailiance/ailiance/blob/main/configs/chain_policies.yaml"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -296,7 +296,7 @@ function TransparencyPage() {
         The chain orchestrator design and the four RecursiveMAS-inspired patterns it draws on
         (Sequential, Mixture, Distillation, Deliberation) are documented in{' '}
         <a
-          href="https://github.com/L-electron-Rare/ailiance/blob/main/docs/router-v0.3-deliberate.md"
+          href="https://github.com/ailiance/ailiance/blob/main/docs/router-v0.3-deliberate.md"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -304,7 +304,7 @@ function TransparencyPage() {
         </a>{' '}
         and the design plan{' '}
         <a
-          href="https://github.com/L-electron-Rare/ailiance/blob/main/docs/plans/2026-05-11-router-agentic-v0.3.md"
+          href="https://github.com/ailiance/ailiance/blob/main/docs/plans/2026-05-11-router-agentic-v0.3.md"
           target="_blank"
           rel="noopener noreferrer"
         >

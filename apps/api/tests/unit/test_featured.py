@@ -18,7 +18,7 @@ def test_load_featured_parses_all_sections() -> None:
     assert "electron-rare/kiki-stm32-sft-v1" in cfg.deprecated
     assert cfg.deprecated["electron-rare/kiki-stm32-sft-v1"].superseded_by == "clemsail/kiki-stm32-sft"
 
-    assert cfg.aliases["clemsail/micro-kiki-v3"] == "Micro-KIKI v3"
+    assert cfg.aliases["clemsail/micro-kiki-v3"] == "Micro-Ailiance v3"
 
 
 def test_load_featured_missing_file_returns_empty(tmp_path: Path) -> None:

@@ -1,7 +1,7 @@
 featured:
   - id: clemsail/micro-kiki-v3
     rank: 1
-    headline: "242 dl, 4♥ — la variante KIKI la plus adoptée"
+    headline: "242 dl, 4♥ — la variante Ailiance la plus adoptée"
   - id: clemsail/kiki-kicad-sft
     rank: 2
     headline: "Premier LLM open KiCad-fluent"
@@ -12,4 +12,4 @@ deprecated:
     note: "v1 vide"
 
 aliases:
-  clemsail/micro-kiki-v3: "Micro-KIKI v3"
+  clemsail/micro-kiki-v3: "Micro-Ailiance v3"

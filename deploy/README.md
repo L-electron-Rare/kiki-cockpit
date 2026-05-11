@@ -44,7 +44,7 @@ Prerequisites on the host:
 ssh electron-server
 sudo mkdir -p /opt/ailiance-demo && sudo chown $USER:$USER /opt/ailiance-demo
 cd /opt/ailiance-demo
-gh repo clone L-electron-Rare/ailiance-demo .
+gh repo clone ailiance/ailiance-demo .
 cp deploy/.env.example deploy/.env                    # then edit
 docker compose -f deploy/docker-compose.yml --env-file deploy/.env up -d --build
 
@@ -80,7 +80,7 @@ Step 1 — clone + install deps under HOME (still useful as a working tree):
 ```bash
 ssh studio
 cd ~/Documents/Projets
-git clone https://github.com/L-electron-Rare/ailiance-demo.git    # or rsync from another host
+git clone https://github.com/ailiance/ailiance-demo.git    # or rsync from another host
 cd ailiance-demo/deploy/collector
 ~/.local/bin/uv sync                                              # creates .venv
 ```
@@ -94,11 +94,11 @@ sudo chown clems:staff /opt/ailiance-collector
 rsync -az --exclude='.venv' ~/Documents/Projets/ailiance-demo/deploy/collector/ /opt/ailiance-collector/
 cd /opt/ailiance-collector && ~/.local/bin/uv sync       # fresh venv at /opt/ailiance-collector/.venv
 
-sudo cp /opt/ailiance-collector/cc.kiki.collector.plist /Library/LaunchDaemons/
-sudo chown root:wheel /Library/LaunchDaemons/cc.kiki.collector.plist
-sudo chmod 644       /Library/LaunchDaemons/cc.kiki.collector.plist
-sudo launchctl bootout   system/cc.kiki.collector 2>/dev/null
-sudo launchctl bootstrap system /Library/LaunchDaemons/cc.kiki.collector.plist
+sudo cp /opt/ailiance-collector/cc.ailiance.collector.plist /Library/LaunchDaemons/
+sudo chown root:wheel /Library/LaunchDaemons/cc.ailiance.collector.plist
+sudo chmod 644       /Library/LaunchDaemons/cc.ailiance.collector.plist
+sudo launchctl bootout   system/cc.ailiance.collector 2>/dev/null
+sudo launchctl bootstrap system /Library/LaunchDaemons/cc.ailiance.collector.plist
 
 curl http://localhost:9150/healthz       # → {"status":"ok","machine":"studio"}
 ```
@@ -121,7 +121,7 @@ curl http://studio:9150/api/v1/training/runs           # → JSON list
 
 Override roots if needed:
 ```bash
-launchctl setenv COLLECTOR_TRAINING_LOG_ROOTS '["/Users/clems/Documents/Projets/KIKI-Mac_tunner/logs"]'
+launchctl setenv COLLECTOR_TRAINING_LOG_ROOTS '["/Users/clems/Documents/Projets/ailiance-mac-tuner/logs"]'
 ```
 
 Container variant (`Dockerfile`) exists for hosts where launchd is not available
