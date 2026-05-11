@@ -6,6 +6,7 @@ caching we'd amplify gateway load by 100x for no benefit.
 """
 from __future__ import annotations
 
+import re
 import time
 from collections.abc import Iterable
 
@@ -18,55 +19,121 @@ log = structlog.get_logger()
 
 WORKERS = [
     {
-        "id": "mistral-medium-3.5",
-        "label": "Mistral Medium 3.5 128B",
+        "id": "studio-mlx",
+        "label": "Mac Studio · mlx_lm.server :9301",
         "url": "http://studio:9301",
         "host": "studio",
         "gpu": "Apple M3 Ultra (76-core GPU)",
         "vram_gb": 512.0,
         "tdp_w": 215,
+        "gateway_aliases": ["ailiance-mistral", "ailiance-mistral-medium"],
+        "served_models": [
+            "Mistral-Medium-3.5-128B-MLX-Q8",
+            "Qwen2.5-32B-Instruct-4bit",
+            "Qwen2.5-7B-Instruct-4bit",
+            "gemma-4-E4B-it-MLX-4bit",
+        ],
     },
     {
-        "id": "gemma4-e4b-curriculum",
-        "label": "Gemma 4 E4B + ailiance curriculum LoRA",
-        "url": "http://macm1:8502",
-        "host": "macm1",
-        "gpu": "Apple M1 (8-core GPU)",
-        "vram_gb": 32.0,
-        "tdp_w": 30,
-    },
-    {
-        "id": "eurollm",
-        "label": "EuroLLM 22B",
+        "id": "studio-eurollm",
+        "label": "Mac Studio · EuroLLM :9303",
         "url": "http://studio:9303",
         "host": "studio",
         "gpu": "Apple M3 Ultra (76-core GPU)",
         "vram_gb": 512.0,
         "tdp_w": 215,
+        "gateway_aliases": ["ailiance-eurollm"],
+        "served_models": ["EuroLLM-22B-Instruct-2512"],
     },
     {
-        "id": "gemma3",
-        "label": "Gemma 3 4B",
+        "id": "macm1-mlx",
+        "label": "macM1 · mlx_lm.server :8502",
+        "url": "http://macm1:8502",
+        "host": "macm1",
+        "gpu": "Apple M1 (8-core GPU)",
+        "vram_gb": 32.0,
+        "tdp_w": 30,
+        "gateway_aliases": ["ailiance-gemma2", "ailiance-gemma4", "ailiance-ministral", "ailiance-granite"],
+        "served_models": [
+            "gemma-4-E4B-it-MLX-4bit",
+            "gemma-4-E2B-it-MLX-4bit",
+            "gemma-3-4b-it-4bit",
+            "Ministral-3-14B-Instruct-2512-4bit",
+            "Ministral-3-14B-Reasoning-2512-4bit",
+            "Ministral-3-8B-Instruct-2512-4bit",
+            "Ministral-3-3B-Instruct-2512-4bit",
+            "granite-4.1-30b-4bit",
+            "granite-4.1-3b-4bit",
+            "Qwen3.5-9B-MLX-4bit",
+            "Qwen2.5-Coder-3B-Instruct-4bit",
+            "Qwen2.5-1.5B-Instruct-4bit",
+            "Llama-3.2-3B-Instruct-mlx-4Bit",
+        ],
+    },
+    {
+        "id": "tower-gemma",
+        "label": "Tower · llama.cpp Gemma 3 :9304",
         "url": "http://tower:9304",
-        "host": "tower",
+        "host": "tower (NVIDIA Quadro P2000)",
         "gpu": "NVIDIA Quadro P2000",
         "vram_gb": 5.0,
         "tdp_w": 75,
+        "gateway_aliases": ["ailiance-gemma"],
+        "served_models": ["gemma-3-4b-it (Q4 GGUF)"],
     },
     {
-        "id": "qwen3-next",
-        "label": "Qwen3-Next 80B",
+        "id": "tower-ollama",
+        "label": "Tower · Ollama mascarade :8004",
+        "url": "http://host.docker.internal:8004",
+        "host": "tower (autossh tunnel)",
+        "gpu": "NVIDIA Quadro P2000",
+        "vram_gb": 5.0,
+        "tdp_w": 75,
+        "gateway_aliases": [
+            "ailiance-kicad", "ailiance-spice", "ailiance-stm32", "ailiance-emc",
+            "ailiance-embedded", "ailiance-platformio", "ailiance-freecad",
+            "ailiance-dsp", "ailiance-iot", "ailiance-power",
+            "ailiance-components-review", "ailiance-coder",
+        ],
+        "served_models": [
+            "mascarade-kicad", "mascarade-spice", "mascarade-stm32",
+            "mascarade-emc", "mascarade-embedded", "mascarade-platformio",
+            "mascarade-freecad", "mascarade-dsp", "mascarade-iot",
+            "mascarade-power", "mascarade-coder-v2", "mascarade-components-review",
+            "mascarade-generic", "qwen2.5-coder:3b", "bge-m3 (embed)",
+        ],
+    },
+    {
+        "id": "kxkm-qwen",
+        "label": "kxkm-ai · llama.cpp Qwen3-Next 80B :8002",
         "url": "http://host.docker.internal:8002",
-        "host": "kxkm-ai (RTX 4090, via autossh tunnel)",
+        "host": "kxkm-ai (RTX 4090, autossh tunnel)",
         "gpu": "NVIDIA RTX 4090",
         "vram_gb": 24.0,
         "tdp_w": 450,
+        "gateway_aliases": ["ailiance-qwen", "ailiance-qwen36", "ailiance"],
+        "served_models": ["Qwen3-Next-80B-A3B-Instruct (Q4_K_M MoE)"],
+    },
+    {
+        "id": "kxkm-granite",
+        "label": "kxkm-ai · llama.cpp Granite 30B :8003",
+        "url": "http://host.docker.internal:8003",
+        "host": "kxkm-ai (RTX 4090, autossh tunnel)",
+        "gpu": "NVIDIA RTX 4090",
+        "vram_gb": 24.0,
+        "tdp_w": 450,
+        "gateway_aliases": ["ailiance-granite"],
+        "served_models": ["granite-4.1-30b-instruct (Q4_K_M)"],
     },
 ]
 
+# Average tokens per response (rough chat estimate). Used to convert
+# the request counter into a tokens_today figure on the UI.
+AVG_TOKENS_PER_REQUEST = 280
+
 # Light, mutable cache. The router endpoint sets _cache when it refreshes.
 _cache: dict[str, tuple[float, object]] = {}
-TTL_SECONDS = 30.0
+TTL_SECONDS = 10.0
 
 
 def _cache_get(key: str) -> object | None:
@@ -110,13 +177,108 @@ def _tokens_today_estimate(body: dict, healthy: bool) -> int | None:
     return min(int(rate_per_s * 86400), tokens_total)
 
 
-async def _probe_one(client: httpx.AsyncClient, w: dict) -> WorkerStatus:
+_MODEL_LABEL_RE = re.compile(r'model="([^"]+)"')
+
+
+async def _fetch_gateway_request_counts(
+    client: httpx.AsyncClient, gateway_url: str
+) -> dict[str, int]:
+    """Parse `ailiance_gw_requests_total{model="…"}` from /metrics.
+
+    Returns {model_alias: total_count_across_paths_and_statuses}. Errors
+    return an empty dict — the worker rows just won't show counters.
+    """
+    try:
+        r = await client.get(f"{gateway_url}/metrics", timeout=2.0)
+        if r.status_code != 200:
+            return {}
+        text = r.text
+    except Exception as exc:  # noqa: BLE001
+        log.warning("gateway_metrics.fetch_failed", error=str(exc))
+        return {}
+    out: dict[str, int] = {}
+    for ln in text.splitlines():
+        if not ln.startswith("ailiance_gw_requests_total"):
+            continue
+        # ailiance_gw_requests_total{auto="0",model="…",path="proxy",status="200"} 12.0
+        match = _MODEL_LABEL_RE.search(ln)
+        if not match:
+            continue
+        model = match.group(1)
+        try:
+            value = float(ln.rsplit(" ", 1)[1])
+        except (ValueError, IndexError):
+            continue
+        out[model] = out.get(model, 0) + int(value)
+    return out
+
+
+def _requests_for(w: dict, counts: dict[str, int]) -> int:
+    """Sum gateway request counts for every alias attached to this worker."""
+    aliases = w.get("gateway_aliases") or []
+    return sum(counts.get(a, 0) for a in aliases)
+
+
+async def _fetch_served_models(client: httpx.AsyncClient, w: dict) -> list[str] | None:
+    """Try live /v1/models on the worker URL. Falls back to /api/tags for
+    Ollama. Returns the static `served_models` config when both fail."""
+    fallback = w.get("served_models")
+    try:
+        r = await client.get(f"{w['url']}/v1/models", timeout=2.0)
+        if r.status_code == 200:
+            data = r.json()
+            ids = [m.get("id") for m in data.get("data", []) if m.get("id")]
+            if ids:
+                return ids
+    except Exception:  # noqa: BLE001
+        pass
+    # Ollama fallback
+    try:
+        r = await client.get(f"{w['url']}/api/tags", timeout=2.0)
+        if r.status_code == 200:
+            data = r.json()
+            ids = [m.get("name") for m in data.get("models", []) if m.get("name")]
+            if ids:
+                return ids
+    except Exception:  # noqa: BLE001
+        pass
+    return fallback
+
+
+async def _fetch_llamacpp_tokens(client: httpx.AsyncClient, w: dict) -> int | None:
+    """Read llamacpp:tokens_predicted_total from a llama.cpp /metrics endpoint."""
+    try:
+        r = await client.get(f"{w['url']}/metrics", timeout=2.0)
+        if r.status_code != 200:
+            return None
+        for ln in r.text.splitlines():
+            if ln.startswith("llamacpp:tokens_predicted_total"):
+                try:
+                    return int(float(ln.rsplit(" ", 1)[1]))
+                except (ValueError, IndexError):
+                    return None
+    except Exception:  # noqa: BLE001
+        return None
+    return None
+
+
+async def _probe_one(
+    client: httpx.AsyncClient, w: dict, request_counts: dict[str, int]
+) -> WorkerStatus:
     started = time.monotonic()
+    # Live served_models + (optional) tokens from the worker itself
+    served_models_live = await _fetch_served_models(client, w)
+    tokens_live = await _fetch_llamacpp_tokens(client, w)
     static_md = {
         "gpu": w.get("gpu"),
         "vram_gb": w.get("vram_gb"),
         "tdp_w": w.get("tdp_w"),
+        "served_models": served_models_live,
     }
+    requests_total = _requests_for(w, request_counts)
+    tokens_lifetime = (
+        requests_total * AVG_TOKENS_PER_REQUEST if requests_total > 0 else None
+    )
     try:
         r = await client.get(f"{w['url']}/health", timeout=2.0)
         ok = r.status_code == 200
@@ -124,6 +286,13 @@ async def _probe_one(client: httpx.AsyncClient, w: dict) -> WorkerStatus:
         latency_ms = round((time.monotonic() - started) * 1000, 1)
         healthy = ok and body.get("status") == "ok"
         load_pct = body.get("load_pct")
+        # Priority order for tokens_today: live llama.cpp counter > worker
+        # /health derived estimate > gateway requests × AVG_TOKENS.
+        tokens_field = tokens_live
+        if tokens_field is None:
+            tokens_field = _tokens_today_estimate(body, healthy)
+        if tokens_field is None:
+            tokens_field = tokens_lifetime
         return WorkerStatus(
             id=w["id"],
             label=w["label"],
@@ -134,7 +303,7 @@ async def _probe_one(client: httpx.AsyncClient, w: dict) -> WorkerStatus:
             uptime_s=int(body.get("uptime_s", 0)),
             error=None,
             load_pct=float(load_pct) if isinstance(load_pct, (int, float)) else None,
-            tokens_today=_tokens_today_estimate(body, healthy),
+            tokens_today=tokens_field,
             kwh_per_day=_energy_per_day(static_md["tdp_w"], healthy),
             **static_md,
         )
@@ -149,7 +318,7 @@ async def _probe_one(client: httpx.AsyncClient, w: dict) -> WorkerStatus:
             uptime_s=0,
             error=str(exc)[:120],
             load_pct=None,
-            tokens_today=None,
+            tokens_today=tokens_live if tokens_live is not None else tokens_lifetime,
             kwh_per_day=_energy_per_day(static_md["tdp_w"], healthy=False),
             **static_md,
         )
@@ -161,9 +330,10 @@ async def fetch_workers_status(gateway_url: str) -> list[WorkerStatus]:
     if isinstance(cached, list):
         return cached  # type: ignore[return-value]
     async with httpx.AsyncClient() as client:
+        request_counts = await _fetch_gateway_request_counts(client, gateway_url)
         results = []
         for w in WORKERS:
-            results.append(await _probe_one(client, w))
+            results.append(await _probe_one(client, w, request_counts))
     _cache_set("workers", results)
     return results
 

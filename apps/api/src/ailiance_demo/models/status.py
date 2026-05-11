@@ -21,6 +21,7 @@ class WorkerStatus(BaseModel):
     load_pct: float | None = None  # gateway-reported utilisation if available
     tokens_today: int | None = None  # tokens served in the last 24h (estimate)
     kwh_per_day: float | None = None  # TDP_W × 24 / 1000 — daily energy estimate
+    served_models: list[str] | None = None  # actual models the worker currently serves
 
 
 class StatusReport(BaseModel):

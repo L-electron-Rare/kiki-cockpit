@@ -13,20 +13,27 @@ from ailiance_demo.models.status import RouterStats, WorkerStatus
 
 @pytest.fixture
 def stub_workers() -> list[WorkerStatus]:
-    """Reflects the 5-worker production fleet as of 2026-05-06."""
+    """Reflects the 7-endpoint production fleet as of 2026-05-11."""
     return [
-        WorkerStatus(id="apertus", label="Apertus 70B", host="studio",
+        WorkerStatus(id="studio-mlx", label="Mac Studio · mlx_lm.server :9301", host="studio",
                      healthy=True, latency_ms=15.2, model_loaded=True, uptime_s=3600),
-        WorkerStatus(id="devstral", label="Devstral 24B", host="macm1",
+        WorkerStatus(id="studio-eurollm", label="Mac Studio · EuroLLM :9303", host="studio",
+                     healthy=True, latency_ms=18.7, model_loaded=True, uptime_s=3600),
+        WorkerStatus(id="macm1-mlx", label="macM1 · mlx_lm.server :8502", host="macm1",
                      healthy=False, latency_ms=None, model_loaded=False, uptime_s=0,
                      error="Connection refused"),
-        WorkerStatus(id="eurollm", label="EuroLLM 22B", host="studio",
-                     healthy=True, latency_ms=18.7, model_loaded=True, uptime_s=3600),
-        WorkerStatus(id="gemma3", label="Gemma 3 4B", host="tower",
+        WorkerStatus(id="tower-gemma", label="Tower · llama.cpp Gemma 3 :9304",
+                     host="tower (NVIDIA Quadro P2000)",
                      healthy=True, latency_ms=9.4, model_loaded=False, uptime_s=0),
-        WorkerStatus(id="qwen3-next", label="Qwen3-Next 80B",
-                     host="kxkm-ai (RTX 4090, via autossh tunnel)",
+        WorkerStatus(id="tower-ollama", label="Tower · Ollama mascarade :8004",
+                     host="tower (autossh tunnel)",
+                     healthy=True, latency_ms=12.0, model_loaded=False, uptime_s=600),
+        WorkerStatus(id="kxkm-qwen", label="kxkm-ai · llama.cpp Qwen3-Next 80B :8002",
+                     host="kxkm-ai (RTX 4090, autossh tunnel)",
                      healthy=True, latency_ms=4.1, model_loaded=True, uptime_s=86400),
+        WorkerStatus(id="kxkm-granite", label="kxkm-ai · llama.cpp Granite 30B :8003",
+                     host="kxkm-ai (RTX 4090, autossh tunnel)",
+                     healthy=True, latency_ms=5.2, model_loaded=True, uptime_s=86400),
     ]
 
 
@@ -44,10 +51,13 @@ async def test_status_endpoint(stub_workers):
         r = client.get("/api/public/status")
     assert r.status_code == 200
     body = r.json()
-    assert body["total_count"] == 5
-    assert body["healthy_count"] == 4
+    assert body["total_count"] == 7
+    assert body["healthy_count"] == 6
     ids = [w["id"] for w in body["workers"]]
-    assert ids == ["apertus", "devstral", "eurollm", "gemma3", "qwen3-next"]
+    assert ids == [
+        "studio-mlx", "studio-eurollm", "macm1-mlx", "tower-gemma",
+        "tower-ollama", "kxkm-qwen", "kxkm-granite",
+    ]
     for worker in body["workers"]:
         assert worker["host"], f"worker {worker['id']} missing host"
     # Timestamp must parse as ISO-8601
@@ -59,11 +69,17 @@ def test_workers_constant_matches_production_fleet():
     from ailiance_demo.services.gateway_probe import WORKERS
 
     ids = {w["id"] for w in WORKERS}
-    assert ids == {"apertus", "devstral", "eurollm", "gemma3", "qwen3-next"}
+    assert ids == {
+        "studio-mlx", "studio-eurollm", "macm1-mlx", "tower-gemma",
+        "tower-ollama", "kxkm-qwen", "kxkm-granite",
+    }
     by_id = {w["id"]: w for w in WORKERS}
-    # Qwen reaches the cockpit via the autossh tunnel that the gateway host
-    # owns; from inside the api container we must talk to host.docker.internal.
-    assert "host.docker.internal" in by_id["qwen3-next"]["url"]
+    # kxkm-* and tower-ollama reach the cockpit via autossh tunnels owned by
+    # the gateway host; from inside the api container we must talk to
+    # host.docker.internal.
+    assert "host.docker.internal" in by_id["kxkm-qwen"]["url"]
+    assert "host.docker.internal" in by_id["kxkm-granite"]["url"]
+    assert "host.docker.internal" in by_id["tower-ollama"]["url"]
     # Other workers are addressed over Tailscale magic DNS.
-    assert by_id["apertus"]["url"] == "http://studio:9301"
-    assert by_id["gemma3"]["url"] == "http://tower:9304"
+    assert by_id["studio-mlx"]["url"] == "http://studio:9301"
+    assert by_id["tower-gemma"]["url"] == "http://tower:9304"
