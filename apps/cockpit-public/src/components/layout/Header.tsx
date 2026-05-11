@@ -1,9 +1,9 @@
 import { Link } from '@tanstack/react-router';
 
-// /chat requires /$owner/$name params — use /models as landing for Playground
 const NAV_ITEMS: [string, string][] = [
   ['/', 'Accueil'],
   ['/models', 'Modèles'],
+  ['/chat', 'Playground'],
   ['/status', 'Status'],
   ['/transparency', 'Transparence'],
   ['/about', 'À propos'],

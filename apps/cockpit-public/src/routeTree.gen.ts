@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TransparencyRouteImport } from './routes/transparency'
 import { Route as StatusRouteImport } from './routes/status'
+import { Route as ChatRouteImport } from './routes/chat'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ModelsIndexRouteImport } from './routes/models.index'
@@ -25,6 +26,11 @@ const TransparencyRoute = TransparencyRouteImport.update({
 const StatusRoute = StatusRouteImport.update({
   id: '/status',
   path: '/status',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChatRoute = ChatRouteImport.update({
+  id: '/chat',
+  path: '/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -48,14 +54,15 @@ const ModelsOwnerNameRoute = ModelsOwnerNameRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const ChatOwnerNameRoute = ChatOwnerNameRouteImport.update({
-  id: '/chat/$owner/$name',
-  path: '/chat/$owner/$name',
-  getParentRoute: () => rootRouteImport,
+  id: '/$owner/$name',
+  path: '/$owner/$name',
+  getParentRoute: () => ChatRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/chat': typeof ChatRouteWithChildren
   '/status': typeof StatusRoute
   '/transparency': typeof TransparencyRoute
   '/models/': typeof ModelsIndexRoute
@@ -65,6 +72,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/chat': typeof ChatRouteWithChildren
   '/status': typeof StatusRoute
   '/transparency': typeof TransparencyRoute
   '/models': typeof ModelsIndexRoute
@@ -75,6 +83,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/chat': typeof ChatRouteWithChildren
   '/status': typeof StatusRoute
   '/transparency': typeof TransparencyRoute
   '/models/': typeof ModelsIndexRoute
@@ -86,6 +95,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/chat'
     | '/status'
     | '/transparency'
     | '/models/'
@@ -95,6 +105,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/chat'
     | '/status'
     | '/transparency'
     | '/models'
@@ -104,6 +115,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/chat'
     | '/status'
     | '/transparency'
     | '/models/'
@@ -114,10 +126,10 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  ChatRoute: typeof ChatRouteWithChildren
   StatusRoute: typeof StatusRoute
   TransparencyRoute: typeof TransparencyRoute
   ModelsIndexRoute: typeof ModelsIndexRoute
-  ChatOwnerNameRoute: typeof ChatOwnerNameRoute
   ModelsOwnerNameRoute: typeof ModelsOwnerNameRoute
 }
 
@@ -135,6 +147,13 @@ declare module '@tanstack/react-router' {
       path: '/status'
       fullPath: '/status'
       preLoaderRoute: typeof StatusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/chat': {
+      id: '/chat'
+      path: '/chat'
+      fullPath: '/chat'
+      preLoaderRoute: typeof ChatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -167,21 +186,31 @@ declare module '@tanstack/react-router' {
     }
     '/chat/$owner/$name': {
       id: '/chat/$owner/$name'
-      path: '/chat/$owner/$name'
+      path: '/$owner/$name'
       fullPath: '/chat/$owner/$name'
       preLoaderRoute: typeof ChatOwnerNameRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof ChatRoute
     }
   }
 }
 
+interface ChatRouteChildren {
+  ChatOwnerNameRoute: typeof ChatOwnerNameRoute
+}
+
+const ChatRouteChildren: ChatRouteChildren = {
+  ChatOwnerNameRoute: ChatOwnerNameRoute,
+}
+
+const ChatRouteWithChildren = ChatRoute._addFileChildren(ChatRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  ChatRoute: ChatRouteWithChildren,
   StatusRoute: StatusRoute,
   TransparencyRoute: TransparencyRoute,
   ModelsIndexRoute: ModelsIndexRoute,
-  ChatOwnerNameRoute: ChatOwnerNameRoute,
   ModelsOwnerNameRoute: ModelsOwnerNameRoute,
 }
 export const routeTree = rootRouteImport

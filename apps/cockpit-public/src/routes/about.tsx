@@ -4,77 +4,140 @@ export const Route = createFileRoute('/about')({
   component: AboutPage,
 });
 
+const BACKENDS = [
+  { plat: 'Apple Silicon (arm64)',               be: 'MLX / MLX-LM (référence), llama.cpp Metal'         },
+  { plat: 'NVIDIA CUDA (x86_64 / arm64)',        be: 'vLLM, TGI, llama.cpp CUDA, Ollama'                  },
+  { plat: 'AMD ROCm (x86_64)',                   be: 'vLLM ROCm, llama.cpp HIP'                           },
+  { plat: 'Intel / x86_64 générique',            be: 'llama.cpp CPU/AVX2/AVX-512, OpenVINO'               },
+  { plat: 'ARM CPU (Linux arm64, Graviton, Ampere)', be: 'llama.cpp NEON'                                 },
+  { plat: 'Pure Python anywhere',                be: 'FastAPI gateway + router (Python 3.12+)'             },
+];
+
 function AboutPage() {
   return (
-    <article className="max-w-3xl mx-auto prose">
-      <h1>About this showcase</h1>
-      <p>
-        Ailiance's LLM fleet is fine-tuned on Apple Silicon (Mac Studio M3 Ultra, 512 GB
-        unified memory) using MLX. We distill Claude Opus reasoning into open-source models and
-        publish provenance-traceable adapters under Apache-2.0.
-      </p>
-      <h2>EU AI Act Article 52/53 transparency</h2>
-      <p>
-        Each model published with full provenance: base model, training method (LoRA / SFT),
-        hyperparameters, datasets (HF-traceable, licensed Apache/MIT/CC-BY), hardware, run SHA. See{' '}
-        <a href="https://github.com/ailiance/ailiance/blob/main/docs/eu-ai-act-transparency.md">
-          the AILIANCE transparency document
-        </a>
-        .
-      </p>
-      <h2>Stack</h2>
-      <ul>
-        <li>
-          Training: MLX bf16 LoRA on Mistral Large 123B, Qwen3.5-122B/35B, Apertus 70B, Devstral
-          24B, EuroLLM 22B
-        </li>
-        <li>
-          Routing: Jina v3 embeddings + MLP classifier (40 predicted domains, 5 fallback) with
-          two-tier cache (L1 hash + L2 semantic)
-        </li>
-        <li>
-          Orchestration: <strong>router v0.3 Deliberation chain</strong> — auto-engages on{' '}
-          <code>model: "ailiance"</code> for hardware/code domains, runs LLM output through a
-          sandboxed iact-bench validator, retries with stderr feedback on failure, emits per-chain
-          audit NDJSON. See the <a href="/transparency">transparency page</a> for details.
-        </li>
-        <li>Serving: multi-worker FastAPI gateway, BF16, shared memory pool</li>
-        <li>
-          Evaluation: Lighteval + EvalPlus + MT-Bench + iact-bench v0.2.0 (31 domains × 23 models,
-          25 sandboxed Docker validators)
-        </li>
-      </ul>
-      <h2>Portable backend</h2>
-      <p>
-        The ailiance gateway and worker stack are <strong>not tied to Apple Silicon</strong>. Our
-        reference deployment runs on Mac Studio M3 Ultra (MLX) and macOS via MLX-LM and llama.cpp,
-        but the same OpenAI-compatible HTTP contract can be served from any runtime that exposes a
-        compatible <code>/v1/chat/completions</code> endpoint. Confirmed-working backends:
-      </p>
-      <ul>
-        <li>
-          <strong>Apple Silicon (arm64)</strong> — MLX / MLX-LM (reference), llama.cpp Metal
-        </li>
-        <li>
-          <strong>NVIDIA CUDA (x86_64 / arm64)</strong> — vLLM, TGI, llama.cpp CUDA, Ollama
-        </li>
-        <li>
-          <strong>AMD ROCm (x86_64)</strong> — vLLM ROCm, llama.cpp HIP
-        </li>
-        <li>
-          <strong>Intel / generic x86_64</strong> — llama.cpp CPU/AVX2/AVX-512, OpenVINO
-        </li>
-        <li>
-          <strong>ARM CPU (Linux arm64, e.g. Graviton, Ampere)</strong> — llama.cpp NEON
-        </li>
-      </ul>
-      <p>
-        Models published in <a href="https://huggingface.co/clemsail">our HuggingFace org</a> are
-        distributed in formats that cover this matrix: MLX safetensors (Apple Silicon), GGUF
-        quantizations (llama.cpp, all platforms), and base bf16 safetensors (vLLM / TGI). The
-        gateway, router, and provenance pipeline are pure Python / FastAPI and run anywhere Python
-        3.12+ is available.
-      </p>
-    </article>
+    <main>
+      <section className="wrap page-head">
+        <div className="kicker"><span className="num">№ 06</span> · L'Électron Rare</div>
+        <h1 className="display">Pourquoi <em>cette</em> flotte.</h1>
+      </section>
+
+      <section className="wrap" style={{ paddingTop: 48, paddingBottom: 80 }}>
+        <article className="prose">
+          <p className="lede">
+            La flotte LLM de L'Électron Rare est fine-tunée sur Apple Silicon (Mac Studio M3 Ultra,
+            512 Go de mémoire unifiée) avec MLX. Nous distillons les traces de raisonnement de
+            Claude Opus dans des modèles open-source, et publions des adaptateurs traçables sous
+            Apache-2.0.
+          </p>
+
+          <h2>Stack technique</h2>
+          <ul>
+            <li>
+              <strong>Entraînement</strong> — MLX bf16 LoRA sur Mistral Large 123B, Qwen3.5-122B/35B,
+              Apertus 70B, Devstral 24B, EuroLLM 22B
+            </li>
+            <li>
+              <strong>Routage</strong> — embeddings Jina v3 + classifier MLP (40 domaines prédits,
+              5 fallback) avec cache deux niveaux (L1 hash + L2 sémantique)
+            </li>
+            <li>
+              <strong>Orchestration</strong> —{' '}
+              <strong>router v0.3 Deliberation chain</strong> : auto-engagé sur{' '}
+              <code>model: "ailiance"</code> pour les domaines hardware / code, fait passer la
+              sortie LLM dans un validator iact-bench sandboxé, retry avec feedback stderr en cas
+              d'échec, émet NDJSON audit par chaîne
+            </li>
+            <li>
+              <strong>Serving</strong> — gateway FastAPI multi-worker, BF16, pool mémoire partagé
+            </li>
+            <li>
+              <strong>Évaluation</strong> — Lighteval + EvalPlus + MT-Bench + iact-bench v0.2.0
+              (31 domaines × 23 modèles, 25 validators Docker sandboxés)
+            </li>
+          </ul>
+
+          <h2>Backend portable</h2>
+          <p>
+            La gateway ailiance et la stack workers ne sont{' '}
+            <strong>pas liées à Apple Silicon</strong>. Notre déploiement de référence tourne sur
+            Mac Studio M3 Ultra (MLX) et macOS via MLX-LM et llama.cpp, mais le même contrat HTTP
+            OpenAI-compatible peut être servi depuis n'importe quel runtime exposant{' '}
+            <code>/v1/chat/completions</code>.
+          </p>
+
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              gap: 0,
+              margin: '24px 0',
+              border: '1px solid var(--rule)',
+            }}
+          >
+            {BACKENDS.map((b) => (
+              <div
+                key={b.plat}
+                style={{
+                  padding: '18px 22px',
+                  borderBottom: '1px solid var(--rule)',
+                  borderRight: '1px solid var(--rule)',
+                }}
+              >
+                <div
+                  style={{
+                    fontFamily: 'var(--mono)',
+                    fontSize: 10,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.12em',
+                    color: 'var(--ink-4)',
+                  }}
+                >
+                  plateforme
+                </div>
+                <div
+                  style={{
+                    fontFamily: 'var(--serif)',
+                    fontSize: 22,
+                    lineHeight: 1.1,
+                    margin: '4px 0 8px',
+                  }}
+                >
+                  {b.plat}
+                </div>
+                <div style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--ink-2)' }}>
+                  {b.be}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <h2>Sister projects</h2>
+          <ul>
+            <li>
+              <a href="https://github.com/L-electron-Rare/ailiance" target="_blank" rel="noopener noreferrer">
+                ailiance
+              </a>{' '}
+              — la gateway LLM elle-même (workers, router-v6, dossier EU AI Act).
+            </li>
+            <li>
+              <a href="https://github.com/L-electron-Rare/agent-kiki" target="_blank" rel="noopener noreferrer">
+                agent-kiki
+              </a>{' '}
+              — agent de code (CLI <code>aki</code> + extension VS Code) qui pointe sur cette
+              gateway par défaut.
+            </li>
+            <li>
+              <a href="https://github.com/electron-rare/iact-bench" target="_blank" rel="noopener noreferrer">
+                iact-bench
+              </a>{' '}
+              — le harnais d'évaluation audit-grade utilisé pour scorer chaque modèle servi.
+            </li>
+          </ul>
+
+          <h2>Licence</h2>
+          <p>Apache-2.0, sur l'ensemble du code et des adaptateurs.</p>
+        </article>
+      </section>
+    </main>
   );
 }
