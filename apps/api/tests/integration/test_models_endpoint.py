@@ -8,13 +8,16 @@ def test_list_models_returns_cards(client_with_cache: TestClient) -> None:
     assert response.status_code == 200
     cards = response.json()
     ids = {c["id"] for c in cards}
-    # 5 live ailiance workers + auto-router + the mocked HF entry.
+    # Live workers + auto-router + 12 mascarade specialists + mocked HF entry.
     assert {
-        "ailiance/apertus-70b",
-        "ailiance/devstral-24b",
+        "ailiance/mistral-medium-3.5-128b",
         "ailiance/eurollm-22b",
         "ailiance/gemma3-4b",
         "ailiance/qwen3-next-80b-a3b-instruct",
+        "ailiance/granite-30b",
+        "ailiance/ministral-14b",
+        "ailiance/mascarade-kicad",
+        "ailiance/mascarade-spice",
         "ailiance/auto",
         "Ailiance-fr/micro-kiki-v3",
     }.issubset(ids)
