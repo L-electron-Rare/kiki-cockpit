@@ -2,7 +2,13 @@ import { Footer } from '@/components/layout/Footer';
 import { Header } from '@/components/layout/Header';
 import { Topstrip } from '@/components/layout/Topstrip';
 import { Outlet, createRootRoute } from '@tanstack/react-router';
-import { useEffect } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
+
+// Dev-only: the ternary folds to null in production (import.meta.env.DEV === false),
+// so Vite tree-shakes the entire TweaksPanel module from the prod bundle.
+const TweaksPanel = import.meta.env.DEV
+  ? lazy(() => import('@/components/dev/TweaksPanel'))
+  : null;
 
 export const Route = createRootRoute({
   component: RootLayout,
@@ -31,6 +37,11 @@ function RootLayout() {
         <Outlet />
       </main>
       <Footer />
+      {TweaksPanel && (
+        <Suspense fallback={null}>
+          <TweaksPanel />
+        </Suspense>
+      )}
     </div>
   );
 }
