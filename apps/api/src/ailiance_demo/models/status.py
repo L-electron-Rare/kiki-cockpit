@@ -27,3 +27,14 @@ class RouterStats(BaseModel):
     cache_misses: int
     total_requests: int
     per_model_requests: dict[str, int] = Field(default_factory=dict)
+
+
+class TelemetryResponse(BaseModel):
+    models_up: int
+    total_models: int
+    gateway: str  # "ok" | "degraded" | "down"
+    latency_p50_ms: float | None
+    latency_p95_ms: float | None
+    requests_per_min: float | None
+    updated_at: str
+    source: str  # "live" | "mock"

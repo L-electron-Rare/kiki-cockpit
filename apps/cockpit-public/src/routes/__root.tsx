@@ -1,5 +1,6 @@
 import { Footer } from '@/components/layout/Footer';
 import { Header } from '@/components/layout/Header';
+import { Topstrip } from '@/components/layout/Topstrip';
 import { Outlet, createRootRoute } from '@tanstack/react-router';
 import { useEffect } from 'react';
 
@@ -20,9 +21,13 @@ function RootLayout() {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col bg-white text-slate-900">
+    <div className="min-h-screen flex flex-col bg-paper text-ink">
+      <Topstrip />
       <Header />
-      <main className="flex-1 px-6 py-8 max-w-6xl mx-auto w-full">
+      <main
+        className="wrap"
+        style={{ flex: 1, paddingTop: 'var(--pad)', paddingBottom: 'var(--pad)' }}
+      >
         <Outlet />
       </main>
       <Footer />

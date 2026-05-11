@@ -44,6 +44,16 @@ export interface components {
       total_requests: number;
       per_model_requests: Record<string, number>;
     };
+    TelemetryResponse: {
+      models_up: number;
+      total_models: number;
+      gateway: 'ok' | 'degraded' | 'down';
+      latency_p50_ms: number | null;
+      latency_p95_ms: number | null;
+      requests_per_min: number | null;
+      updated_at: string;
+      source: 'live' | 'mock';
+    };
     ModelCard: {
       id: string;
       owner: string;
