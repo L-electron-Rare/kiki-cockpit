@@ -2,6 +2,7 @@ import { DatasetList } from '@/components/ModelDetail/DatasetList';
 import { EvalScores } from '@/components/ModelDetail/EvalScores';
 import { Provenance } from '@/components/ModelDetail/Provenance';
 import { useEvalScores } from '@/hooks/useEvalScores';
+import { useMascaradeLoras } from '@/hooks/useMascaradeLoras';
 import { useModelDetail } from '@/hooks/useModelDetail';
 import { useProvenance } from '@/hooks/useProvenance';
 import { Link, createFileRoute } from '@tanstack/react-router';
@@ -12,15 +13,17 @@ export const Route = createFileRoute('/models/$owner/$name')({
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <h3 style={{
-      fontFamily: 'var(--mono)',
-      fontSize: 10,
-      textTransform: 'uppercase',
-      letterSpacing: '0.14em',
-      color: 'var(--ink-4)',
-      margin: '0 0 12px',
-      fontWeight: 500,
-    }}>
+    <h3
+      style={{
+        fontFamily: 'var(--mono)',
+        fontSize: 10,
+        textTransform: 'uppercase',
+        letterSpacing: '0.14em',
+        color: 'var(--ink-4)',
+        margin: '0 0 12px',
+        fontWeight: 500,
+      }}
+    >
       {children}
     </h3>
   );
@@ -31,6 +34,8 @@ function ModelDetailPage() {
   const id = `${owner}/${name}`;
 
   const detail = useModelDetail(owner, name);
+  const isMascarade = owner === 'ailiance' && name === 'mascarade';
+  const loras = useMascaradeLoras(isMascarade);
   const evals = useEvalScores(owner, name);
   const provenance = useProvenance(id);
 
@@ -39,7 +44,9 @@ function ModelDetailPage() {
       <main>
         <section className="wrap page-head">
           <div className="kicker">
-            <Link to="/models" style={{ cursor: 'pointer' }}>← Catalogue</Link>
+            <Link to="/models" style={{ cursor: 'pointer' }}>
+              ← Catalogue
+            </Link>
           </div>
           <p style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--ink-4)' }}>
             Chargement…
@@ -54,7 +61,9 @@ function ModelDetailPage() {
       <main>
         <section className="wrap page-head">
           <div className="kicker">
-            <Link to="/models" style={{ cursor: 'pointer' }}>← Catalogue</Link>
+            <Link to="/models" style={{ cursor: 'pointer' }}>
+              ← Catalogue
+            </Link>
           </div>
           <p style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--bad)' }}>
             Modèle introuvable.
@@ -73,15 +82,18 @@ function ModelDetailPage() {
   const nameTail = nameParts.slice(-1)[0];
 
   // Derive role heuristic for compliance flag (no direct field — use kind)
-  const isCodeModel = (card.kind === 'fine_tuned' || card.kind === 'lora')
-    && (card.id.toLowerCase().includes('code') || card.id.toLowerCase().includes('coder'));
+  const isCodeModel =
+    (card.kind === 'fine_tuned' || card.kind === 'lora') &&
+    (card.id.toLowerCase().includes('code') || card.id.toLowerCase().includes('coder'));
 
   return (
     <main>
       {/* ── Page header ── */}
       <section className="wrap page-head">
         <div className="kicker">
-          <Link to="/models" style={{ cursor: 'pointer' }}>← Catalogue</Link>
+          <Link to="/models" style={{ cursor: 'pointer' }}>
+            ← Catalogue
+          </Link>
           <span style={{ opacity: 0.4 }}>/</span>
           <span className="num">{card.id}</span>
           <span className={'badge ' + (isLive ? 'live' : 'hf')} style={{ marginLeft: 'auto' }}>
@@ -90,19 +102,27 @@ function ModelDetailPage() {
         </div>
 
         <h1 className="display">
-          {nameHead ? <>{nameHead} <em>{nameTail}</em></> : <em>{nameTail}</em>}
+          {nameHead ? (
+            <>
+              {nameHead} <em>{nameTail}</em>
+            </>
+          ) : (
+            <em>{nameTail}</em>
+          )}
         </h1>
 
         {card.featured_headline && (
-          <p style={{
-            fontFamily: 'var(--serif)',
-            fontSize: 24,
-            lineHeight: 1.35,
-            color: 'var(--ink-2)',
-            maxWidth: '62ch',
-            margin: '20px 0 0',
-            fontStyle: 'italic',
-          }}>
+          <p
+            style={{
+              fontFamily: 'var(--serif)',
+              fontSize: 24,
+              lineHeight: 1.35,
+              color: 'var(--ink-2)',
+              maxWidth: '62ch',
+              margin: '20px 0 0',
+              fontStyle: 'italic',
+            }}
+          >
             "{card.featured_headline}"
           </p>
         )}
@@ -117,23 +137,15 @@ function ModelDetailPage() {
               Essayer dans le playground →
             </Link>
           ) : (
-            <a
-              href={card.hf_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn accent"
-            >
+            <a href={card.hf_url} target="_blank" rel="noopener noreferrer" className="btn accent">
               HuggingFace →
             </a>
           )}
           {/* TODO: wire to /api/public/provenance/{owner}/{name} for JSON download */}
-          <a className="btn ghost" href="#">JSON provenance ↗</a>
-          <a
-            className="btn ghost"
-            href={card.hf_url}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a className="btn ghost" href="#">
+            JSON provenance ↗
+          </a>
+          <a className="btn ghost" href={card.hf_url} target="_blank" rel="noopener noreferrer">
             HuggingFace ↗
           </a>
         </div>
@@ -198,22 +210,26 @@ function ModelDetailPage() {
           </div>
 
           {/* Eval bars — inline design matching model-detail.jsx */}
-          {evals.data && evals.data.by_benchmark && Object.keys(evals.data.by_benchmark).length > 0 && (
-            <>
-              <div style={{ marginTop: 40 }}><SectionLabel>Évaluations</SectionLabel></div>
-              <div>
-                {Object.entries(evals.data.by_benchmark).map(([bench, result]) => (
-                  <div className="eval-bar" key={bench}>
-                    <span className="name">{bench}</span>
-                    <span className="track">
-                      <span className="fill" style={{ width: `${result.score * 100}%` }} />
-                    </span>
-                    <span className="score">{(result.score * 100).toFixed(1)}%</span>
-                  </div>
-                ))}
-              </div>
-            </>
-          )}
+          {evals.data &&
+            evals.data.by_benchmark &&
+            Object.keys(evals.data.by_benchmark).length > 0 && (
+              <>
+                <div style={{ marginTop: 40 }}>
+                  <SectionLabel>Évaluations</SectionLabel>
+                </div>
+                <div>
+                  {Object.entries(evals.data.by_benchmark).map(([bench, result]) => (
+                    <div className="eval-bar" key={bench}>
+                      <span className="name">{bench}</span>
+                      <span className="track">
+                        <span className="fill" style={{ width: `${result.score * 100}%` }} />
+                      </span>
+                      <span className="score">{(result.score * 100).toFixed(1)}%</span>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
 
           {/* LoRA technical details — for fine_tuned / lora cards */}
           {(card.kind === 'lora' || card.kind === 'fine_tuned') && (
@@ -222,7 +238,9 @@ function ModelDetailPage() {
               <div className="dl-grid">
                 <div className="row">
                   <span className="k">Type</span>
-                  <span className="v">{card.kind === 'lora' ? 'LoRA adapter (PEFT)' : 'Full fine-tune'}</span>
+                  <span className="v">
+                    {card.kind === 'lora' ? 'LoRA adapter (PEFT)' : 'Full fine-tune'}
+                  </span>
                 </div>
                 <div className="row">
                   <span className="k">Modèle de base</span>
@@ -247,8 +265,8 @@ function ModelDetailPage() {
                 <div className="row">
                   <span className="k">Méthode</span>
                   <span className="v">
-                    MLX bf16 LoRA fine-tuning sur Mac Studio M3 Ultra, distillation
-                    Claude Opus + corpus curé Ailiance-fr.
+                    MLX bf16 LoRA fine-tuning sur Mac Studio M3 Ultra, distillation Claude Opus +
+                    corpus curé Ailiance-fr.
                   </span>
                 </div>
                 <div className="row">
@@ -265,13 +283,125 @@ function ModelDetailPage() {
             </div>
           )}
 
+          {/* Mascarade family — list of the 12 LoRA specialists */}
+          {isMascarade && loras.data && loras.data.length > 0 && (
+            <div style={{ marginTop: 40 }}>
+              <SectionLabel>12 LoRAs spécialistes</SectionLabel>
+              <p
+                style={{
+                  fontFamily: 'var(--sans)',
+                  fontSize: 14,
+                  color: 'var(--ink-3)',
+                  margin: '0 0 16px',
+                }}
+              >
+                Toutes les adapters partagent le même modèle de base{' '}
+                <code style={{ fontFamily: 'var(--mono)', fontSize: 12 }}>ailiance/Qwen3-4B</code>{' '}
+                avec LoRA r=16 / α=32. Servies par Ollama sur Tower (NVIDIA Quadro P2000) via le
+                tunnel autossh electron-server :8004.
+              </p>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: '1fr',
+                  gap: 0,
+                  border: '1px solid var(--rule)',
+                }}
+              >
+                {loras.data.map((lo, idx) => (
+                  <div
+                    key={lo.name}
+                    style={{
+                      padding: '14px 18px',
+                      borderTop: idx === 0 ? 'none' : '1px solid var(--rule)',
+                      display: 'grid',
+                      gridTemplateColumns: '180px 1fr 90px',
+                      gap: 18,
+                      alignItems: 'start',
+                    }}
+                  >
+                    <div>
+                      <code
+                        style={{ fontFamily: 'var(--mono)', fontSize: 13, color: 'var(--ink)' }}
+                      >
+                        mascarade-{lo.name}
+                      </code>
+                      <div
+                        style={{
+                          fontFamily: 'var(--mono)',
+                          fontSize: 10,
+                          color: 'var(--ink-4)',
+                          marginTop: 2,
+                        }}
+                      >
+                        domain={lo.domain}
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        style={{ fontFamily: 'var(--sans)', fontSize: 14, color: 'var(--ink-2)' }}
+                      >
+                        {lo.blurb}
+                      </div>
+                      <div
+                        style={{
+                          fontFamily: 'var(--mono)',
+                          fontSize: 11,
+                          color: 'var(--ink-3)',
+                          marginTop: 4,
+                        }}
+                      >
+                        validator · {lo.validator}
+                      </div>
+                    </div>
+                    <div style={{ textAlign: 'right' }}>
+                      <div
+                        style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--ink-4)' }}
+                      >
+                        steps
+                      </div>
+                      <div
+                        style={{
+                          fontFamily: 'var(--mono)',
+                          fontSize: 14,
+                          color: 'var(--ink)',
+                          marginTop: 2,
+                        }}
+                      >
+                        {lo.steps}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <p
+                style={{
+                  fontFamily: 'var(--mono)',
+                  fontSize: 10,
+                  color: 'var(--ink-4)',
+                  marginTop: 12,
+                }}
+              >
+                Les adapters avec ≤2 steps sont des smoke-tests Qwen2.5-32B (compilation Ollama) en
+                attente d'un re-training Qwen3-4B complet. État réel suivi dans le bench iact-bench.
+              </p>
+            </div>
+          )}
+
           {/* Auto-router — list of LoRA specialists it routes to */}
           {card.id.endsWith('/auto') && (
             <div style={{ marginTop: 40 }}>
               <SectionLabel>Spécialistes LoRA routés</SectionLabel>
-              <p style={{ fontFamily: 'var(--sans)', fontSize: 14, color: 'var(--ink-3)', margin: '0 0 16px' }}>
-                Sur les domaines hardware/code, l'auto-router délègue à un des 12
-                spécialistes mascarade (LoRA Qwen3-4B sur Tower Ollama :8004).
+              <p
+                style={{
+                  fontFamily: 'var(--sans)',
+                  fontSize: 14,
+                  color: 'var(--ink-3)',
+                  margin: '0 0 16px',
+                }}
+              >
+                Sur les domaines hardware/code, l'auto-router délègue à un des 12 spécialistes
+                mascarade (LoRA Qwen3-4B sur Tower Ollama :8004).
               </p>
               <div
                 style={{
@@ -310,7 +440,14 @@ function ModelDetailPage() {
                     }}
                   >
                     <div style={{ color: 'var(--ink)' }}>mascarade-{slug}</div>
-                    <div style={{ fontSize: 11, color: 'var(--ink-4)', marginTop: 2, fontFamily: 'var(--sans)' }}>
+                    <div
+                      style={{
+                        fontSize: 11,
+                        color: 'var(--ink-4)',
+                        marginTop: 2,
+                        fontFamily: 'var(--sans)',
+                      }}
+                    >
                       {label}
                     </div>
                   </Link>
@@ -323,30 +460,34 @@ function ModelDetailPage() {
           <div style={{ marginTop: 40 }}>
             <SectionLabel>Provenance · Annex IV §1(c)</SectionLabel>
             {provenance.data ? (
-              <pre style={{
-                background: 'var(--paper-2)',
-                border: '1px solid var(--rule)',
-                padding: '16px 18px',
-                fontFamily: 'var(--mono)',
-                fontSize: 11,
-                lineHeight: 1.55,
-                color: 'var(--ink-2)',
-                overflowX: 'auto',
-              }}>
+              <pre
+                style={{
+                  background: 'var(--paper-2)',
+                  border: '1px solid var(--rule)',
+                  padding: '16px 18px',
+                  fontFamily: 'var(--mono)',
+                  fontSize: 11,
+                  lineHeight: 1.55,
+                  color: 'var(--ink-2)',
+                  overflowX: 'auto',
+                }}
+              >
                 {JSON.stringify(provenance.data, null, 2)}
               </pre>
             ) : (
-              <pre style={{
-                background: 'var(--paper-2)',
-                border: '1px solid var(--rule)',
-                padding: '16px 18px',
-                fontFamily: 'var(--mono)',
-                fontSize: 11,
-                lineHeight: 1.55,
-                color: 'var(--ink-2)',
-                overflowX: 'auto',
-              }}>
-{`{
+              <pre
+                style={{
+                  background: 'var(--paper-2)',
+                  border: '1px solid var(--rule)',
+                  padding: '16px 18px',
+                  fontFamily: 'var(--mono)',
+                  fontSize: 11,
+                  lineHeight: 1.55,
+                  color: 'var(--ink-2)',
+                  overflowX: 'auto',
+                }}
+              >
+                {`{
   "alias":         "${card.id}",
   "base_model":    "${card.base_model ?? 'unknown'}",
   "base_sha":      "sha256:…",
@@ -377,15 +518,17 @@ function ModelDetailPage() {
           {/* How to call it */}
           <div className="spec-card">
             <h4>Comment l'appeler</h4>
-            <pre style={{
-              fontFamily: 'var(--mono)',
-              fontSize: 11,
-              lineHeight: 1.55,
-              color: 'var(--ink-2)',
-              margin: 0,
-              whiteSpace: 'pre-wrap',
-            }}>
-{`curl -X POST \\
+            <pre
+              style={{
+                fontFamily: 'var(--mono)',
+                fontSize: 11,
+                lineHeight: 1.55,
+                color: 'var(--ink-2)',
+                margin: 0,
+                whiteSpace: 'pre-wrap',
+              }}
+            >
+              {`curl -X POST \\
   https://ailiance.fr/api/public/chat \\
   -H 'content-type: application/json' \\
   -d '{
@@ -398,13 +541,15 @@ function ModelDetailPage() {
           {/* Compliance flags */}
           <div className="spec-card" style={{ marginTop: 18 }}>
             <h4>Drapeaux conformité</h4>
-            <div style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 8,
-              fontFamily: 'var(--mono)',
-              fontSize: 11,
-            }}>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 8,
+                fontFamily: 'var(--mono)',
+                fontSize: 11,
+              }}
+            >
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span>EU AI Act art. 50</span>
                 <span style={{ color: 'var(--ok)' }}>✓ disclosed</span>
@@ -446,9 +591,7 @@ function ModelDetailPage() {
               {card.disk_size_bytes != null && (
                 <>
                   <span className="k">disque</span>
-                  <span className="v tnum">
-                    {(card.disk_size_bytes / 1e9).toFixed(1)} GB
-                  </span>
+                  <span className="v tnum">{(card.disk_size_bytes / 1e9).toFixed(1)} GB</span>
                 </>
               )}
               {card.memory_gb != null && (

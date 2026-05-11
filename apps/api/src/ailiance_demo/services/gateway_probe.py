@@ -279,15 +279,23 @@ async def _ssh_probe_gpu(host: str) -> dict | None:
     else:
         # Apple Silicon — base64-encode the Python script so SSH/zsh quoting
         # can't mangle the regex characters. The decoded payload reads the
-        # AGXAccelerator PerformanceStatistics line and prints "util,used,alloc".
+        # AGXAccelerator PerformanceStatistics line and prints "util,used,alloc,temp".
+        # Temperature comes from osx-cpu-temp (Homebrew, no sudo) when available.
         import base64
         payload = (
-            "import re,subprocess as s\n"
+            "import re,subprocess as s,shutil\n"
             "o=s.check_output(['ioreg','-rc','AGXAccelerator','-d','1']).decode()\n"
             "u=re.search(r'\"Device Utilization %\"=(\\d+)',o)\n"
             "m=re.search(r'\"In use system memory \\(driver\\)\"=(\\d+)',o)\n"
             "a=re.search(r'\"Alloc system memory\"=(\\d+)',o)\n"
-            "print(','.join(g.group(1) if g else '0' for g in [u,m,a]))\n"
+            "t='0'\n"
+            "p=shutil.which('osx-cpu-temp') or '/opt/homebrew/bin/osx-cpu-temp'\n"
+            "try:\n"
+            " r=s.check_output([p],timeout=2).decode().strip()\n"
+            " mt=re.search(r'([0-9.]+)',r)\n"
+            " if mt: t=mt.group(1)\n"
+            "except Exception: pass\n"
+            "print(','.join([(g.group(1) if g else '0') for g in [u,m,a]]+[t]))\n"
         )
         b64 = base64.b64encode(payload.encode()).decode()
         remote_cmd = f"echo {b64} | base64 -d | python3"
@@ -326,17 +334,19 @@ async def _ssh_probe_gpu(host: str) -> dict | None:
             }
         except (ValueError, IndexError):
             return None
-    # apple — "util,used_bytes,alloc_bytes" or just "util" if older format
+    # apple — "util,used_bytes,alloc_bytes,temp_c"
     try:
         parts = out.split(",")
         util = float(parts[0])
         used_mb = int(int(parts[1]) / 1024 / 1024) if len(parts) > 1 else None
         alloc_mb = int(int(parts[2]) / 1024 / 1024) if len(parts) > 2 else None
+        temp_raw = float(parts[3]) if len(parts) > 3 else 0.0
+        temp_c = temp_raw if temp_raw > 0 else None
         return {
             "load_pct": util,
             "vram_used_mb": used_mb,
             "vram_total_mb": alloc_mb,
-            "temp_c": None,  # requires sudo powermetrics on macOS
+            "temp_c": temp_c,
         }
     except (ValueError, IndexError):
         return None

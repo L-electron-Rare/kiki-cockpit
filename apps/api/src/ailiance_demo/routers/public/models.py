@@ -203,98 +203,86 @@ _LIVE_DETAILS: dict[str, dict] = {
 }
 
 
-def _mascarade(name: str, domain: str, blurb: str, validators: str) -> dict:
-    """Helper for the 12 mascarade Qwen3-4B LoRA specialists on Tower Ollama."""
-    return {
-        "display_name": f"mascarade-{name}",
-        "base_model": "Qwen/Qwen3-4B-Instruct-2507",
-        "domain": domain,
-        "description": (
-            f"{blurb} LoRA r=16 / α=32 fine-tuned on a curated Ailiance-fr "
-            f"{name} corpus (300+ steps), distilled from Claude Opus reasoning "
-            "traces. Served by Ollama on Tower (NVIDIA Quadro P2000) via the "
-            "autossh tunnel electron-server :8004. Domain-routed by the "
-            f"auto-router with sandboxed validators: {validators}."
-        ),
-        "headline": f"Qwen3-4B + LoRA · {domain} · Tower Ollama · validator sandbox",
-        "parameters": 4_000_000_000,
-        "disk_size_bytes": 3 * _GIB,
-        "memory_gb": 3.5,
-        "quantization": "Q4_K_M LoRA",
-        "host": "tower (NVIDIA Quadro P2000 5 GB)",
-        "architecture": "gguf",
-        "license": "apache-2.0",
-        "kind": ModelKind.LORA,
-    }
+# 12 mascarade LoRA specialists — one card, twelve adapters. Each entry lists
+# its domain, blurb, sandboxed validator(s), and approximate training steps.
+# The cockpit surfaces them collectively in /models/ailiance/mascarade.
+MASCARADE_LORAS: list[dict] = [
+    {"name": "kicad", "domain": "kicad", "steps": 522,
+     "blurb": "KiCad schematic & PCB DSL — s-expression .kicad_sch and .kicad_pcb generation",
+     "validator": "kicad-cli ERC + DRC sandboxed (--network=none)"},
+    {"name": "spice", "domain": "spice", "steps": 412,
+     "blurb": "SPICE netlist + simulation — ngspice / Xyce / LTspice idiomatic input",
+     "validator": "ngspice batch --no-spiceinit"},
+    {"name": "stm32", "domain": "stm32", "steps": 350,
+     "blurb": "STM32 / ARM Cortex-M embedded — HAL/LL, FreeRTOS, peripheral init",
+     "validator": "arm-none-eabi-gcc + cppcheck"},
+    {"name": "emc", "domain": "emc", "steps": 280,
+     "blurb": "EMC / EMI compliance — CISPR / FCC limits, filter & decoupling design",
+     "validator": "rule-based EMC checker (compatibility report)"},
+    {"name": "embedded", "domain": "embedded", "steps": 100,
+     "blurb": "Generic embedded C/C++ — bare-metal drivers, MMIO, ISR, DMA",
+     "validator": "g++ + compile + cppcheck"},
+    {"name": "platformio", "domain": "platformio", "steps": 2,
+     "blurb": "PlatformIO / Arduino — board configs, library targets, build pipeline",
+     "validator": "pio run --target lint"},
+    {"name": "freecad", "domain": "freecad", "steps": 2,
+     "blurb": "FreeCAD scripting — Python macros for parametric modelling & 3D MCAD",
+     "validator": "freecadcmd headless script run"},
+    {"name": "dsp", "domain": "dsp", "steps": 2,
+     "blurb": "DSP / signal processing — IIR/FIR, FFT, audio + RF analyse",
+     "validator": "numpy + scipy validator"},
+    {"name": "iot", "domain": "iot", "steps": 2,
+     "blurb": "IoT / connectivity — MQTT, BLE, LoRa, ESP-IDF, Zephyr",
+     "validator": "ESP-IDF idf.py build"},
+    {"name": "power", "domain": "power", "steps": 2,
+     "blurb": "Power electronics — DC/DC, converters, motor drives, battery management",
+     "validator": "ngspice transient + steady-state"},
+    {"name": "components-review", "domain": "components-review", "steps": 200,
+     "blurb": "BOM / parts review — recommends alternatives, flags obsolescence, sourcing",
+     "validator": "OctoPart / Digi-Key API cross-check"},
+    {"name": "coder", "domain": "code", "steps": 300,
+     "blurb": "Polyglot coder — Python, Rust, TypeScript, Go with iact-bench code validators",
+     "validator": "tsc, ruff, rustc, go vet"},
+]
 
 
-_LIVE_DETAILS.update({
-    "ailiance/mascarade-kicad": _mascarade(
-        "kicad", "kicad",
-        "KiCad schematic & PCB DSL specialist — generates s-expression `.kicad_sch` and `.kicad_pcb` content.",
-        "kicad-cli ERC + DRC sandboxed (--network=none)",
+_LIVE_DETAILS["ailiance/mascarade"] = {
+    "display_name": "Mascarade · 12 LoRAs spécialistes",
+    "base_model": "ailiance/Qwen3-4B + LoRA",
+    "domain": "hardware-specialists",
+    "description": (
+        "Famille de 12 adaptateurs LoRA fine-tunés (r=16, α=32) sur le "
+        "modèle de base ailiance/Qwen3-4B. Chacun est servi par Ollama sur "
+        "Tower (NVIDIA Quadro P2000) via le tunnel autossh "
+        "electron-server :8004 → tower:11434. L'auto-router classifie le "
+        "domaine du prompt et délègue au spécialiste correspondant, puis "
+        "fait passer la sortie dans un validator Docker sandboxé. La fiche "
+        "détaillée liste les 12 spécialistes avec leur domaine, leur "
+        "nombre de steps d'entraînement et leur validator dédié."
     ),
-    "ailiance/mascarade-spice": _mascarade(
-        "spice", "spice",
-        "SPICE netlist + simulation specialist — ngspice / Xyce / LTspice idiomatic input.",
-        "ngspice batch --no-spiceinit",
-    ),
-    "ailiance/mascarade-stm32": _mascarade(
-        "stm32", "stm32",
-        "STM32 / ARM Cortex-M embedded specialist — HAL/LL, FreeRTOS, peripheral init.",
-        "arm-none-eabi-gcc + lint",
-    ),
-    "ailiance/mascarade-emc": _mascarade(
-        "emc", "emc",
-        "EMC / EMI compliance specialist — CISPR / FCC limits, filter and decoupling design.",
-        "rule-based EMC checker (compatibility report)",
-    ),
-    "ailiance/mascarade-embedded": _mascarade(
-        "embedded", "embedded",
-        "Generic embedded C/C++ specialist — bare-metal drivers, MMIO, ISR, DMA.",
-        "g++ + compile + cppcheck",
-    ),
-    "ailiance/mascarade-platformio": _mascarade(
-        "platformio", "platformio",
-        "PlatformIO / Arduino ecosystem specialist — board configs, library targets, build pipeline.",
-        "pio run --target lint",
-    ),
-    "ailiance/mascarade-freecad": _mascarade(
-        "freecad", "freecad",
-        "FreeCAD scripting specialist — Python macros for parametric modelling and 3D MCAD.",
-        "freecadcmd headless script run",
-    ),
-    "ailiance/mascarade-dsp": _mascarade(
-        "dsp", "dsp",
-        "DSP / signal processing specialist — IIR/FIR, FFT, audio + RF analyse.",
-        "numpy + scipy validator",
-    ),
-    "ailiance/mascarade-iot": _mascarade(
-        "iot", "iot",
-        "IoT / connectivity specialist — MQTT, BLE, LoRa, ESP-IDF, Zephyr.",
-        "ESP-IDF idf.py build",
-    ),
-    "ailiance/mascarade-power": _mascarade(
-        "power", "power",
-        "Power electronics specialist — DC/DC, converters, motor drives, battery management.",
-        "ngspice transient + steady-state",
-    ),
-    "ailiance/mascarade-components-review": _mascarade(
-        "components-review", "components-review",
-        "BOM / parts review specialist — recommends alternatives, flags obsolescence, sourcing.",
-        "OctoPart / Digi-Key API cross-check",
-    ),
-    "ailiance/mascarade-coder": _mascarade(
-        "coder", "code",
-        "Polyglot coder specialist — Python, Rust, TypeScript, Go with iact-bench code validators.",
-        "tsc, ruff, rustc, go vet",
-    ),
-})
+    "headline": "ailiance/Qwen3-4B + 12 LoRAs · Tower Ollama :8004 · validator sandbox",
+    "parameters": 4_000_000_000,
+    "disk_size_bytes": 12 * 3 * _GIB,  # 12 LoRAs × ~3 GB GGUF each
+    "memory_gb": 3.5,
+    "quantization": "Q4_K_M LoRA",
+    "host": "tower (NVIDIA Quadro P2000 5 GB)",
+    "architecture": "gguf",
+    "license": "apache-2.0",
+    "kind": ModelKind.LORA,
+}
+
+
+# The 12 mascarade-* gateway aliases stay in ALIAS_TO_GATEWAY_MODEL so the
+# gateway router can still address each specialist directly, but the public
+# /models catalog folds them into a single "ailiance/mascarade" card.
+_MASCARADE_HIDDEN = {f"ailiance/mascarade-{lo['name']}" for lo in MASCARADE_LORAS}
 
 
 def _live_cards() -> list[ModelCard]:
     cards: list[ModelCard] = []
     for alias in ALIAS_TO_GATEWAY_MODEL:
+        if alias in _MASCARADE_HIDDEN:
+            continue  # collapsed into the single ailiance/mascarade card below
         owner, name = alias.split("/", 1)
         details = _LIVE_DETAILS.get(alias, {})
         cards.append(
@@ -322,6 +310,36 @@ def _live_cards() -> list[ModelCard]:
                 kind=details.get("kind", ModelKind.UNKNOWN),
             )
         )
+
+    # Append the consolidated mascarade card (not in ALIAS_TO_GATEWAY_MODEL —
+    # it represents the LoRA family, individual specialists are routed
+    # transparently by the auto-router).
+    md = _LIVE_DETAILS["ailiance/mascarade"]
+    cards.append(
+        ModelCard(
+            id="ailiance/mascarade",
+            owner="ailiance",
+            name="mascarade",
+            display_name=md["display_name"],
+            description=md["description"],
+            base_model=md["base_model"],
+            domain=md["domain"],
+            status=ModelStatus.PRODUCTION,
+            chat_backend=ChatBackend.AILIANCE_LIVE,
+            chat_eligible=True,
+            featured_rank=0,
+            featured_headline=md["headline"],
+            hf_url="https://huggingface.co/Ailiance-fr",
+            parameters=md["parameters"],
+            disk_size_bytes=md["disk_size_bytes"],
+            memory_gb=md["memory_gb"],
+            quantization=md["quantization"],
+            host=md["host"],
+            architecture=md["architecture"],
+            license=md["license"],
+            kind=md["kind"],
+        )
+    )
     return cards
 
 
@@ -346,9 +364,15 @@ def list_models(
 @router.get("/models/{owner}/{name}", response_model=ModelCard)
 def get_model(owner: str, name: str, cache: HFCache = Depends(get_hf_cache)) -> ModelCard:
     model_id = f"{owner}/{name}"
-    if model_id in ALIAS_TO_GATEWAY_MODEL:
+    if model_id == "ailiance/mascarade" or model_id in ALIAS_TO_GATEWAY_MODEL:
         return next(c for c in _live_cards() if c.id == model_id)
     card = cache.get_card(model_id)
     if card is None:
         raise HTTPException(status_code=404, detail=f"Model {model_id} not found")
     return card
+
+
+@router.get("/models/ailiance/mascarade/loras")
+def mascarade_loras() -> list[dict]:
+    """List the 12 LoRA specialists under the mascarade family."""
+    return MASCARADE_LORAS

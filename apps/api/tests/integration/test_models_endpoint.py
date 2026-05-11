@@ -16,8 +16,7 @@ def test_list_models_returns_cards(client_with_cache: TestClient) -> None:
         "ailiance/qwen3-next-80b-a3b-instruct",
         "ailiance/granite-30b",
         "ailiance/ministral-14b",
-        "ailiance/mascarade-kicad",
-        "ailiance/mascarade-spice",
+        "ailiance/mascarade",
         "ailiance/auto",
         "Ailiance-fr/micro-kiki-v3",
     }.issubset(ids)
