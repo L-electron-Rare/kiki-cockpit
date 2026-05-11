@@ -69,7 +69,9 @@ function ModelGridCard({ card }: { card: ModelCard }) {
         </div>
         <div>
           <span className="k">mémoire</span>
-          <span className="v">{card.memory_gb != null ? `${card.memory_gb.toFixed(1)} GB` : '—'}</span>
+          <span className="v">
+            {card.memory_gb != null ? `${card.memory_gb.toFixed(1)} GB` : '—'}
+          </span>
         </div>
         <div>
           <span className="k">disque</span>
@@ -173,8 +175,8 @@ function ModelsPage() {
           <RouterArrow label="POST /api/public/chat" />
           <RouterStep
             num="2"
-            title="Classifier Jina v3 + MLP"
-            sub="32 domaines prédits · cache L1 hash + L2 cosinus sémantique"
+            title="Classifier MiniLM L6 v2 + MLP"
+            sub="MiniLM L6 v2 384d · 40 domaines prédits · cache L1 hash + L2 cosinus sémantique"
             tone="accent"
             chips={['kicad', 'spice', 'stm32', 'emc', 'embedded', 'code', 'math', '…']}
           />
@@ -448,7 +450,7 @@ function ModelsPage() {
         >
           Source :{' '}
           <a
-            href="https://github.com/ailiance/iact-bench"
+            href="https://github.com/ailiance/ailiance-bench"
             target="_blank"
             rel="noopener noreferrer"
           >

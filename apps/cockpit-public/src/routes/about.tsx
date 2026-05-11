@@ -41,8 +41,8 @@ function AboutPage() {
               Qwen3.5-122B/35B, Apertus 70B, Devstral 24B, EuroLLM 22B
             </li>
             <li>
-              <strong>Routage</strong> — embeddings Jina v3 + classifier MLP (40 domaines prédits, 5
-              fallback) avec cache deux niveaux (L1 hash + L2 sémantique)
+              <strong>Routage</strong> — embeddings MiniLM L6 v2 384d + classifier MLP (40 domaines
+              prédits, 5 fallback) avec cache deux niveaux (L1 hash + L2 sémantique)
             </li>
             <li>
               <strong>Orchestration</strong> — <strong>router v0.3 Deliberation chain</strong> :
@@ -139,11 +139,11 @@ function AboutPage() {
             </li>
             <li>
               <a
-                href="https://github.com/ailiance/iact-bench"
+                href="https://github.com/ailiance/ailiance-bench"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                iact-bench
+                ailiance-bench
               </a>{' '}
               — le harnais d'évaluation audit-grade utilisé pour scorer chaque modèle servi.
             </li>

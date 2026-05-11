@@ -123,7 +123,7 @@ _LIVE_DETAILS: dict[str, dict] = {
     },
     "ailiance/auto": {
         "display_name": "Auto-router",
-        "base_model": "Jina v3 1024d embeddings + 2-layer MLP",
+        "base_model": "MiniLM L6 v2 384d + 2-layer MLP",
         "domain": "router",
         "description": (
             "Domain router classifies your prompt over 32 domains and forwards "
@@ -134,10 +134,10 @@ _LIVE_DETAILS: dict[str, dict] = {
             "(math, code, multilingual, raisonnement) route directly. The "
             "decision is shown above each reply in the playground."
         ),
-        "headline": "Jina v3 1024d · 32 domains · chain v0.3 · iact-bench validator",
-        "parameters": 137_000_000,  # Jina v3 ~137M
-        "disk_size_bytes": 550_000_000,
-        "memory_gb": 1.2,
+        "headline": "MiniLM 384d · 40 domains · top1≈65% top3≈86% · chain v0.3",
+        "parameters": 22_700_000,  # MiniLM L6 v2 ≈ 22.7M
+        "disk_size_bytes": 90_500_000,
+        "memory_gb": 0.2,
         "quantization": "FP32",
         "host": "electron-server (gateway-side, CPU)",
         "architecture": "safetensors",

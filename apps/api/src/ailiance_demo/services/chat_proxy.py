@@ -41,7 +41,7 @@ ALIAS_TO_GATEWAY_MODEL: dict[str, str] = {
     "ailiance/mascarade-components-review": "ailiance-components-review",
     "ailiance/mascarade-coder": "ailiance-coder",
     # The bare "ailiance" alias triggers the gateway's domain router
-    # (Jina v3 embeddings + MLP classifier) — not in MODEL_FORCE_MAP on
+    # (MiniLM L6 v2 embeddings + MLP classifier) — not in MODEL_FORCE_MAP on
     # purpose. We surface the decision in the chat stream via a route
     # preamble (see stream_chat).
     "ailiance/auto": "ailiance",

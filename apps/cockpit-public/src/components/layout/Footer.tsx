@@ -13,8 +13,8 @@ export function Footer() {
             </div>
             <p>
               Flotte LLM souveraine : plusieurs dizaines de modèles servis depuis du matériel
-              personnel en France, exposés par tailnet, avec un dossier de conformité Annex IV
-              par référence. Pas de dépendance cloud.
+              personnel en France, exposés par tailnet, avec un dossier de conformité Annex IV par
+              référence. Pas de dépendance cloud.
             </p>
           </div>
           <div>
@@ -34,15 +34,26 @@ export function Footer() {
               <li>
                 <Link to="/transparency">Démarche Qualité IA Act</Link>
               </li>
-              {/* TODO: wire to real URLs (provenance bundle, iact-bench, log policy doc) */}
               <li>
-                <a href="#">Provenance JSON</a>
+                <a
+                  href="https://github.com/ailiance/ailiance/tree/main/docs/provenance"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Provenance JSON
+                </a>
               </li>
               <li>
-                <a href="#">iact-bench v0.2</a>
+                <a
+                  href="https://github.com/ailiance/ailiance-bench"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Bench audit-grade
+                </a>
               </li>
               <li>
-                <a href="#">Politique de logs</a>
+                <Link to="/transparency">Politique de logs</Link>
               </li>
             </ul>
           </div>

@@ -141,8 +141,12 @@ function ModelDetailPage() {
               HuggingFace →
             </a>
           )}
-          {/* TODO: wire to /api/public/provenance/{owner}/{name} for JSON download */}
-          <a className="btn ghost" href="#">
+          <a
+            className="btn ghost"
+            href="https://github.com/ailiance/ailiance/tree/main/docs/provenance"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             JSON provenance ↗
           </a>
           <a className="btn ghost" href={card.hf_url} target="_blank" rel="noopener noreferrer">

@@ -58,8 +58,8 @@ const ENTRIES: ProvenanceEntry[] = [
   },
   {
     alias: 'ailiance/auto',
-    base: 'Jina v3 embeddings + MLP head + chain orchestrator',
-    provider: 'Jina AI + Ailiance software',
+    base: 'MiniLM L6 v2 384d + 2-layer MLP + chain orchestrator',
+    provider: 'Microsoft (MiniLM) + Ailiance software',
     license: 'Apache-2.0',
     provenanceUrl:
       'https://github.com/ailiance/ailiance/blob/main/docs/provenance/auto-router-minilm.json',
