@@ -162,17 +162,13 @@ function BenchPage() {
             margin: '20px 0 0',
           }}
         >
-          Pipeline d'évaluation audit-grade EU AI Act : 5 axes locaux N3 + validators
-          Docker iact-bench. Pré-registration OSF-style, seeds verrouillées, validators
-          épinglés.
+          Pipeline d'évaluation audit-grade EU AI Act : 5 axes locaux N3 + validators Docker
+          iact-bench. Pré-registration OSF-style, seeds verrouillées, validators épinglés.
         </p>
       </section>
 
       <section className="wrap" style={{ paddingTop: 24 }}>
-        <h2
-          className="kicker"
-          style={{ fontSize: 11, margin: '0 0 12px', letterSpacing: '0.1em' }}
-        >
+        <h2 className="kicker" style={{ fontSize: 11, margin: '0 0 12px', letterSpacing: '0.1em' }}>
           Méthodologie
         </h2>
         <ul
@@ -186,26 +182,25 @@ function BenchPage() {
           }}
         >
           <li>
-            5 axes : <code>parse_ok</code> · <code>erc_clean</code> ·{' '}
-            <code>sch_render</code> · <code>drc_clean</code> · <code>sem_equiv</code>{' '}
-            (poids composite 0.30 / 0.30 / 0.15 / 0.10 / 0.15).
+            5 axes : <code>parse_ok</code> · <code>erc_clean</code> · <code>sch_render</code> ·{' '}
+            <code>drc_clean</code> · <code>sem_equiv</code> (poids composite 0.30 / 0.30 / 0.15 /
+            0.10 / 0.15).
           </li>
           <li>
             5 seeds verrouillées : <code>[42, 137, 1024, 8675309, 31415]</code>.
           </li>
           <li>
-            Validators iact-bench Docker épinglés (
-            <code>ghcr.io/electron-rare/iact-bench-kicad</code>) — 24 images
-            verrouillées par digest <code>sha256</code>.
+            Validators iact-bench Docker épinglés (<code>ghcr.io/ailiance/iact-bench-kicad</code>) —
+            24 images verrouillées par digest <code>sha256</code>.
           </li>
           <li>
-            Hypothèses H1/H2/H3 pré-enregistrées, NDJSON audit trail append-only
-            avec manifest <code>sha256</code> (EU AI Act Annex IV §7).
+            Hypothèses H1/H2/H3 pré-enregistrées, NDJSON audit trail append-only avec manifest{' '}
+            <code>sha256</code> (EU AI Act Annex IV §7).
           </li>
           <li>
             Spec :{' '}
             <a
-              href="https://github.com/electron-rare/electron-bench/blob/main/docs/superpowers/specs/2026-05-11-kicad-sch-gap-design.md"
+              href="https://github.com/ailiance/ailiance-bench/blob/main/docs/superpowers/specs/2026-05-11-kicad-sch-gap-design.md"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -216,10 +211,7 @@ function BenchPage() {
       </section>
 
       <section className="wrap" style={{ paddingTop: 32 }}>
-        <h2
-          className="kicker"
-          style={{ fontSize: 11, margin: '0 0 12px', letterSpacing: '0.1em' }}
-        >
+        <h2 className="kicker" style={{ fontSize: 11, margin: '0 0 12px', letterSpacing: '0.1em' }}>
           Cellules
         </h2>
         <div style={{ overflowX: 'auto', borderTop: '1px solid var(--rule)' }}>
@@ -244,9 +236,7 @@ function BenchPage() {
                   >
                     {a.label}
                     <br />
-                    <span style={{ fontSize: 9, color: 'var(--ink-4)' }}>
-                      ω={a.weight}
-                    </span>
+                    <span style={{ fontSize: 9, color: 'var(--ink-4)' }}>ω={a.weight}</span>
                   </th>
                 ))}
                 <th style={{ ...thStyle, textAlign: 'right' }}>iact pass</th>
@@ -282,16 +272,11 @@ function BenchPage() {
                       {fmt(c.composite)}
                     </td>
                     {AXES.map((a) => (
-                      <td
-                        key={a.key as string}
-                        style={{ ...tdStyle, textAlign: 'right' }}
-                      >
+                      <td key={a.key as string} style={{ ...tdStyle, textAlign: 'right' }}>
                         {fmt(c[a.key] as number | null)}
                       </td>
                     ))}
-                    <td style={{ ...tdStyle, textAlign: 'right' }}>
-                      {fmt(c.iact_pass_rate)}
-                    </td>
+                    <td style={{ ...tdStyle, textAlign: 'right' }}>{fmt(c.iact_pass_rate)}</td>
                     <td style={{ ...tdStyle, textAlign: 'right' }}>{c.n_samples}</td>
                     <td style={tdStyle}>
                       <span
@@ -318,10 +303,7 @@ function BenchPage() {
       </section>
 
       <section className="wrap" style={{ paddingTop: 32 }}>
-        <h2
-          className="kicker"
-          style={{ fontSize: 11, margin: '0 0 12px', letterSpacing: '0.1em' }}
-        >
+        <h2 className="kicker" style={{ fontSize: 11, margin: '0 0 12px', letterSpacing: '0.1em' }}>
           Auto-router classifier
         </h2>
         <p
@@ -333,9 +315,8 @@ function BenchPage() {
             maxWidth: '70ch',
           }}
         >
-          L'alias <code>ailiance</code> route automatiquement chaque requête vers
-          le worker spécialisé via un classifier MLP entraîné sur 32 classes de
-          domaine.
+          L'alias <code>ailiance</code> route automatiquement chaque requête vers le worker
+          spécialisé via un classifier MLP entraîné sur 32 classes de domaine.
         </p>
         <div style={{ overflowX: 'auto', borderTop: '1px solid var(--rule)', marginTop: 12 }}>
           <table
@@ -358,7 +339,9 @@ function BenchPage() {
             </thead>
             <tbody>
               <tr style={{ borderBottom: '1px solid var(--rule-soft, var(--rule))' }}>
-                <td style={tdStyle}><code>v6</code> (prod)</td>
+                <td style={tdStyle}>
+                  <code>v6</code> (prod)
+                </td>
                 <td style={tdStyle}>jina-v3 1024d</td>
                 <td style={{ ...tdStyle, textAlign: 'right' }}>512</td>
                 <td style={{ ...tdStyle, textAlign: 'right', fontWeight: 600 }}>0.877</td>
@@ -366,7 +349,9 @@ function BenchPage() {
                 <td style={tdStyle}>déployé depuis 2026-05-08</td>
               </tr>
               <tr style={{ borderBottom: '1px solid var(--rule-soft, var(--rule))' }}>
-                <td style={tdStyle}><code>v7</code></td>
+                <td style={tdStyle}>
+                  <code>v7</code>
+                </td>
                 <td style={tdStyle}>MiniLM-L6 384d</td>
                 <td style={{ ...tdStyle, textAlign: 'right' }}>256</td>
                 <td style={{ ...tdStyle, textAlign: 'right' }}>0.879</td>
@@ -374,7 +359,9 @@ function BenchPage() {
                 <td style={tdStyle}>test régression encoder</td>
               </tr>
               <tr style={{ borderBottom: '1px solid var(--rule-soft, var(--rule))' }}>
-                <td style={tdStyle}><code>v8</code></td>
+                <td style={tdStyle}>
+                  <code>v8</code>
+                </td>
                 <td style={tdStyle}>jina-v3 1024d</td>
                 <td style={{ ...tdStyle, textAlign: 'right' }}>512</td>
                 <td style={{ ...tdStyle, textAlign: 'right' }}>0.875</td>
@@ -387,10 +374,7 @@ function BenchPage() {
       </section>
 
       <section className="wrap" style={{ paddingTop: 32, paddingBottom: 32 }}>
-        <h2
-          className="kicker"
-          style={{ fontSize: 11, margin: '0 0 12px', letterSpacing: '0.1em' }}
-        >
+        <h2 className="kicker" style={{ fontSize: 11, margin: '0 0 12px', letterSpacing: '0.1em' }}>
           État du sweep
         </h2>
         <p
@@ -402,11 +386,10 @@ function BenchPage() {
             maxWidth: '70ch',
           }}
         >
-          Baselines floor <code>0.000</code> établies sur les deux ancres macM1
-          (pre-fused + base un-tuned). Les cellules <code>gemma-4-E4B × D1/D2/D3</code>{' '}
-          sont en cours de training (macM1, MLX-LM). Les cellules{' '}
-          <code>qwen3.6 × 3</code> et <code>granite × 3</code> sont différées (Studio
-          MLX rsrc_limit + kxkm-ai 4090 post-mascarade).
+          Baselines floor <code>0.000</code> établies sur les deux ancres macM1 (pre-fused + base
+          un-tuned). Les cellules <code>gemma-4-E4B × D1/D2/D3</code> sont en cours de training
+          (macM1, MLX-LM). Les cellules <code>qwen3.6 × 3</code> et <code>granite × 3</code> sont
+          différées (Studio MLX rsrc_limit + kxkm-ai 4090 post-mascarade).
         </p>
       </section>
     </main>
