@@ -17,8 +17,8 @@ function ModelDetailPage() {
   const evals = useEvalScores(owner, name);
   const provenance = useProvenance(id);
 
-  if (detail.isLoading) return <p>Chargement…</p>;
-  if (detail.error || !detail.data) return <p>Modèle introuvable.</p>;
+  if (detail.isLoading) return <p>Loading…</p>;
+  if (detail.error || !detail.data) return <p>Model not found.</p>;
   const card = detail.data;
 
   return (
@@ -32,15 +32,15 @@ function ModelDetailPage() {
       {card.description && <p className="text-slate-700">{card.description}</p>}
 
       <dl className="grid grid-cols-2 gap-y-1 text-sm">
-        {card.base_model && (<><dt className="text-slate-500">Modèle de base</dt><dd className="font-mono">{card.base_model}</dd></>)}
-        {card.parameters && (<><dt className="text-slate-500">Paramètres</dt><dd>{card.parameters.toLocaleString()}</dd></>)}
-        {card.disk_size_bytes && (<><dt className="text-slate-500">Disque</dt><dd>{(card.disk_size_bytes / 1e9).toFixed(1)} GB</dd></>)}
-        {card.memory_gb && (<><dt className="text-slate-500">Mémoire</dt><dd>{card.memory_gb} GB</dd></>)}
+        {card.base_model && (<><dt className="text-slate-500">Base model</dt><dd className="font-mono">{card.base_model}</dd></>)}
+        {card.parameters && (<><dt className="text-slate-500">Parameters</dt><dd>{card.parameters.toLocaleString()}</dd></>)}
+        {card.disk_size_bytes && (<><dt className="text-slate-500">Disk</dt><dd>{(card.disk_size_bytes / 1e9).toFixed(1)} GB</dd></>)}
+        {card.memory_gb && (<><dt className="text-slate-500">Memory</dt><dd>{card.memory_gb} GB</dd></>)}
         {card.quantization && (<><dt className="text-slate-500">Quantization</dt><dd>{card.quantization}</dd></>)}
-        {card.host && (<><dt className="text-slate-500">Hôte</dt><dd>{card.host}</dd></>)}
+        {card.host && (<><dt className="text-slate-500">Host</dt><dd>{card.host}</dd></>)}
         {card.architecture && (<><dt className="text-slate-500">Architecture</dt><dd>{card.architecture}</dd></>)}
-        {card.license && (<><dt className="text-slate-500">Licence</dt><dd>{card.license}</dd></>)}
-        {card.kind && (<><dt className="text-slate-500">Type</dt><dd>{card.kind}</dd></>)}
+        {card.license && (<><dt className="text-slate-500">License</dt><dd>{card.license}</dd></>)}
+        {card.kind && (<><dt className="text-slate-500">Kind</dt><dd>{card.kind}</dd></>)}
       </dl>
 
       {card.chat_eligible ? (
@@ -49,7 +49,7 @@ function ModelDetailPage() {
           params={{ owner: card.owner, name: card.name }}
           className="inline-block rounded bg-emerald-600 px-6 py-2 font-medium text-white"
         >
-          Essayer →
+          Try it →
         </Link>
       ) : (
         <a
@@ -58,7 +58,7 @@ function ModelDetailPage() {
           rel="noopener noreferrer"
           className="inline-block rounded border border-slate-300 px-6 py-2 font-medium"
         >
-          Essayer sur HuggingFace →
+          Try on HuggingFace →
         </a>
       )}
 
@@ -70,7 +70,7 @@ function ModelDetailPage() {
         <section className="mt-10">
           <h2 className="text-lg font-semibold">Provenance (EU AI Act §53)</h2>
           <p className="text-xs text-slate-500 mt-1">
-            Source{' '}
+            Sourced from{' '}
             <a
               className="underline"
               href="https://github.com/L-electron-Rare/ailiance/blob/main/docs/provenance/"

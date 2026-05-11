@@ -50,13 +50,13 @@ function ModelsPage() {
     navigate({ search: { ...search, [key]: value } });
   };
 
-  if (isLoading) return <p className="text-slate-500">Chargement des modèles…</p>;
-  if (error) return <p className="text-rose-700">Échec du chargement</p>;
+  if (isLoading) return <p className="text-slate-500">Loading models…</p>;
+  if (error) return <p className="text-rose-700">Failed to load models</p>;
 
   return (
     <div>
       <header className="mb-6">
-        <h2 className="text-2xl font-bold">Modèles ({filtered.length})</h2>
+        <h2 className="text-2xl font-bold">Models ({filtered.length})</h2>
         <div className="mt-3 flex flex-wrap gap-2">
           <DomainFilter value={search.domain} onChange={(v) => setFilter('domain', v)} />
           <BaseModelFilter value={search.base} onChange={(v) => setFilter('base', v)} />
@@ -65,7 +65,7 @@ function ModelsPage() {
             type="search"
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
-            placeholder="Rechercher par id, nom, base…"
+            placeholder="Search by id, name, base…"
             className="rounded border border-slate-300 px-2 py-1 text-sm"
           />
           <select
@@ -73,7 +73,7 @@ function ModelsPage() {
             onChange={(e) => setKindFilter(e.target.value)}
             className="rounded border border-slate-300 px-2 py-1 text-sm"
           >
-            <option value="all">Tous les types</option>
+            <option value="all">All kinds</option>
             <option value="base">base</option>
             <option value="fine_tuned">fine-tune</option>
             <option value="lora">LoRA</option>

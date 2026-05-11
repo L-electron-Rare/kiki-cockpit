@@ -10,12 +10,12 @@ function ChatPage() {
   const { owner, name } = Route.useParams();
   const detail = useModelDetail(owner, name);
 
-  if (detail.isLoading) return <p>Chargement…</p>;
-  if (!detail.data) return <p>Modèle introuvable.</p>;
+  if (detail.isLoading) return <p>Loading…</p>;
+  if (!detail.data) return <p>Model not found.</p>;
   if (!detail.data.chat_eligible) {
     return (
       <p>
-        Ce modèle n'est pas activé pour le chat. Voir{' '}
+        This model is not chat-eligible in sprint 1. See{' '}
         <a className="underline" href={detail.data.hf_url}>
           HuggingFace
         </a>
