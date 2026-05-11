@@ -34,11 +34,16 @@ def test_eval_summary_returns_per_benchmark(tmp_path: Path, empty_hf_cache) -> N
     assert data["by_benchmark"]["HumanEval+"]["score"] == 0.78
 
 
-def test_eval_summary_404_when_unknown(empty_hf_cache, empty_eval_index) -> None:
+def test_eval_summary_empty_when_unknown(empty_hf_cache, empty_eval_index) -> None:
+    """Unknown model now returns an empty summary (200) instead of 404 —
+    keeps the SPA console clean while still hiding the eval section."""
     app = create_app()
     app.dependency_overrides[get_hf_cache] = lambda: empty_hf_cache
     app.dependency_overrides[get_eval_index] = lambda: empty_eval_index
     client = TestClient(app)
 
     response = client.get("/api/public/eval/Ailiance-fr/unknown")
-    assert response.status_code == 404
+    assert response.status_code == 200
+    body = response.json()
+    assert body["model_id"] == "Ailiance-fr/unknown"
+    assert body["by_benchmark"] == {}
