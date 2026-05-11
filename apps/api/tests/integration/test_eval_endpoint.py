@@ -11,7 +11,7 @@ from ailiance_demo.services.eval_index import EvalIndex
 
 def test_eval_summary_returns_per_benchmark(tmp_path: Path, empty_hf_cache) -> None:
     payload = {
-        "model_id": "clemsail/micro-kiki-v3",
+        "model_id": "Ailiance-fr/micro-kiki-v3",
         "benchmark": "HumanEval+",
         "metric": "pass@1",
         "score": 0.78,
@@ -27,7 +27,7 @@ def test_eval_summary_returns_per_benchmark(tmp_path: Path, empty_hf_cache) -> N
     app.dependency_overrides[get_eval_index] = lambda: index
     client = TestClient(app)
 
-    response = client.get("/api/public/eval/clemsail/micro-kiki-v3")
+    response = client.get("/api/public/eval/Ailiance-fr/micro-kiki-v3")
     assert response.status_code == 200
     data = response.json()
     assert "HumanEval+" in data["by_benchmark"]
@@ -40,5 +40,5 @@ def test_eval_summary_404_when_unknown(empty_hf_cache, empty_eval_index) -> None
     app.dependency_overrides[get_eval_index] = lambda: empty_eval_index
     client = TestClient(app)
 
-    response = client.get("/api/public/eval/clemsail/unknown")
+    response = client.get("/api/public/eval/Ailiance-fr/unknown")
     assert response.status_code == 404

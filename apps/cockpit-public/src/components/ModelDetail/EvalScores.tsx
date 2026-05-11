@@ -15,7 +15,8 @@ export function EvalScores({ summary }: Props) {
       </section>
     );
   }
-  const entries = Object.entries(summary.by_benchmark);
+  type EvalResult = components['schemas']['EvalResult'];
+  const entries = Object.entries(summary.by_benchmark) as [string, EvalResult][];
   return (
     <section className="rounded border border-slate-200 p-4">
       <h3 className="font-bold mb-3">Eval scores</h3>

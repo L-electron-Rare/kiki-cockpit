@@ -7,7 +7,7 @@ def test_dataset_summary_minimal_fields() -> None:
         name="oshwa-curated",
         n_rows=4321,
         license="CERN-OHL-S-2.0",
-        hf_dataset_id="electron-rare/oshwa",
+        hf_dataset_id="Ailiance-fr/oshwa",
         download_date="2026-04-26",
         size_bytes=14_222_345,
     )

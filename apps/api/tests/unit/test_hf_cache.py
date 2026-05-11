@@ -18,12 +18,14 @@ def make_handler(responses: dict[str, list[dict]]):
 @pytest.mark.asyncio
 async def test_hfcache_refresh_merges_owners_and_marks_ailiance() -> None:
     responses = {
-        "clemsail": [{"id": "clemsail/micro-kiki-v3", "downloads": 242}],
-        "electron-rare": [{"id": "electron-rare/mascarade-iot", "downloads": 6}],
+        "Ailiance-fr": [
+            {"id": "Ailiance-fr/micro-kiki-v3", "downloads": 242},
+            {"id": "Ailiance-fr/mascarade-iot", "downloads": 6},
+        ],
     }
     transport = httpx.MockTransport(make_handler(responses))
     cache = HFCache(
-        owners=["clemsail", "electron-rare"],
+        owners=["Ailiance-fr"],
         ailiance_aliases={"ailiance/apertus-70b"},
         featured=FeaturedConfig(),
         cache_dir=Path("/tmp/test-cache-refresh"),
@@ -35,18 +37,18 @@ async def test_hfcache_refresh_merges_owners_and_marks_ailiance() -> None:
     cards = cache.list_cards()
     assert len(cards) == 2
     ids = {c.id for c in cards}
-    assert ids == {"clemsail/micro-kiki-v3", "electron-rare/mascarade-iot"}
+    assert ids == {"Ailiance-fr/micro-kiki-v3", "Ailiance-fr/mascarade-iot"}
 
 
 @pytest.mark.asyncio
 async def test_hfcache_applies_featured_rank_and_headline() -> None:
-    responses = {"clemsail": [{"id": "clemsail/micro-kiki-v3", "downloads": 242}]}
+    responses = {"Ailiance-fr": [{"id": "Ailiance-fr/micro-kiki-v3", "downloads": 242}]}
     transport = httpx.MockTransport(make_handler(responses))
     featured = FeaturedConfig(
-        featured=[FeaturedEntry(id="clemsail/micro-kiki-v3", rank=1, headline="HEADLINE")],
+        featured=[FeaturedEntry(id="Ailiance-fr/micro-kiki-v3", rank=1, headline="HEADLINE")],
     )
     cache = HFCache(
-        owners=["clemsail"],
+        owners=["Ailiance-fr"],
         ailiance_aliases=set(),
         featured=featured,
         cache_dir=Path("/tmp/test-cache-featured"),
@@ -63,18 +65,18 @@ async def test_hfcache_applies_featured_rank_and_headline() -> None:
 
 @pytest.mark.asyncio
 async def test_hfcache_filters_deprecated() -> None:
-    responses = {"electron-rare": [{"id": "electron-rare/kiki-stm32-sft-v1", "downloads": 0}]}
+    responses = {"Ailiance-fr": [{"id": "Ailiance-fr/kiki-stm32-sft-v1", "downloads": 0}]}
     transport = httpx.MockTransport(make_handler(responses))
     featured = FeaturedConfig(
         deprecated={
-            "electron-rare/kiki-stm32-sft-v1": DeprecatedEntry(
-                superseded_by="clemsail/kiki-stm32-sft",
+            "Ailiance-fr/kiki-stm32-sft-v1": DeprecatedEntry(
+                superseded_by="Ailiance-fr/kiki-stm32-sft",
                 note="empty",
             ),
         },
     )
     cache = HFCache(
-        owners=["electron-rare"],
+        owners=["Ailiance-fr"],
         ailiance_aliases=set(),
         featured=featured,
         cache_dir=Path("/tmp/test-cache-deprecated"),

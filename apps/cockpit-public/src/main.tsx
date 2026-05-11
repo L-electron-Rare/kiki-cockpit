@@ -6,6 +6,7 @@ import { createRoot } from 'react-dom/client';
 import { queryClient } from './queryClient';
 import { router } from './router';
 import './index.css';
+import './styles.css';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) throw new Error('Root element #root not found');

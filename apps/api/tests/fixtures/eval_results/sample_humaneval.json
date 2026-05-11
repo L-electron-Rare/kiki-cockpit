@@ -1,5 +1,5 @@
 {
-  "model_id": "clemsail/micro-kiki-v3",
+  "model_id": "Ailiance-fr/micro-kiki-v3",
   "benchmark": "HumanEval+",
   "metric": "pass@1",
   "score": 0.78,

@@ -6,23 +6,23 @@ from ailiance_demo.models import ChatBackend, EvalResult, ModelCard, ModelStatus
 
 def test_model_card_minimal_fields() -> None:
     card = ModelCard(
-        id="clemsail/micro-kiki-v3",
-        owner="clemsail",
+        id="Ailiance-fr/micro-kiki-v3",
+        owner="Ailiance-fr",
         name="micro-kiki-v3",
         display_name="Micro-Ailiance v3",
         status=ModelStatus.FEATURED,
         chat_backend=ChatBackend.HF_EXTERNAL,
         chat_eligible=False,
-        hf_url="https://huggingface.co/clemsail/micro-kiki-v3",
+        hf_url="https://huggingface.co/Ailiance-fr/micro-kiki-v3",
     )
-    assert card.id == "clemsail/micro-kiki-v3"
+    assert card.id == "Ailiance-fr/micro-kiki-v3"
     assert card.downloads == 0
     assert card.chat_eligible is False
 
 
 def test_eval_result_roundtrip() -> None:
     payload = {
-        "model_id": "clemsail/micro-kiki-v3",
+        "model_id": "Ailiance-fr/micro-kiki-v3",
         "benchmark": "HumanEval+",
         "metric": "pass@1",
         "score": 0.78,

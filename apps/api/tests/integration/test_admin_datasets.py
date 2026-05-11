@@ -16,7 +16,7 @@ def client_with_datasets(tmp_path: Path):
     (elec / "MANIFEST.json").write_text(
         json.dumps(
             {
-                "hf_dataset_id": "electron-rare/oshwa",
+                "hf_dataset_id": "Ailiance-fr/oshwa",
                 "license": "CERN-OHL-S-2.0",
                 "download_date": "2026-04-26",
                 "n_used": 4321,

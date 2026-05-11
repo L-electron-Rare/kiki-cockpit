@@ -10,7 +10,7 @@ const sample = {
   name: 'oshwa',
   n_rows: 4321,
   license: 'CERN-OHL-S-2.0',
-  hf_dataset_id: 'electron-rare/oshwa',
+  hf_dataset_id: 'Ailiance-fr/oshwa',
   download_date: '2026-04-26',
   size_bytes: 14_222_345,
   size_mb: 13.56,
@@ -38,6 +38,6 @@ describe('DatasetCard', () => {
 
   it('renders HF dataset id text', async () => {
     await renderWithRouter(<DatasetCard dataset={sample} />);
-    expect(screen.getByText('electron-rare/oshwa')).toBeInTheDocument();
+    expect(screen.getByText('Ailiance-fr/oshwa')).toBeInTheDocument();
   });
 });

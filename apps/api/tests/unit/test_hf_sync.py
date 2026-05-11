@@ -13,21 +13,21 @@ FIXTURES = Path(__file__).parent.parent / "fixtures" / "hf_responses"
 
 @pytest.mark.asyncio
 async def test_fetch_models_for_owner_parses_response() -> None:
-    fixture = json.loads((FIXTURES / "clemsail_models.json").read_text())
+    fixture = json.loads((FIXTURES / "Ailiance-fr_models.json").read_text())
 
     def handler(request: httpx.Request) -> httpx.Response:
         assert "/api/models" in str(request.url)
-        assert request.url.params["author"] == "clemsail"
+        assert request.url.params["author"] == "Ailiance-fr"
         return httpx.Response(200, json=fixture)
 
     transport = httpx.MockTransport(handler)
     async with httpx.AsyncClient(transport=transport, base_url="https://huggingface.co") as client:
-        models = await fetch_models_for_owner(client, "clemsail")
+        models = await fetch_models_for_owner(client, "Ailiance-fr")
 
     assert len(models) == 2
-    assert models[0]["id"] == "clemsail/micro-kiki-v3"
+    assert models[0]["id"] == "Ailiance-fr/micro-kiki-v3"
     assert models[0]["downloads"] == 242
-    assert models[1]["id"] == "clemsail/kiki-stm32-sft"
+    assert models[1]["id"] == "Ailiance-fr/kiki-stm32-sft"
 
 
 @pytest.mark.asyncio
@@ -44,8 +44,8 @@ async def test_fetch_models_for_owner_empty_when_404() -> None:
 
 def test_to_model_card_maps_basic_fields() -> None:
     raw = {
-        "id": "clemsail/micro-kiki-v3",
-        "author": "clemsail",
+        "id": "Ailiance-fr/micro-kiki-v3",
+        "author": "Ailiance-fr",
         "downloads": 242,
         "likes": 4,
         "lastModified": "2026-04-26T12:34:56.000Z",
@@ -54,15 +54,15 @@ def test_to_model_card_maps_basic_fields() -> None:
 
     card = to_model_card(raw, ailiance_aliases=set())
 
-    assert card.id == "clemsail/micro-kiki-v3"
-    assert card.owner == "clemsail"
+    assert card.id == "Ailiance-fr/micro-kiki-v3"
+    assert card.owner == "Ailiance-fr"
     assert card.name == "micro-kiki-v3"
     assert card.downloads == 242
     assert card.likes == 4
     assert card.status == ModelStatus.PRODUCTION
     assert card.chat_backend == ChatBackend.HF_EXTERNAL
     assert card.chat_eligible is False
-    assert card.hf_url == "https://huggingface.co/clemsail/micro-kiki-v3"
+    assert card.hf_url == "https://huggingface.co/Ailiance-fr/micro-kiki-v3"
 
 
 def test_to_model_card_marks_ailiance_live_models_chat_eligible() -> None:
@@ -76,8 +76,8 @@ def test_to_model_card_marks_ailiance_live_models_chat_eligible() -> None:
 
 def test_to_model_card_zero_downloads_marks_alpha() -> None:
     raw = {
-        "id": "clemsail/spikingkiki-v4-adapters",
-        "author": "clemsail",
+        "id": "Ailiance-fr/spikingkiki-v4-adapters",
+        "author": "Ailiance-fr",
         "downloads": 0,
         "likes": 0,
     }

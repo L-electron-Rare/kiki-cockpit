@@ -16,8 +16,8 @@ def test_is_chat_eligible_returns_true_for_ailiance_aliases() -> None:
 
 
 def test_is_chat_eligible_returns_false_for_hf_models() -> None:
-    assert is_chat_eligible("clemsail/micro-kiki-v3") is False
-    assert is_chat_eligible("electron-rare/mascarade-iot") is False
+    assert is_chat_eligible("Ailiance-fr/micro-kiki-v3") is False
+    assert is_chat_eligible("Ailiance-fr/mascarade-iot") is False
 
 
 @pytest.mark.asyncio

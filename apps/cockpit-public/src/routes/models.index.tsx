@@ -1,11 +1,10 @@
-import { ModelCard } from '@/components/ModelCard';
-import { BaseModelFilter } from '@/components/filters/BaseModelFilter';
-import { DomainFilter } from '@/components/filters/DomainFilter';
-import { StatusFilter } from '@/components/filters/StatusFilter';
-import { useModels } from '@/hooks/useModels';
-import { createFileRoute, useNavigate, useSearch } from '@tanstack/react-router';
+import type { components } from '@cockpit/shared';
+import { Link, createFileRoute, useNavigate, useSearch } from '@tanstack/react-router';
 import { useMemo, useState } from 'react';
 import { z } from 'zod';
+import { useModels } from '@/hooks/useModels';
+
+type ModelCard = components['schemas']['ModelCard'];
 
 const searchSchema = z.object({
   domain: z.string().optional(),
@@ -17,6 +16,95 @@ export const Route = createFileRoute('/models/')({
   component: ModelsPage,
   validateSearch: searchSchema,
 });
+
+const KINDS = ['all', 'base', 'fine_tuned', 'lora', 'quantized', 'distilled'] as const;
+const KIND_LABELS: Record<string, string> = {
+  all: 'all',
+  base: 'base',
+  fine_tuned: 'fine-tune',
+  lora: 'lora',
+  quantized: 'quantized',
+  distilled: 'distilled',
+};
+
+/** Inline card using styles.css design-token classes (avoids touching ModelCard.tsx). */
+function ModelGridCard({ card }: { card: ModelCard }) {
+  const isLive = card.chat_eligible;
+  const badgeClass = card.status === 'featured' ? 'badge featured'
+    : isLive ? 'badge live'
+    : card.kind === 'lora' ? 'badge lora'
+    : 'badge hf';
+  const badgeLabel = card.status === 'featured' ? 'FEATURED'
+    : isLive ? 'LIVE'
+    : (card.kind ?? 'hf').toUpperCase();
+
+  return (
+    <article className="model">
+      <div className="model-head">
+        <div>
+          <div className="model-id">{card.id}</div>
+          <h3>{card.display_name}</h3>
+        </div>
+        <span className={badgeClass}>{badgeLabel}</span>
+      </div>
+
+      {card.featured_headline && (
+        <p className="model-headline">{card.featured_headline}</p>
+      )}
+
+      <div className="model-stats">
+        <div>
+          <span className="k">base</span>
+          <span className="v" style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            {card.base_model ?? '—'}
+          </span>
+        </div>
+        <div>
+          <span className="k">domain</span>
+          <span className="v">{card.domain ?? '—'}</span>
+        </div>
+        <div>
+          <span className="k">license</span>
+          <span className="v">{card.license ?? '—'}</span>
+        </div>
+        <div>
+          <span className="k">score</span>
+          <span className="v">
+            {card.top_eval_score != null
+              ? `${(card.top_eval_score * 100).toFixed(1)}%`
+              : '—'}
+          </span>
+        </div>
+      </div>
+
+      <div className="model-foot">
+        <span>
+          {card.downloads > 0
+            ? `↓ ${(card.downloads / 1000).toFixed(1)}k`
+            : 'interne'}
+        </span>
+        {isLive ? (
+          <Link
+            to="/models/$owner/$name"
+            params={{ owner: card.owner, name: card.name }}
+            className="model-try"
+          >
+            Essayer →
+          </Link>
+        ) : (
+          <a
+            href={card.hf_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="model-try"
+          >
+            HuggingFace →
+          </a>
+        )}
+      </div>
+    </article>
+  );
+}
 
 function ModelsPage() {
   const search = useSearch({ from: '/models/' });
@@ -33,6 +121,13 @@ function ModelsPage() {
 
   const cards = data ?? [];
 
+  // Derive unique domains from loaded data for the domain chip-bar
+  const domains = useMemo(() => {
+    const set = new Set<string>();
+    cards.forEach((c) => { if (c.domain) set.add(c.domain.split('/')[0] ?? c.domain); });
+    return ['all', ...Array.from(set).sort()];
+  }, [cards]);
+
   const filtered = useMemo(() => {
     const q = searchText.trim().toLowerCase();
     return cards.filter((c) => {
@@ -46,46 +141,130 @@ function ModelsPage() {
     });
   }, [cards, searchText, kindFilter]);
 
-  const setFilter = (key: 'domain' | 'base' | 'status', value: string | undefined) => {
-    navigate({ search: { ...search, [key]: value } });
+  const activeDomain = search.domain ?? 'all';
+
+  const setDomain = (d: string) => {
+    navigate({ search: { ...search, domain: d === 'all' ? undefined : d } });
   };
 
-  if (isLoading) return <p className="text-slate-500">Loading models…</p>;
-  if (error) return <p className="text-rose-700">Failed to load models</p>;
+  if (isLoading) {
+    return (
+      <main>
+        <section className="wrap page-head">
+          <div className="kicker"><span className="num">№ 02</span> · catalogue</div>
+          <h1 className="display">Modèles <em>servis</em> &amp; publiés.</h1>
+        </section>
+        <section className="wrap" style={{ padding: '48px 0' }}>
+          <p style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--ink-4)' }}>
+            Chargement du catalogue…
+          </p>
+        </section>
+      </main>
+    );
+  }
+
+  if (error) {
+    return (
+      <main>
+        <section className="wrap page-head">
+          <div className="kicker"><span className="num">№ 02</span> · catalogue</div>
+          <h1 className="display">Modèles <em>servis</em> &amp; publiés.</h1>
+        </section>
+        <section className="wrap" style={{ padding: '48px 0' }}>
+          <p style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--bad)' }}>
+            Erreur lors du chargement des modèles.
+          </p>
+        </section>
+      </main>
+    );
+  }
 
   return (
-    <div>
-      <header className="mb-6">
-        <h2 className="text-2xl font-bold">Models ({filtered.length})</h2>
-        <div className="mt-3 flex flex-wrap gap-2">
-          <DomainFilter value={search.domain} onChange={(v) => setFilter('domain', v)} />
-          <BaseModelFilter value={search.base} onChange={(v) => setFilter('base', v)} />
-          <StatusFilter value={search.status} onChange={(v) => setFilter('status', v)} />
+    <main>
+      <section className="wrap page-head">
+        <div className="kicker"><span className="num">№ 02</span> · catalogue</div>
+        <h1 className="display">Modèles <em>servis</em> &amp; publiés.</h1>
+        <p style={{
+          fontFamily: 'var(--serif)',
+          fontSize: 22,
+          lineHeight: 1.4,
+          color: 'var(--ink-2)',
+          maxWidth: '60ch',
+          margin: '20px 0 0',
+        }}>
+          Workers répondent en SSE depuis l'infra. LoRA et distillations publiés sur
+          HuggingFace. Chaque entrée pointe vers un fichier JSON Annex&nbsp;IV signé.
+        </p>
+      </section>
+
+      <section className="wrap">
+        {/* Kind + text search bar */}
+        <div className="filter-bar">
           <input
-            type="search"
+            className="search-input"
+            placeholder="rechercher par id, base, domaine…"
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
-            placeholder="Search by id, name, base…"
-            className="rounded border border-slate-300 px-2 py-1 text-sm"
           />
-          <select
-            value={kindFilter}
-            onChange={(e) => setKindFilter(e.target.value)}
-            className="rounded border border-slate-300 px-2 py-1 text-sm"
-          >
-            <option value="all">All kinds</option>
-            <option value="base">base</option>
-            <option value="fine_tuned">fine-tune</option>
-            <option value="lora">LoRA</option>
-            <option value="quantized">quantized</option>
-          </select>
+          {KINDS.map((k) => (
+            <button
+              key={k}
+              className={'chip' + (kindFilter === k ? ' on' : '')}
+              onClick={() => setKindFilter(k)}
+            >
+              {KIND_LABELS[k] ?? k}
+            </button>
+          ))}
         </div>
-      </header>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        {filtered.map((card) => (
-          <ModelCard key={card.id} card={card} />
-        ))}
-      </div>
-    </div>
+
+        {/* Domain chip bar */}
+        <div className="filter-bar" style={{ borderBottom: '1px solid var(--rule)' }}>
+          <span className="kicker" style={{ margin: 0, fontSize: 10 }}>domaine</span>
+          {domains.map((d) => (
+            <button
+              key={d}
+              className={'chip' + (activeDomain === d ? ' on' : '')}
+              onClick={() => setDomain(d)}
+            >
+              {d}
+            </button>
+          ))}
+        </div>
+
+        {/* Results count */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          padding: '16px 0',
+          fontFamily: 'var(--mono)',
+          fontSize: 11,
+          textTransform: 'uppercase',
+          letterSpacing: '0.1em',
+          color: 'var(--ink-4)',
+        }}>
+          <span>{filtered.length} résultats sur {cards.length}</span>
+          <span>tri : featured ↓</span>
+        </div>
+
+        {/* Grid */}
+        <div className="models-grid">
+          {filtered.map((card) => (
+            <ModelGridCard key={card.id} card={card} />
+          ))}
+          {filtered.length === 0 && (
+            <div style={{
+              gridColumn: '1 / -1',
+              padding: '48px 0',
+              fontFamily: 'var(--mono)',
+              fontSize: 12,
+              color: 'var(--ink-4)',
+              textAlign: 'center',
+            }}>
+              Aucun modèle ne correspond aux filtres.
+            </div>
+          )}
+        </div>
+      </section>
+    </main>
   );
 }

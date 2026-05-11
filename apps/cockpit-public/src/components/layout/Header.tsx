@@ -1,33 +1,57 @@
 import { Link } from '@tanstack/react-router';
 
+const NAV_ITEMS: [string, string][] = [
+  ['/', 'Accueil'],
+  ['/models', 'Modèles'],
+  ['/catalog', 'Catalogue HF'],
+  ['/bench', 'Bench'],
+  ['/chat', 'Playground'],
+  ['/status', 'Status'],
+  ['/transparency', 'Transparence'],
+  ['/about', 'À propos'],
+];
+
 export function Header() {
   return (
-    <header className="border-b border-slate-200 bg-white">
-      <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-        <Link to="/" className="font-bold text-lg">
-          AILIANCE LLM Workflow
+    <header className="masthead">
+      <div className="wrap masthead-inner">
+        <Link to="/" className="brand">
+          <span className="brand-mark">
+            <svg
+              viewBox="0 0 32 32"
+              width="30"
+              height="30"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+            >
+              <circle cx="16" cy="16" r="14" />
+              <path d="M4 16h24M16 4c4 4 4 20 0 24M16 4c-4 4-4 20 0 24" />
+            </svg>
+          </span>
+          <span className="brand-word">
+            ail<em>i</em>ance
+          </span>
+          <span className="brand-sub">
+            <span>Flotte LLM</span>
+            <span>souveraine</span>
+          </span>
         </Link>
-        <nav className="flex gap-4 text-sm">
-          <Link to="/models" className="hover:underline">
-            Models
-          </Link>
-          <Link to="/status" className="hover:underline">
-            Status
-          </Link>
-          <Link to="/transparency" className="hover:underline">
-            Transparency
-          </Link>
-          <Link to="/about" className="hover:underline">
-            About
-          </Link>
-          <a
-            href="https://huggingface.co/clemsail"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:underline"
-          >
-            HuggingFace ↗
-          </a>
+        <nav className="nav">
+          {NAV_ITEMS.map(([path, label]) => (
+            <Link
+              key={path}
+              to={path}
+              activeProps={{ 'aria-current': 'page' }}
+            >
+              {label}
+            </Link>
+          ))}
+          <span className="nav-flag">
+            <i />
+            <i />
+            <i />
+          </span>
         </nav>
       </div>
     </header>
