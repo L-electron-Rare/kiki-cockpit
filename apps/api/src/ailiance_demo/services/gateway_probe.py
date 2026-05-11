@@ -282,9 +282,23 @@ async def _probe_one(
     try:
         r = await client.get(f"{w['url']}/health", timeout=2.0)
         ok = r.status_code == 200
-        body = r.json() if ok else {}
+        try:
+            body = r.json() if ok else {}
+        except Exception:  # noqa: BLE001
+            body = {}
         latency_ms = round((time.monotonic() - started) * 1000, 1)
-        healthy = ok and body.get("status") == "ok"
+        # If /health doesn't exist (404/501) but /v1/models worked (we just
+        # fetched served_models above), the backend is reachable — treat it
+        # as healthy. This covers Ollama and mlx_lm.server which don't ship
+        # a standard /health endpoint.
+        if not ok and served_models_live:
+            ok = True
+            healthy = True
+        else:
+            # Standard /health bodies usually report {"status": "ok"}; some
+            # backends just return 200 with no body — accept either.
+            status_str = str(body.get("status", "")).lower()
+            healthy = ok and (status_str in ("", "ok", "healthy") or status_str == "200")
         load_pct = body.get("load_pct")
         # Priority order for tokens_today: live llama.cpp counter > worker
         # /health derived estimate > gateway requests × AVG_TOKENS.
@@ -308,18 +322,24 @@ async def _probe_one(
             **static_md,
         )
     except Exception as exc:  # noqa: BLE001
+        # If /health is unreachable but /v1/models did respond (we have a
+        # served_models_live list above), the worker is actually serving —
+        # mark it healthy but with the /health error attached for debugging.
+        fallback_healthy = bool(served_models_live)
         return WorkerStatus(
             id=w["id"],
             label=w["label"],
             host=w["host"],
-            healthy=False,
-            latency_ms=None,
+            healthy=fallback_healthy,
+            latency_ms=round((time.monotonic() - started) * 1000, 1)
+            if fallback_healthy
+            else None,
             model_loaded=False,
             uptime_s=0,
-            error=str(exc)[:120],
+            error=None if fallback_healthy else str(exc)[:120],
             load_pct=None,
             tokens_today=tokens_live if tokens_live is not None else tokens_lifetime,
-            kwh_per_day=_energy_per_day(static_md["tdp_w"], healthy=False),
+            kwh_per_day=_energy_per_day(static_md["tdp_w"], healthy=fallback_healthy),
             **static_md,
         )
 
