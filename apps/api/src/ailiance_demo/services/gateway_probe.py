@@ -136,7 +136,7 @@ AVG_TOKENS_PER_REQUEST = 280
 # has openssh-client and /root/.ssh mounted RO from /home/electron/.ssh.
 _HOST_PROBES: dict[str, dict[str, str]] = {
     "studio": {"ssh": "studio", "kind": "apple"},
-    "macm1": {"ssh": "macm1", "kind": "apple"},
+    "macm1": {"ssh": "electron@macm1", "kind": "apple"},
     "tower": {"ssh": "clems@tower", "kind": "nvidia"},
     "kxkm-ai": {"ssh": "kxkm@10.2.0.237", "kind": "nvidia"},
 }
@@ -277,15 +277,16 @@ async def _ssh_probe_gpu(host: str) -> dict | None:
             "temperature.gpu --format=csv,noheader,nounits"
         )
     else:
-        # Apple Silicon — Device Utilization % is buried inside the
-        # PerformanceStatistics dict, e.g.:
-        #   "Device Utilization %"=11
-        # The whole dict is rendered on a single line, so grep then sed
-        # the integer that follows our key.
+        # Apple Silicon — PerformanceStatistics is a one-line dict.
+        # macOS ships BSD awk (no gawk match-with-capture), so use sed three
+        # times and join with commas. Each sed prints just the integer or
+        # nothing when the key is missing.
         remote_cmd = (
-            "ioreg -rc AGXAccelerator -d 1 2>/dev/null "
-            "| sed -n 's/.*\"Device Utilization %\"=\\([0-9][0-9]*\\).*/\\1/p' "
-            "| head -n1"
+            "ioreg -rc AGXAccelerator -d 1 2>/dev/null > /tmp/.agx; "
+            "U=$(sed -n 's/.*\"Device Utilization %\"=\\([0-9][0-9]*\\).*/\\1/p' /tmp/.agx | head -n1); "
+            "M=$(sed -n 's/.*\"In use system memory (driver)\"=\\([0-9][0-9]*\\).*/\\1/p' /tmp/.agx | head -n1); "
+            "A=$(sed -n 's/.*\"Alloc system memory\"=\\([0-9][0-9]*\\).*/\\1/p' /tmp/.agx | head -n1); "
+            "echo \"${U:-0},${M:-0},${A:-0}\""
         )
     import asyncio
     cmd = [
@@ -322,10 +323,18 @@ async def _ssh_probe_gpu(host: str) -> dict | None:
             }
         except (ValueError, IndexError):
             return None
-    # apple
+    # apple — "util,used_bytes,alloc_bytes" or just "util" if older format
     try:
-        return {"load_pct": float(out.split()[0]), "vram_used_mb": None,
-                "vram_total_mb": None, "temp_c": None}
+        parts = out.split(",")
+        util = float(parts[0])
+        used_mb = int(int(parts[1]) / 1024 / 1024) if len(parts) > 1 else None
+        alloc_mb = int(int(parts[2]) / 1024 / 1024) if len(parts) > 2 else None
+        return {
+            "load_pct": util,
+            "vram_used_mb": used_mb,
+            "vram_total_mb": alloc_mb,
+            "temp_c": None,  # requires sudo powermetrics on macOS
+        }
     except (ValueError, IndexError):
         return None
 
