@@ -425,6 +425,9 @@ async def _probe_one(
             load_pct=final_load_pct,
             tokens_today=tokens_field,
             kwh_per_day=_energy_per_day(static_md["tdp_w"], healthy),
+            vram_used_mb=gpu_probe.get("vram_used_mb") if gpu_probe else None,
+            vram_total_mb=gpu_probe.get("vram_total_mb") if gpu_probe else None,
+            temp_c=gpu_probe.get("temp_c") if gpu_probe else None,
             **static_md,
         )
     except Exception as exc:  # noqa: BLE001

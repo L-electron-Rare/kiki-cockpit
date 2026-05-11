@@ -38,6 +38,9 @@ export interface components {
       tokens_today?: number | null;
       kwh_per_day?: number | null;
       served_models?: string[] | null;
+      vram_used_mb?: number | null;
+      vram_total_mb?: number | null;
+      temp_c?: number | null;
     };
     StatusReport: {
       workers: components['schemas']['WorkerStatus'][];

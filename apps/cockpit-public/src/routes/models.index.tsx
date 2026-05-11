@@ -329,9 +329,23 @@ function ModelsPage() {
                 </div>
               </div>
               <div>
-                <div className="label">charge</div>
+                <div className="label">GPU</div>
                 <div className="val tnum">
                   {w.load_pct != null ? `${w.load_pct.toFixed(0)} %` : '—'}
+                </div>
+              </div>
+              <div>
+                <div className="label">VRAM</div>
+                <div className="val tnum">
+                  {w.vram_used_mb != null && w.vram_total_mb != null
+                    ? `${Math.round(w.vram_used_mb / 1024)} / ${Math.round(w.vram_total_mb / 1024)} GB`
+                    : '—'}
+                </div>
+              </div>
+              <div>
+                <div className="label">temp</div>
+                <div className="val tnum">
+                  {w.temp_c != null ? `${w.temp_c.toFixed(0)} °C` : '—'}
                 </div>
               </div>
               <div>

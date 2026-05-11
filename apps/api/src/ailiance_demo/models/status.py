@@ -22,6 +22,9 @@ class WorkerStatus(BaseModel):
     tokens_today: int | None = None  # tokens served in the last 24h (estimate)
     kwh_per_day: float | None = None  # TDP_W × 24 / 1000 — daily energy estimate
     served_models: list[str] | None = None  # actual models the worker currently serves
+    vram_used_mb: int | None = None  # live GPU memory used
+    vram_total_mb: int | None = None  # GPU memory total (nvidia-smi)
+    temp_c: float | None = None  # GPU temperature
 
 
 class StatusReport(BaseModel):
