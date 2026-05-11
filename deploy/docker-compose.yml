@@ -80,7 +80,7 @@ services:
       - "traefik.http.middlewares.kiki-api-ratelimit.ratelimit.burst=10"
       - "traefik.http.middlewares.kiki-api-ratelimit.ratelimit.sourceCriterion.ipStrategy.depth=1"
       - "traefik.http.routers.kiki-api-public.middlewares=kiki-api-ratelimit"
-      - "traefik.http.routers.kiki-api-admin.middlewares=kiki-api-ratelimit,kiki-admin-tsuser"
+      - "traefik.http.routers.kiki-api-admin.middlewares=kiki-api-ratelimit,kiki-admin-tsuser,oidc-auth@docker"
 
   public:
     <<: [*restart, *logging]
@@ -145,6 +145,12 @@ services:
       - "traefik.http.routers.kiki-admin.tls.certresolver=${TRAEFIK_CERTRESOLVER:-letsencrypt}"
       - "traefik.http.routers.kiki-admin.service=kiki-admin"
       - "traefik.http.routers.kiki-admin.priority=1"
+      # Defence in depth on top of tailnet-only DNS: any tailnet device
+      # reaching admin.ailiance.fr must also pass Keycloak SSO
+      # (electron_rare realm) via the shared traefik-forward-auth
+      # middleware. Tailnet membership stays the network gate; OIDC is
+      # the per-user identity gate.
+      - "traefik.http.routers.kiki-admin.middlewares=oidc-auth@docker"
 
 networks:
   traefik:
