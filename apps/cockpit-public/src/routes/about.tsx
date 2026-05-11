@@ -18,7 +18,7 @@ function AboutPage() {
     <main>
       <section className="wrap page-head">
         <div className="kicker">
-          <span className="num">№ 06</span> · L'Électron Rare
+          <span className="num">№ 06</span> · Ailiance software
         </div>
         <h1 className="display">
           Pourquoi <em>cette</em> flotte.
@@ -28,10 +28,10 @@ function AboutPage() {
       <section className="wrap" style={{ paddingTop: 48, paddingBottom: 80 }}>
         <article className="prose">
           <p className="lede">
-            La flotte LLM de L'Électron Rare est fine-tunée sur Apple Silicon (Mac Studio M3 Ultra,
+            La flotte LLM Ailiance software est fine-tunée sur Apple Silicon (Mac Studio M3 Ultra,
             512 Go de mémoire unifiée) avec MLX. Nous distillons les traces de raisonnement de
             Claude Opus dans des modèles open-source, et publions des adaptateurs traçables sous
-            Apache-2.0.
+            Apache-2.0 ou autres licences adaptées au modèle de base.
           </p>
 
           <h2>Stack technique</h2>
@@ -139,7 +139,7 @@ function AboutPage() {
             </li>
             <li>
               <a
-                href="https://github.com/electron-rare/iact-bench"
+                href="https://github.com/ailiance/iact-bench"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -151,9 +151,9 @@ function AboutPage() {
 
           <h2>Organisation des responsabilités</h2>
           <p>
-            Trois pôles de responsabilité, séparés au sein de L'Électron Rare pour permettre la
-            traçabilité et la séparation des contrôles attendues par l'Article 17 IA Act (Quality
-            Management System) :
+            Trois pôles de responsabilité, séparés au sein de l'équipe Ailiance software pour
+            permettre la traçabilité et la séparation des contrôles attendues par l'Article 17 IA
+            Act (Quality Management System) :
           </p>
           <ul>
             <li>

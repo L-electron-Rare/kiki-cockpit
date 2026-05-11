@@ -59,7 +59,7 @@ const ENTRIES: ProvenanceEntry[] = [
   {
     alias: 'ailiance/auto',
     base: 'Jina v3 embeddings + MLP head + chain orchestrator',
-    provider: "Jina AI + L'Électron Rare",
+    provider: 'Jina AI + Ailiance software',
     license: 'Apache-2.0',
     provenanceUrl:
       'https://github.com/ailiance/ailiance/blob/main/docs/provenance/auto-router.json',
@@ -82,7 +82,7 @@ function TransparencyPage() {
       <section className="wrap" style={{ paddingTop: 48 }}>
         <article className="prose">
           <p className="lede">
-            Ce site est exploité par <strong>L'Électron Rare</strong> comme vitrine publique d'une
+            Ce site est exploité par <strong>Ailiance software</strong> comme vitrine publique d'une
             infrastructure LLM européenne. Il relève du règlement (UE) 2024/1689. Les six blocs
             ci-dessous décrivent notre démarche qualité : documentation technique, information
             intégrateurs, résumé des données, procédure de validation, vérification des biais, et
@@ -182,7 +182,7 @@ function TransparencyPage() {
           </p>
           <ul>
             <li>
-              <strong>Sources principales</strong> — corpus internes L'Électron Rare (distillation
+              <strong>Sources principales</strong> — corpus internes Ailiance software (distillation
               synthétique de traces Claude Opus, documentation technique publique, prompts curés
               manuellement) et jeux de données ouverts sous licence (Stack Exchange, KiCad upstream,
               Wikipédia, Common Crawl filtré)

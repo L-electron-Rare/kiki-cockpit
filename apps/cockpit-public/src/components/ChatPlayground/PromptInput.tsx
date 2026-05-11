@@ -31,7 +31,7 @@ export function PromptInput({ onSubmit, disabled }: Props) {
         placeholder="Type a message…"
         rows={3}
         disabled={disabled}
-        className="flex-1 rounded border border-slate-300 p-2 resize-none focus:outline-none focus:ring-2 focus:ring-emerald-500"
+        className="flex-1 rounded border border-slate-300 bg-white text-slate-900 placeholder:text-slate-400 p-2 resize-none focus:outline-none focus:ring-2 focus:ring-emerald-500"
       />
       <button
         type="button"

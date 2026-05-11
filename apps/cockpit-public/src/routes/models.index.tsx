@@ -270,7 +270,7 @@ function ModelsPage() {
         >
           Source :{' '}
           <a
-            href="https://github.com/electron-rare/iact-bench"
+            href="https://github.com/ailiance/iact-bench"
             target="_blank"
             rel="noopener noreferrer"
           >

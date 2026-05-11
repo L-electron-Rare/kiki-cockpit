@@ -7,7 +7,10 @@ interface Props {
 }
 
 export function MessageBubble({ speaker, content, streaming }: Props) {
-  const align = speaker === 'user' ? 'ml-auto bg-slate-100' : 'mr-auto bg-emerald-50';
+  const align =
+    speaker === 'user'
+      ? 'ml-auto bg-slate-100 text-slate-900'
+      : 'mr-auto bg-emerald-50 text-slate-900';
   // During the gap between request and first token (Cloudflare can buffer SSE
   // for several seconds before any chunk reaches the client) show three
   // pulsing dots so the user gets immediate feedback.

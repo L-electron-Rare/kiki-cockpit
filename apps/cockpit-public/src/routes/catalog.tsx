@@ -1,7 +1,7 @@
+import catalog from '@/data/hf-catalog.json';
 import { createFileRoute } from '@tanstack/react-router';
 import { useMemo, useState } from 'react';
 import type { CSSProperties } from 'react';
-import catalog from '@/data/hf-catalog.json';
 
 export const Route = createFileRoute('/catalog')({
   component: CatalogPage,
@@ -81,10 +81,12 @@ function CatalogPage() {
             margin: '20px 0 0',
           }}
         >
-          Source-of-truth des poids LoRA et modèles fine-tunés Ailiance, distribués
-          publiquement sur HuggingFace. {erCount} dépôts <code>electron-rare</code>{' '}
-          (production IP) et {aiCount} dépôts <code>Ailiance-fr</code> (fine-tunes
-          mascarade, devstral, gemma-4, apertus, eurollm).
+          Source-of-truth des poids LoRA et modèles fine-tunés Ailiance software, distribués
+          publiquement sur HuggingFace. {aiCount} dépôts <code>Ailiance-fr</code> (fine-tunes
+          mascarade, devstral, gemma-4, apertus, eurollm) et {erCount} dépôts{' '}
+          <code>electron-rare</code> <span className="badge hf">legacy</span> conservés pour
+          traçabilité historique des releases avant la migration sur l'organisation{' '}
+          <code>Ailiance-fr</code>.
         </p>
       </section>
 
@@ -103,7 +105,11 @@ function CatalogPage() {
               className={'chip' + (orgFilter === o ? ' on' : '')}
               onClick={() => setOrgFilter(o)}
             >
-              {o === 'all' ? `all (${erCount + aiCount})` : `${o} (${data.orgs[o] ?? 0})`}
+              {o === 'all'
+                ? `all (${erCount + aiCount})`
+                : o === 'electron-rare'
+                  ? `electron-rare · legacy (${data.orgs[o] ?? 0})`
+                  : `${o} (${data.orgs[o] ?? 0})`}
             </button>
           ))}
         </div>
@@ -186,9 +192,7 @@ function CatalogPage() {
                   <td style={{ ...tdStyle, textAlign: 'right' }}>
                     {m.downloads > 0 ? m.downloads : '—'}
                   </td>
-                  <td style={{ ...tdStyle, textAlign: 'right' }}>
-                    {m.likes > 0 ? m.likes : '—'}
-                  </td>
+                  <td style={{ ...tdStyle, textAlign: 'right' }}>{m.likes > 0 ? m.likes : '—'}</td>
                   <td style={tdStyle}>
                     <a
                       href={`https://huggingface.co/${m.modelId}`}
