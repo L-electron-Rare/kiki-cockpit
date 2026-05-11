@@ -35,11 +35,7 @@ export function Header() {
         </Link>
         <nav className="nav">
           {NAV_ITEMS.map(([path, label]) => (
-            <Link
-              key={path}
-              to={path}
-              activeProps={{ 'aria-current': 'page' }}
-            >
+            <Link key={path} to={path} activeProps={{ 'aria-current': 'page' }}>
               {label}
             </Link>
           ))}

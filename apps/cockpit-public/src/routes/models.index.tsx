@@ -1,8 +1,8 @@
+import { ChatPlayground } from '@/components/ChatPlayground/ChatPlayground';
+import { useModels } from '@/hooks/useModels';
 import type { components } from '@cockpit/shared';
 import { Link, createFileRoute } from '@tanstack/react-router';
 import { useMemo } from 'react';
-import { ChatPlayground } from '@/components/ChatPlayground/ChatPlayground';
-import { useModels } from '@/hooks/useModels';
 
 type ModelCard = components['schemas']['ModelCard'];
 
@@ -12,21 +12,21 @@ export const Route = createFileRoute('/models/')({
 
 // Mini fleet panel — single source of truth for status while /api/public/status n'est pas câblé.
 const FLEET = [
-  { id: 'ailiance/apertus-70b',    host: 'studio',  port: 9301, role: 'souverain',    up: true  },
-  { id: 'ailiance/devstral-24b',   host: 'macm1',   port: 9302, role: 'code',          up: true  },
-  { id: 'ailiance/eurollm-22b',    host: 'studio',  port: 9303, role: 'multilingue',   up: true  },
-  { id: 'ailiance/gemma3-4b',      host: 'tower',   port: 9304, role: 'fallback',      up: true  },
-  { id: 'ailiance/qwen3-next-80b', host: 'kxkm-ai', port: 8002, role: 'raisonnement',  up: true  },
+  { id: 'ailiance/apertus-70b', host: 'studio', port: 9301, role: 'souverain', up: true },
+  { id: 'ailiance/devstral-24b', host: 'macm1', port: 9302, role: 'code', up: true },
+  { id: 'ailiance/eurollm-22b', host: 'studio', port: 9303, role: 'multilingue', up: true },
+  { id: 'ailiance/gemma3-4b', host: 'tower', port: 9304, role: 'fallback', up: true },
+  { id: 'ailiance/qwen3-next-80b', host: 'kxkm-ai', port: 8002, role: 'raisonnement', up: true },
 ];
 
 // Bench origine vs tuné — extrait iact-bench v0.2.0. À remplacer par fetch /api/public/bench plus tard.
 const BENCH = [
-  { domain: 'KiCad DSL',       origin: 12, tuned: 67, model: 'ailiance/auto'         },
-  { domain: 'KiCad PCB',       origin: 18, tuned: 60, model: 'ailiance/auto'         },
-  { domain: 'SPICE simulation', origin: 21, tuned: 46, model: 'ailiance/auto'         },
-  { domain: 'STM32 embedded',  origin: 28, tuned: 71, model: 'ailiance/auto'         },
-  { domain: 'EMC analysis',    origin: 24, tuned: 58, model: 'ailiance/auto'         },
-  { domain: 'Power electronics', origin: 31, tuned: 64, model: 'ailiance/auto'       },
+  { domain: 'KiCad DSL', origin: 12, tuned: 67, model: 'ailiance/auto' },
+  { domain: 'KiCad PCB', origin: 18, tuned: 60, model: 'ailiance/auto' },
+  { domain: 'SPICE simulation', origin: 21, tuned: 46, model: 'ailiance/auto' },
+  { domain: 'STM32 embedded', origin: 28, tuned: 71, model: 'ailiance/auto' },
+  { domain: 'EMC analysis', origin: 24, tuned: 58, model: 'ailiance/auto' },
+  { domain: 'Power electronics', origin: 31, tuned: 64, model: 'ailiance/auto' },
 ];
 
 function ModelGridCard({ card }: { card: ModelCard }) {
@@ -42,9 +42,7 @@ function ModelGridCard({ card }: { card: ModelCard }) {
           {isLive ? 'LIVE' : 'FEATURED'}
         </span>
       </div>
-      {card.featured_headline && (
-        <p className="model-headline">{card.featured_headline}</p>
-      )}
+      {card.featured_headline && <p className="model-headline">{card.featured_headline}</p>}
       <div className="model-stats">
         <div>
           <span className="k">base</span>
@@ -63,9 +61,7 @@ function ModelGridCard({ card }: { card: ModelCard }) {
         <div>
           <span className="k">score</span>
           <span className="v">
-            {card.top_eval_score != null
-              ? `${(card.top_eval_score * 100).toFixed(1)}%`
-              : '—'}
+            {card.top_eval_score != null ? `${(card.top_eval_score * 100).toFixed(1)}%` : '—'}
           </span>
         </div>
       </div>
@@ -80,12 +76,7 @@ function ModelGridCard({ card }: { card: ModelCard }) {
             Annex IV →
           </Link>
         ) : (
-          <a
-            href={card.hf_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="model-try"
-          >
+          <a href={card.hf_url} target="_blank" rel="noopener noreferrer" className="model-try">
             HuggingFace →
           </a>
         )}
@@ -118,27 +109,33 @@ function ModelsPage() {
   return (
     <main>
       <section className="wrap page-head">
-        <div className="kicker"><span className="num">№ 02</span> · modèles servis</div>
+        <div className="kicker">
+          <span className="num">№ 02</span> · modèles servis
+        </div>
         <h1 className="display">
           Modèles <em>finaux</em> &amp; auto-router.
         </h1>
-        <p style={{
-          fontFamily: 'var(--serif)',
-          fontSize: 22,
-          lineHeight: 1.4,
-          color: 'var(--ink-2)',
-          maxWidth: '60ch',
-          margin: '20px 0 0',
-        }}>
-          Les workers actifs, l'auto-router agentique, le statut de la flotte, les scores
-          bench origine vs tuné, le chemin d'une requête, et le playground — sur une seule page.
+        <p
+          style={{
+            fontFamily: 'var(--serif)',
+            fontSize: 22,
+            lineHeight: 1.4,
+            color: 'var(--ink-2)',
+            maxWidth: '60ch',
+            margin: '20px 0 0',
+          }}
+        >
+          Les workers actifs, l'auto-router agentique, le statut de la flotte, les scores bench
+          origine vs tuné, le chemin d'une requête, et le playground — sur une seule page.
         </p>
       </section>
 
       {/* Auto-router showcase */}
       <section className="wrap block">
         <div className="block-head">
-          <h2>Auto-router <code className="mono">model: "ailiance"</code>.</h2>
+          <h2>
+            Auto-router <code className="mono">model: "ailiance"</code>.
+          </h2>
           <p className="lede">
             Un seul alias. Le routeur classifie 32 domaines (embeddings Jina v3 + classifier MLP),
             applique une politique YAML par domaine, et fait passer la sortie dans un validator
@@ -183,21 +180,31 @@ function ModelsPage() {
         <div className="block-head">
           <h2>Statut de la flotte.</h2>
           <p className="lede">
-            Gateway et workers actifs. <strong>{upCount} / {FLEET.length}</strong> healthy. Refresh
-            manuel — pour la page complète d'observabilité voir le dossier Annex IV.
+            Gateway et workers actifs.{' '}
+            <strong>
+              {upCount} / {FLEET.length}
+            </strong>{' '}
+            healthy. Refresh manuel — pour la page complète d'observabilité voir le dossier Annex
+            IV.
           </p>
         </div>
         <div className="fleet">
           <div className="fleet-head">
-            <span className="live"><span className="dot" /> gateway :9300 · router v0.3</span>
-            <span>{upCount} / {FLEET.length} healthy</span>
+            <span className="live">
+              <span className="dot" /> gateway :9300 · router v0.3
+            </span>
+            <span>
+              {upCount} / {FLEET.length} healthy
+            </span>
           </div>
           {FLEET.map((w) => (
             <div className="worker-row" key={w.id}>
               <span className="dot" style={{ background: w.up ? 'var(--ok)' : 'var(--bad)' }} />
               <div>
                 <div className="id">{w.id}</div>
-                <div className="host">{w.host}:{w.port}</div>
+                <div className="host">
+                  {w.host}:{w.port}
+                </div>
               </div>
               <div>
                 <div className="label">role</div>
@@ -215,7 +222,9 @@ function ModelsPage() {
       {/* Bench origine vs tuné */}
       <section className="wrap block">
         <div className="block-head">
-          <h2>Bench — origine <em>vs</em> tuné.</h2>
+          <h2>
+            Bench — origine <em>vs</em> tuné.
+          </h2>
           <p className="lede">
             iact-bench v0.2.0, sandbox Docker épinglé par digest. Score = % cellules avec validator
             exit-zéro. Origine = modèle base sans routage. Tuné = via auto-router + validator chain.
@@ -239,18 +248,35 @@ function ModelsPage() {
                   <td>{b.domain}</td>
                   <td style={{ textAlign: 'right', fontFamily: 'var(--mono)' }}>{b.origin}%</td>
                   <td style={{ textAlign: 'right', fontFamily: 'var(--mono)' }}>{b.tuned}%</td>
-                  <td style={{ textAlign: 'right', fontFamily: 'var(--mono)', color: delta > 0 ? 'var(--ok)' : 'var(--bad)' }}>
+                  <td
+                    style={{
+                      textAlign: 'right',
+                      fontFamily: 'var(--mono)',
+                      color: delta > 0 ? 'var(--ok)' : 'var(--bad)',
+                    }}
+                  >
                     +{delta}
                   </td>
-                  <td><code>{b.model}</code></td>
+                  <td>
+                    <code>{b.model}</code>
+                  </td>
                 </tr>
               );
             })}
           </tbody>
         </table>
-        <p style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--ink-4)', marginTop: 16 }}>
-          Source : <a href="https://github.com/electron-rare/iact-bench" target="_blank" rel="noopener noreferrer">iact-bench</a> ·
-          {' '}seed crc32(domaine + index) · digest validator sha256 épinglé
+        <p
+          style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--ink-4)', marginTop: 16 }}
+        >
+          Source :{' '}
+          <a
+            href="https://github.com/electron-rare/iact-bench"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            iact-bench
+          </a>{' '}
+          · seed crc32(domaine + index) · digest validator sha256 épinglé
         </p>
       </section>
 
@@ -277,14 +303,16 @@ function ModelsPage() {
               <ModelGridCard key={card.id} card={card} />
             ))}
             {finalModels.length === 0 && (
-              <div style={{
-                gridColumn: '1 / -1',
-                padding: '48px 0',
-                fontFamily: 'var(--mono)',
-                fontSize: 12,
-                color: 'var(--ink-4)',
-                textAlign: 'center',
-              }}>
+              <div
+                style={{
+                  gridColumn: '1 / -1',
+                  padding: '48px 0',
+                  fontFamily: 'var(--mono)',
+                  fontSize: 12,
+                  color: 'var(--ink-4)',
+                  textAlign: 'center',
+                }}
+              >
                 Aucun modèle final.
               </div>
             )}

@@ -9,19 +9,19 @@ const MISSIONS = [
   {
     num: 'I',
     t: 'Frameworks spécialisés',
-    d: 'Mise à disposition de modèles d\'entraînement spécialisés par domaine (KiCad, ngspice, embarqué, droit, médical, math). LoRA et distillations publiés sous Apache-2.0.',
+    d: "Mise à disposition de modèles d'entraînement spécialisés par domaine (KiCad, ngspice, embarqué, droit, médical, math). LoRA et distillations publiés sous Apache-2.0.",
     tag: 'OPEN-WEIGHTS',
   },
   {
     num: 'II',
-    t: 'Aide à l\'implémentation',
+    t: "Aide à l'implémentation",
     d: 'Accompagnement technique pour intégrer la flotte LLM ou un sous-ensemble (gateway, routeur, validators) dans votre infrastructure existante. On-prem, hybride ou cloud privé.',
     tag: 'INTÉGRATION',
   },
   {
     num: 'III',
     t: 'Formation',
-    d: 'Sessions sur le routage agentique, le fine-tuning LoRA sur Apple Silicon, l\'évaluation audit-grade et la conformité AI Act — équipes data, conformité, intégrateurs.',
+    d: "Sessions sur le routage agentique, le fine-tuning LoRA sur Apple Silicon, l'évaluation audit-grade et la conformité AI Act — équipes data, conformité, intégrateurs.",
     tag: 'TRANSFERT',
   },
   {
@@ -36,7 +36,9 @@ function FranceStamp() {
   return (
     <span className="france-stamp">
       <span className="flag">
-        <i /><i /><i />
+        <i />
+        <i />
+        <i />
       </span>
       Servi depuis la France · Beaujolais
     </span>
@@ -54,28 +56,39 @@ function HomePage() {
 
   return (
     <div style={{ margin: '0 calc(-1 * var(--pad))' }}>
-
       {/* Hero — onglets/CTA retirés (déjà dans le header) */}
       <section className="wrap hero">
         <div>
-          <div className="kicker"><span className="num">№ 01</span> · vitrine publique · ailiance.fr</div>
+          <div className="kicker">
+            <span className="num">№ 01</span> · vitrine publique · ailiance.fr
+          </div>
           <h1>
             Une flotte LLM <em>souveraine</em>,<br />
-            servie depuis le Beaujolais,<br />
+            servie depuis le Beaujolais,
+            <br />
             <span className="stk">pas</span> depuis un cloud.
           </h1>
         </div>
         <div>
           <p className="hero-lede">
-            Frameworks de modèles spécialisés, aide à l'implémentation, formation et création
-            de schémas PCB — opérés depuis du matériel personnel en France, sous Apache-2.0.
+            Frameworks de modèles spécialisés, aide à l'implémentation, formation et création de
+            schémas PCB — opérés depuis du matériel personnel en France, sous Apache-2.0.
           </p>
           <div className="hero-meta">
-            <div><span>5</span> workers · <span>24</span> LoRA publics · <span>31</span> domaines évalués</div>
-            <div><span>0</span> dépendance cloud · <span>0</span> log de prompt persisté</div>
-            <div>EU AI Act <span>Article 50, 53, Annex IV §1(c)</span></div>
+            <div>
+              <span>5</span> workers · <span>24</span> LoRA publics · <span>31</span> domaines
+              évalués
+            </div>
+            <div>
+              <span>0</span> dépendance cloud · <span>0</span> log de prompt persisté
+            </div>
+            <div>
+              EU AI Act <span>Article 50, 53, Annex IV §1(c)</span>
+            </div>
           </div>
-          <div style={{ marginTop: 28 }}><FranceStamp /></div>
+          <div style={{ marginTop: 28 }}>
+            <FranceStamp />
+          </div>
         </div>
       </section>
 
@@ -102,10 +115,15 @@ function HomePage() {
       {/* Manifeste — 4 missions */}
       <section className="wrap block">
         <div className="block-head">
-          <h2>Le manifeste<br />en quatre missions.</h2>
+          <h2>
+            Le manifeste
+            <br />
+            en quatre missions.
+          </h2>
           <p className="lede">
-            Pourquoi exploiter cinq workers sur du matériel personnel quand un appel d'API suffirait&nbsp;?
-            Parce qu'il existe encore un standard plus exigeant que la latence : la <em>traçabilité</em>.
+            Pourquoi exploiter cinq workers sur du matériel personnel quand un appel d'API
+            suffirait&nbsp;? Parce qu'il existe encore un standard plus exigeant que la latence : la{' '}
+            <em>traçabilité</em>.
           </p>
         </div>
         <div className="pillars">
@@ -123,7 +141,9 @@ function HomePage() {
       {/* Une seule présentation des modèles */}
       <section className="wrap block">
         <div className="block-head">
-          <h2>Modèles servis <em>live</em>.</h2>
+          <h2>
+            Modèles servis <em>live</em>.
+          </h2>
           <p className="lede">
             Workers actifs sur la flotte, plus l'auto-router agentique. Le bouton{' '}
             <strong>Essayer</strong> ouvre le playground sans inscription, sans clé d'API, sans
@@ -132,8 +152,18 @@ function HomePage() {
         </div>
         <div className="models-grid">
           {isLoading ? (
-            <div className="model" style={{ gridColumn: '1/-1', justifyContent: 'center', alignItems: 'center', minHeight: 120 }}>
-              <span className="muted mono" style={{ fontSize: 12 }}>chargement…</span>
+            <div
+              className="model"
+              style={{
+                gridColumn: '1/-1',
+                justifyContent: 'center',
+                alignItems: 'center',
+                minHeight: 120,
+              }}
+            >
+              <span className="muted mono" style={{ fontSize: 12 }}>
+                chargement…
+              </span>
             </div>
           ) : (
             featured.map((w) => (
@@ -151,30 +181,44 @@ function HomePage() {
                     </div>
                     <span className="badge live">LIVE</span>
                   </div>
-                  {w.featured_headline && (
-                    <p className="model-headline">{w.featured_headline}</p>
-                  )}
+                  {w.featured_headline && <p className="model-headline">{w.featured_headline}</p>}
                   <div className="model-stats">
                     {w.base_model && (
-                      <div><span className="k">base</span><span className="v">{w.base_model}</span></div>
+                      <div>
+                        <span className="k">base</span>
+                        <span className="v">{w.base_model}</span>
+                      </div>
                     )}
                     {w.quantization && (
-                      <div><span className="k">quant</span><span className="v">{w.quantization}</span></div>
+                      <div>
+                        <span className="k">quant</span>
+                        <span className="v">{w.quantization}</span>
+                      </div>
                     )}
                     {w.memory_gb && (
-                      <div><span className="k">mem</span><span className="v">{w.memory_gb.toFixed(0)} GB</span></div>
+                      <div>
+                        <span className="k">mem</span>
+                        <span className="v">{w.memory_gb.toFixed(0)} GB</span>
+                      </div>
                     )}
                     {w.host && (
-                      <div><span className="k">host</span><span className="v">{w.host.split('.')[0]}</span></div>
+                      <div>
+                        <span className="k">host</span>
+                        <span className="v">{w.host.split('.')[0]}</span>
+                      </div>
                     )}
                   </div>
                   <div className="model-foot">
                     {w.top_eval_benchmark && w.top_eval_score != null ? (
-                      <span>{w.top_eval_benchmark} {(w.top_eval_score * 100).toFixed(1)}%</span>
+                      <span>
+                        {w.top_eval_benchmark} {(w.top_eval_score * 100).toFixed(1)}%
+                      </span>
                     ) : (
                       <span />
                     )}
-                    <span className="model-try">Essayer <ArrowRight size={12} /></span>
+                    <span className="model-try">
+                      Essayer <ArrowRight size={12} />
+                    </span>
                   </div>
                 </article>
               </Link>
@@ -216,12 +260,16 @@ function HomePage() {
                 margin: 0,
               }}
             >
-              Tout le code, <em style={{ color: 'var(--accent)', fontStyle: 'italic' }}>tous les poids</em>, toutes les politiques — sur GitHub.
+              Tout le code,{' '}
+              <em style={{ color: 'var(--accent)', fontStyle: 'italic' }}>tous les poids</em>,
+              toutes les politiques — sur GitHub.
             </h2>
             <div>
-              <p style={{ color: 'var(--ink-3)', fontSize: 17, lineHeight: 1.5, margin: '0 0 24px' }}>
-                <code className="mono">ailiance/ailiance</code> contient la gateway, le
-                router, les politiques de chaîne et le dossier de transparence.{' '}
+              <p
+                style={{ color: 'var(--ink-3)', fontSize: 17, lineHeight: 1.5, margin: '0 0 24px' }}
+              >
+                <code className="mono">ailiance/ailiance</code> contient la gateway, le router, les
+                politiques de chaîne et le dossier de transparence.{' '}
                 <code className="mono">ailiance-demo</code> contient ce site. Les LoRA et
                 distillations sont sur HuggingFace. Tout sous Apache-2.0.
               </p>
@@ -247,7 +295,6 @@ function HomePage() {
           </div>
         </div>
       </section>
-
     </div>
   );
 }

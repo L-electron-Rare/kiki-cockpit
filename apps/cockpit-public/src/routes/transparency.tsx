@@ -86,8 +86,10 @@ function TransparencyPage() {
             infrastructure LLM européenne. Il relève du règlement (UE) 2024/1689. Les six blocs
             ci-dessous décrivent notre démarche qualité : documentation technique, information
             intégrateurs, résumé des données, procédure de validation, vérification des biais, et
-            mécanisme d'incidents. <em>L'obligation d'information d'utilisation IA (Article 50)
-            apparaît dès l'accueil.</em>
+            mécanisme d'incidents.{' '}
+            <em>
+              L'obligation d'information d'utilisation IA (Article 50) apparaît dès l'accueil.
+            </em>
           </p>
 
           {/* 1. Documentation technique */}
@@ -98,9 +100,18 @@ function TransparencyPage() {
             <code>ailiance/ailiance/docs/provenance/</code>, daté et signé par commit Git.
           </p>
           <ul>
-            <li><strong>Entraînement</strong> — repository source, SHA upstream, méthode (LoRA bf16 MLX, distillation, quantization), hyperparamètres, durée et coût matériel</li>
-            <li><strong>Tests</strong> — suites Lighteval / EvalPlus / MT-Bench / iact-bench avec git_sha et methodology pinned</li>
-            <li><strong>Résultats</strong> — scores par domaine, perplexité, task-score, LLM-judge, et validator exit-codes — toutes les cellules rejouables byte-à-byte</li>
+            <li>
+              <strong>Entraînement</strong> — repository source, SHA upstream, méthode (LoRA bf16
+              MLX, distillation, quantization), hyperparamètres, durée et coût matériel
+            </li>
+            <li>
+              <strong>Tests</strong> — suites Lighteval / EvalPlus / MT-Bench / iact-bench avec
+              git_sha et methodology pinned
+            </li>
+            <li>
+              <strong>Résultats</strong> — scores par domaine, perplexité, task-score, LLM-judge, et
+              validator exit-codes — toutes les cellules rejouables byte-à-byte
+            </li>
           </ul>
 
           <table className="prov-table">
@@ -138,14 +149,29 @@ function TransparencyPage() {
           {/* 2. Information intégrateurs */}
           <h2>2 · Information pour intégrateurs — capacités et limites</h2>
           <p>
-            Chaque model card HuggingFace déclare explicitement les capacités prévues et les
-            limites — conformément à l'Article 53 pour les fournisseurs de modèles GPAI.
+            Chaque model card HuggingFace déclare explicitement les capacités prévues et les limites
+            — conformément à l'Article 53 pour les fournisseurs de modèles GPAI.
           </p>
           <ul>
-            <li><strong>Capacités</strong> — domaines de spécialisation (KiCad, ngspice, embarqué, droit FR, médical EU, math), langue(s) supportées, longueur de contexte maximale, modes (chat, code, raisonnement)</li>
-            <li><strong>Limites</strong> — cas hors-périmètre, modes connus de défaillance (hallucination de pin-out, confusion d'unités, biais culturels), seuils de confiance recommandés</li>
-            <li><strong>Pré-requis matériels</strong> — quantization disponible, mémoire minimale, débit attendu sur backend de référence</li>
-            <li><strong>Intégration</strong> — endpoint OpenAI-compatible <code>/v1/chat/completions</code>, exemples d'appel curl/Python, paramètres recommandés par cas d'usage</li>
+            <li>
+              <strong>Capacités</strong> — domaines de spécialisation (KiCad, ngspice, embarqué,
+              droit FR, médical EU, math), langue(s) supportées, longueur de contexte maximale,
+              modes (chat, code, raisonnement)
+            </li>
+            <li>
+              <strong>Limites</strong> — cas hors-périmètre, modes connus de défaillance
+              (hallucination de pin-out, confusion d'unités, biais culturels), seuils de confiance
+              recommandés
+            </li>
+            <li>
+              <strong>Pré-requis matériels</strong> — quantization disponible, mémoire minimale,
+              débit attendu sur backend de référence
+            </li>
+            <li>
+              <strong>Intégration</strong> — endpoint OpenAI-compatible{' '}
+              <code>/v1/chat/completions</code>, exemples d'appel curl/Python, paramètres
+              recommandés par cas d'usage
+            </li>
           </ul>
 
           {/* 3. Résumé du contenu d'entraînement */}
@@ -155,10 +181,23 @@ function TransparencyPage() {
             uniquement un dump technique) :
           </p>
           <ul>
-            <li><strong>Sources principales</strong> — corpus internes L'Électron Rare (distillation synthétique de traces Claude Opus, documentation technique publique, prompts curés manuellement) et jeux de données ouverts sous licence (Stack Exchange, KiCad upstream, Wikipédia, Common Crawl filtré)</li>
-            <li><strong>Volume et composition</strong> — nombre approximatif d'exemples, distribution par langue, distribution par domaine</li>
-            <li><strong>Exclusions</strong> — contenus protégés non utilisés sciemment, respect des signaux d'opt-out (robots.txt, ai.txt) pour les données web</li>
-            <li><strong>Période de collecte</strong> — bornes temporelles des sources</li>
+            <li>
+              <strong>Sources principales</strong> — corpus internes L'Électron Rare (distillation
+              synthétique de traces Claude Opus, documentation technique publique, prompts curés
+              manuellement) et jeux de données ouverts sous licence (Stack Exchange, KiCad upstream,
+              Wikipédia, Common Crawl filtré)
+            </li>
+            <li>
+              <strong>Volume et composition</strong> — nombre approximatif d'exemples, distribution
+              par langue, distribution par domaine
+            </li>
+            <li>
+              <strong>Exclusions</strong> — contenus protégés non utilisés sciemment, respect des
+              signaux d'opt-out (robots.txt, ai.txt) pour les données web
+            </li>
+            <li>
+              <strong>Période de collecte</strong> — bornes temporelles des sources
+            </li>
           </ul>
 
           {/* 4. Procédure de conception et validation */}
@@ -168,19 +207,47 @@ function TransparencyPage() {
             suit une procédure formelle reproductible :
           </p>
           <ul>
-            <li><strong>Conception</strong> — sélection du modèle base, justification de la méthode (LoRA vs full fine-tune vs distillation), choix des hyperparamètres documenté dans le fichier de provenance</li>
-            <li><strong>Validation pré-publication</strong> — iact-bench complet (31 domaines × 23 modèles) + sandbox Docker validators (g++, KiCad DRC/ERC, ngspice, shellcheck, tsc, etc.) avec digests sha256 épinglés</li>
-            <li><strong>Critères de release</strong> — gain mesurable sur le domaine cible vs base model, absence de régression critique sur les autres domaines, validator exit-zero sur ≥ 80% des cellules domain-critical</li>
-            <li><strong>Trace d'audit</strong> — NDJSON par run avec <code>run_id</code>, <code>git_sha</code>, <code>seed</code>, <code>validator_image_digest</code>, <code>prompt_hash</code> et <code>output_hash</code></li>
+            <li>
+              <strong>Conception</strong> — sélection du modèle base, justification de la méthode
+              (LoRA vs full fine-tune vs distillation), choix des hyperparamètres documenté dans le
+              fichier de provenance
+            </li>
+            <li>
+              <strong>Validation pré-publication</strong> — iact-bench complet (31 domaines × 23
+              modèles) + sandbox Docker validators (g++, KiCad DRC/ERC, ngspice, shellcheck, tsc,
+              etc.) avec digests sha256 épinglés
+            </li>
+            <li>
+              <strong>Critères de release</strong> — gain mesurable sur le domaine cible vs base
+              model, absence de régression critique sur les autres domaines, validator exit-zero sur
+              ≥ 80% des cellules domain-critical
+            </li>
+            <li>
+              <strong>Trace d'audit</strong> — NDJSON par run avec <code>run_id</code>,{' '}
+              <code>git_sha</code>, <code>seed</code>, <code>validator_image_digest</code>,{' '}
+              <code>prompt_hash</code> et <code>output_hash</code>
+            </li>
           </ul>
 
           {/* 5. Vérification des données */}
           <h2>5 · Processus de vérification des données d'entraînement</h2>
           <p>Trois axes contrôlés systématiquement avant fine-tuning :</p>
           <ul>
-            <li><strong>Qualité</strong> — dédup near-duplicate (MinHash), filtrage des artefacts (HTML résiduel, encodage cassé, tronqué), validation syntaxique pour les corpus code/JSON/YAML, score de cohérence sur échantillon stratifié</li>
-            <li><strong>Biais</strong> — audit sur axes protégés (genre, origine, opinion politique, religion) via classifiers ouverts, comparaison de la distribution corpus vs distribution attendue, alerte si écart-type {'>'} 2σ</li>
-            <li><strong>Représentativité</strong> — couverture des sous-domaines techniques (par exemple en KiCad : symboles vs footprints vs schémas vs PCB layout), équilibrage langue FR / EN, équilibrage difficulté (basique → expert)</li>
+            <li>
+              <strong>Qualité</strong> — dédup near-duplicate (MinHash), filtrage des artefacts
+              (HTML résiduel, encodage cassé, tronqué), validation syntaxique pour les corpus
+              code/JSON/YAML, score de cohérence sur échantillon stratifié
+            </li>
+            <li>
+              <strong>Biais</strong> — audit sur axes protégés (genre, origine, opinion politique,
+              religion) via classifiers ouverts, comparaison de la distribution corpus vs
+              distribution attendue, alerte si écart-type {'>'} 2σ
+            </li>
+            <li>
+              <strong>Représentativité</strong> — couverture des sous-domaines techniques (par
+              exemple en KiCad : symboles vs footprints vs schémas vs PCB layout), équilibrage
+              langue FR / EN, équilibrage difficulté (basique → expert)
+            </li>
           </ul>
           <p>
             Les scripts de vérification sont publiés dans{' '}
@@ -190,23 +257,40 @@ function TransparencyPage() {
               rel="noopener noreferrer"
             >
               ailiance/scripts/data_audit/
-            </a>
-            {' '}et exécutés en CI à chaque mise à jour de corpus.
+            </a>{' '}
+            et exécutés en CI à chaque mise à jour de corpus.
           </p>
 
           {/* 6. Mécanisme d'incidents */}
           <h2>6 · Mécanisme de remontée et de traitement des incidents</h2>
           <p>
-            Un canal unique de remontée pour plaintes, erreurs, biais détectés ou préoccupations
-            de droit d'auteur :{' '}
-            <a href="mailto:incidents@ailiance.fr">incidents@ailiance.fr</a>.
+            Un canal unique de remontée pour plaintes, erreurs, biais détectés ou préoccupations de
+            droit d'auteur : <a href="mailto:incidents@ailiance.fr">incidents@ailiance.fr</a>.
           </p>
           <ul>
-            <li><strong>Réception</strong> — accusé sous 48 heures ouvrées, identifiant d'incident unique, qualification (plainte / erreur factuelle / biais / droit d'auteur / autre)</li>
-            <li><strong>Investigation</strong> — reproduction de la sortie incriminée si possible (NDJSON audit-grade contient prompt_hash + seed), analyse de la chaîne de provenance, identification du ou des modèles concernés</li>
-            <li><strong>Traitement</strong> — retrait temporaire du modèle si gravité élevée, patch dataset ou règle de routage si biais reproductible, ré-entraînement si nécessaire, mise à jour de la model card</li>
-            <li><strong>Communication</strong> — réponse documentée au plaignant sous 7 jours ouvrés, et publication d'un post-mortem anonymisé dans <code>docs/incidents/</code> si l'incident a entraîné un changement de modèle ou de politique</li>
-            <li><strong>Registre public</strong> — incidents par catégorie et délais de traitement publiés trimestriellement sur cette page</li>
+            <li>
+              <strong>Réception</strong> — accusé sous 48 heures ouvrées, identifiant d'incident
+              unique, qualification (plainte / erreur factuelle / biais / droit d'auteur / autre)
+            </li>
+            <li>
+              <strong>Investigation</strong> — reproduction de la sortie incriminée si possible
+              (NDJSON audit-grade contient prompt_hash + seed), analyse de la chaîne de provenance,
+              identification du ou des modèles concernés
+            </li>
+            <li>
+              <strong>Traitement</strong> — retrait temporaire du modèle si gravité élevée, patch
+              dataset ou règle de routage si biais reproductible, ré-entraînement si nécessaire,
+              mise à jour de la model card
+            </li>
+            <li>
+              <strong>Communication</strong> — réponse documentée au plaignant sous 7 jours ouvrés,
+              et publication d'un post-mortem anonymisé dans <code>docs/incidents/</code> si
+              l'incident a entraîné un changement de modèle ou de politique
+            </li>
+            <li>
+              <strong>Registre public</strong> — incidents par catégorie et délais de traitement
+              publiés trimestriellement sur cette page
+            </li>
           </ul>
 
           <div className="disclosure">
@@ -216,14 +300,21 @@ function TransparencyPage() {
             </div>
             <div>
               <h4>Sandbox des validators</h4>
-              <p style={{ margin: 0, fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--ink-2)' }}>
+              <p
+                style={{
+                  margin: 0,
+                  fontFamily: 'var(--mono)',
+                  fontSize: 12,
+                  color: 'var(--ink-2)',
+                }}
+              >
                 docker run --network=none --read-only --user 1000:1000 --cap-drop=ALL
               </p>
               <p style={{ margin: '10px 0 0', color: 'var(--ink-3)', fontSize: 14 }}>
                 La sortie du modèle est <em>la seule entrée</em> du validator : pas d'exfiltration
-                de données, pas de fuite d'environnement. Douze validators stables aujourd'hui
-                (g++, arm-none-eabi-gcc, cargo embedded, shellcheck, tsc, ngspice, KiCad DRC/ERC,
-                FreeCAD scripting, html5lib strict, sqlglot, JSON/YAML). Dix validators EDA/MCAD
+                de données, pas de fuite d'environnement. Douze validators stables aujourd'hui (g++,
+                arm-none-eabi-gcc, cargo embedded, shellcheck, tsc, ngspice, KiCad DRC/ERC, FreeCAD
+                scripting, html5lib strict, sqlglot, JSON/YAML). Dix validators EDA/MCAD
                 supplémentaires en v0.3.0.
               </p>
             </div>
