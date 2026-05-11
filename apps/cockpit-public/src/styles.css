@@ -189,7 +189,7 @@ button { font-family: inherit; }
   align-items: stretch;
   gap: 0;
 }
-.nav button {
+.nav a {
   background: none;
   border: 0;
   padding: 0 18px;
@@ -202,10 +202,11 @@ button { font-family: inherit; }
   display: flex;
   align-items: center;
   gap: 6px;
+  text-decoration: none;
 }
-.nav button:hover { color: var(--ink); }
-.nav button[aria-current="true"] { color: var(--ink); }
-.nav button[aria-current="true"]::after {
+.nav a:hover { color: var(--ink); }
+.nav a[aria-current="page"] { color: var(--ink); }
+.nav a[aria-current="page"]::after {
   content: "";
   position: absolute;
   left: 18px; right: 18px;
