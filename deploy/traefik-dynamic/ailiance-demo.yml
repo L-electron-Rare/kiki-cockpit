@@ -20,10 +20,14 @@ http:
       tls:
         certResolver: letsencrypt
     kiki-admin:
-      rule: 'Host(`admin.ailiance.fr`) || Host(`admin.ml.saillant.cc`)'
+      rule: 'Host(`admin.ailiance.fr`)'
       entryPoints: [websecure]
       service: kiki-admin
       priority: 1
+      # Keycloak SSO is the SOLE access gate — middleware lives on the
+      # finefab-life forward-auth container, referenced cross-provider.
+      middlewares:
+        - oidc-auth@docker
       tls:
         certResolver: letsencrypt
   services:
