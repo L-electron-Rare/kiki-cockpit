@@ -27,7 +27,7 @@ def sample_card() -> ModelCard:
         id="clemsail/micro-kiki-v3",
         owner="clemsail",
         name="micro-kiki-v3",
-        display_name="Micro-KIKI v3",
+        display_name="Micro-Ailiance v3",
         status=ModelStatus.FEATURED,
         chat_backend=ChatBackend.HF_EXTERNAL,
         chat_eligible=False,

@@ -1,4 +1,4 @@
-# Curated from eu-kiki/eval/results/SUMMARY.md (2026-05-04 + 2026-05-06).
+# Curated from ailiance/eval/results/SUMMARY.md (2026-05-04 + 2026-05-06).
 # Refresh: edit this file, redeploy api. Each row is one bench run.
 benchmarks:
   - run_id: devstral-base-humanevalplus

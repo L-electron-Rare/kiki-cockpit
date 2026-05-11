@@ -265,7 +265,7 @@ packages/shared/src/api/types.ts
 ```markdown
 # ailiance-demo
 
-Frontend for training, evaluation, and testing of L'Électron Rare's LLM fleet.
+Frontend for training, evaluation, and testing of Ailiance's LLM fleet.
 
 - **Public showcase**: gallery + provenance + chat playground for the 3 AILIANCE Live models, HF deep-link for the 24 published HF models
 - **Admin (Tailscale-only)**: monitoring training runs, worker health, eval results, and (future sprints) eval/train orchestration
@@ -477,7 +477,7 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
 
     # Paths to sibling repos (read-only sources)
-    kiki_mac_tunner_root: Path = Path.home() / "Documents" / "Projets" / "KIKI-Mac_tunner"
+    kiki_mac_tunner_root: Path = Path.home() / "Documents" / "Projets" / "ailiance-mac-tuner"
     ailiance_root: Path = Path.home() / "Documents" / "Projets" / "ailiance"
 
     # ailiance gateway
@@ -1118,7 +1118,7 @@ export default {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ailiance-demo — L'Électron Rare</title>
+    <title>ailiance-demo — Ailiance</title>
   </head>
   <body>
     <div id="root"></div>
@@ -1197,7 +1197,7 @@ export const Route = createFileRoute('/')({
 function HomePage() {
   return (
     <div>
-      <h2 className="text-3xl font-bold">L'Électron Rare — Model Showcase</h2>
+      <h2 className="text-3xl font-bold">Ailiance — Model Showcase</h2>
       <p className="mt-2 text-slate-600">
         Foundation under construction. Sprint 1 brings the gallery and chat playground.
       </p>
@@ -1706,7 +1706,7 @@ def test_model_card_minimal_fields() -> None:
         id="clemsail/micro-kiki-v3",
         owner="clemsail",
         name="micro-kiki-v3",
-        display_name="Micro-KIKI v3",
+        display_name="Micro-Ailiance v3",
         status=ModelStatus.FEATURED,
         chat_backend=ChatBackend.HF_EXTERNAL,
         chat_eligible=False,
@@ -2066,7 +2066,7 @@ git commit -m "feat(api): hf_sync.to_model_card mapper with chat-eligibility det
 featured:
   - id: clemsail/micro-kiki-v3
     rank: 1
-    headline: "242 dl, 4♥ — la variante KIKI la plus adoptée"
+    headline: "242 dl, 4♥ — la variante Ailiance la plus adoptée"
   - id: clemsail/kiki-kicad-sft
     rank: 2
     headline: "Premier LLM open KiCad-fluent"
@@ -2077,7 +2077,7 @@ deprecated:
     note: "v1 vide"
 
 aliases:
-  clemsail/micro-kiki-v3: "Micro-KIKI v3"
+  clemsail/micro-kiki-v3: "Micro-Ailiance v3"
 ```
 
 - [ ] **Step 2: Write `apps/api/tests/unit/test_featured.py`** (test first)
@@ -2103,7 +2103,7 @@ def test_load_featured_parses_all_sections() -> None:
     assert "electron-rare/kiki-stm32-sft-v1" in cfg.deprecated
     assert cfg.deprecated["electron-rare/kiki-stm32-sft-v1"].superseded_by == "clemsail/kiki-stm32-sft"
 
-    assert cfg.aliases["clemsail/micro-kiki-v3"] == "Micro-KIKI v3"
+    assert cfg.aliases["clemsail/micro-kiki-v3"] == "Micro-Ailiance v3"
 
 
 def test_load_featured_missing_file_returns_empty(tmp_path: Path) -> None:
@@ -2211,7 +2211,7 @@ Expected: `3 passed`
 featured:
   - id: clemsail/micro-kiki-v3
     rank: 1
-    headline: "242 dl, 4♥ — la variante KIKI la plus adoptée"
+    headline: "242 dl, 4♥ — la variante Ailiance la plus adoptée"
   - id: clemsail/kiki-kicad-sft
     rank: 2
     headline: "Premier LLM open KiCad-fluent — 94 dl"
@@ -2234,7 +2234,7 @@ deprecated:
     note: "v1 vide"
 
 aliases:
-  clemsail/micro-kiki-v3: "Micro-KIKI v3"
+  clemsail/micro-kiki-v3: "Micro-Ailiance v3"
   ailiance/apertus-70b: "Apertus 70B (AILIANCE)"
   ailiance/devstral-24b: "Devstral 24B (AILIANCE)"
   ailiance/eurollm-22b: "EuroLLM 22B (AILIANCE)"
@@ -2659,7 +2659,7 @@ def sample_card() -> ModelCard:
         id="clemsail/micro-kiki-v3",
         owner="clemsail",
         name="micro-kiki-v3",
-        display_name="Micro-KIKI v3",
+        display_name="Micro-Ailiance v3",
         status=ModelStatus.FEATURED,
         chat_backend=ChatBackend.HF_EXTERNAL,
         chat_eligible=False,
@@ -2707,7 +2707,7 @@ def test_get_model_returns_single_card(client_with_cache: TestClient) -> None:
 
     assert response.status_code == 200
     card = response.json()
-    assert card["display_name"] == "Micro-KIKI v3"
+    assert card["display_name"] == "Micro-Ailiance v3"
 
 
 def test_get_model_404_when_unknown(client_with_cache: TestClient) -> None:
@@ -3462,7 +3462,7 @@ const baseCard: Card = {
   id: 'clemsail/micro-kiki-v3',
   owner: 'clemsail',
   name: 'micro-kiki-v3',
-  display_name: 'Micro-KIKI v3',
+  display_name: 'Micro-Ailiance v3',
   status: 'featured',
   chat_backend: 'hf_external',
   chat_eligible: false,
@@ -3482,7 +3482,7 @@ const baseCard: Card = {
 describe('ModelCard', () => {
   it('renders display name and downloads', () => {
     render(<ModelCard card={baseCard} />);
-    expect(screen.getByText('Micro-KIKI v3')).toBeInTheDocument();
+    expect(screen.getByText('Micro-Ailiance v3')).toBeInTheDocument();
     expect(screen.getByText(/242/)).toBeInTheDocument();
   });
 
@@ -4529,7 +4529,7 @@ function HomePage() {
   return (
     <div className="max-w-6xl mx-auto space-y-8">
       <section>
-        <h1 className="text-4xl font-bold">L'Électron Rare — Model Showcase</h1>
+        <h1 className="text-4xl font-bold">Ailiance — Model Showcase</h1>
         <p className="mt-2 text-slate-600">
           24 fine-tuned LLMs published on HuggingFace + 3 EU-sovereign models served live.
           Provenance, eval scores, and chat playground for the AILIANCE Live stack.
@@ -4575,7 +4575,7 @@ function AboutPage() {
     <article className="max-w-3xl mx-auto prose">
       <h1>About this showcase</h1>
       <p>
-        L'Électron Rare's LLM fleet is fine-tuned on Apple Silicon (Mac Studio M3 Ultra,
+        Ailiance's LLM fleet is fine-tuned on Apple Silicon (Mac Studio M3 Ultra,
         512 GB unified memory) using MLX. We distill Claude Opus reasoning into open-source
         models and publish provenance-traceable adapters under Apache-2.0.
       </p>
@@ -4583,7 +4583,7 @@ function AboutPage() {
       <p>
         Each model published with full provenance: base model, training method (LoRA / SFT),
         hyperparameters, datasets (HF-traceable, licensed Apache/MIT/CC-BY), hardware,
-        run SHA. See <a href="https://github.com/L-electron-Rare/ailiance/blob/main/docs/eu-ai-act-transparency.md">the AILIANCE transparency document</a>.
+        run SHA. See <a href="https://github.com/ailiance/ailiance/blob/main/docs/eu-ai-act-transparency.md">the AILIANCE transparency document</a>.
       </p>
       <h2>Stack</h2>
       <ul>
@@ -4658,14 +4658,14 @@ export function Footer() {
     <footer className="border-t border-slate-200 mt-12">
       <div className="max-w-6xl mx-auto px-6 py-6 text-sm text-slate-500">
         <p>
-          L'Électron Rare — Apache-2.0 — Models on{' '}
+          Ailiance — Apache-2.0 — Models on{' '}
           <a className="underline" href="https://huggingface.co/clemsail">clemsail</a> +{' '}
           <a className="underline" href="https://huggingface.co/electron-rare">electron-rare</a>
         </p>
         <p className="mt-1">
           Source:{' '}
-          <a className="underline" href="https://github.com/L-electron-Rare/ailiance-demo">
-            github.com/L-electron-Rare/ailiance-demo
+          <a className="underline" href="https://github.com/ailiance/ailiance-demo">
+            github.com/ailiance/ailiance-demo
           </a>
         </p>
       </div>
@@ -5094,7 +5094,7 @@ Expected: FAIL `ImportError`
 - [ ] **Step 4: Write `apps/api/src/ailiance_demo/services/log_tail.py`**
 
 ```python
-"""Parse mlx_lm training log format. Reuses regex from KIKI-Mac_tunner/scripts/training_tui.py."""
+"""Parse mlx_lm training log format. Reuses regex from ailiance-mac-tuner/scripts/training_tui.py."""
 from __future__ import annotations
 
 import re
@@ -5319,7 +5319,7 @@ Replace the body of `Settings` with the previous fields plus:
 ```python
     training_log_roots: list[Path] = Field(
         default_factory=lambda: [
-            Path.home() / "Documents" / "Projets" / "KIKI-Mac_tunner" / "logs",
+            Path.home() / "Documents" / "Projets" / "ailiance-mac-tuner" / "logs",
             Path.home() / "Documents" / "Projets" / "ailiance" / "logs",
         ],
     )

@@ -105,7 +105,7 @@ def test_dataset_detail_inherits_summary_and_adds_samples() -> None:
 - [ ] **Step 1.2: Run test, verify it fails**
 
 ```bash
-cd /Users/electron/Documents/Projets/kiki-cockpit/apps/api
+cd /Users/electron/Documents/Projets/ailiance-cockpit/apps/api
 uv run pytest tests/unit/test_dataset_model.py -v
 ```
 Expected: FAIL — `ModuleNotFoundError: No module named 'ailiance_demo.models.dataset'`
@@ -180,7 +180,7 @@ git commit -m "feat(api): dataset Pydantic models"
 - Create: `apps/api/src/ailiance_demo/services/datasets.py`
 - Test: `apps/api/tests/unit/test_datasets_service.py`
 
-The service walks a configured root dir for `*/MANIFEST.json` files; each manifest follows the eu-kiki/ailiance convention (`hf_dataset_id`, `license`, `download_date`, `n_used`, sibling `train.jsonl`).
+The service walks a configured root dir for `*/MANIFEST.json` files; each manifest follows the ailiance/ailiance convention (`hf_dataset_id`, `license`, `download_date`, `n_used`, sibling `train.jsonl`).
 
 - [ ] **Step 2.1: Write the failing test**
 
@@ -762,10 +762,10 @@ _ADAPTER_ROOT_PER_HOST: dict[str, str] = {
 }
 _HF_BASE_PER_MODEL: dict[str, str] = {
     "ailiance/mistral-medium-3.5-128b": (
-        "/Users/clems/KIKI-Mac_tunner/models/Mistral-Medium-3.5-128B-MLX-Q8"
+        "/Users/clems/ailiance-mac-tuner/models/Mistral-Medium-3.5-128B-MLX-Q8"
     ),
     "ailiance/gemma4-e4b-curriculum": "lmstudio-community/gemma-4-E4B-it-MLX-4bit",
-    "ailiance/eurollm-22b": "/Users/clems/KIKI-Mac_tunner/models/EuroLLM-22B-Instruct-2512",
+    "ailiance/eurollm-22b": "/Users/clems/ailiance-mac-tuner/models/EuroLLM-22B-Instruct-2512",
 }
 
 
@@ -1129,10 +1129,10 @@ git commit -m "feat(api): POST admin training launch"
 - [ ] **Step 8.1: Run the generator**
 
 ```bash
-cd /Users/electron/Documents/Projets/kiki-cockpit
+cd /Users/electron/Documents/Projets/ailiance-cockpit
 bash scripts/gen-api-types.sh
 ```
-Expected: `✓ Generated /Users/electron/Documents/Projets/kiki-cockpit/packages/shared/src/api/types.ts`.
+Expected: `✓ Generated /Users/electron/Documents/Projets/ailiance-cockpit/packages/shared/src/api/types.ts`.
 
 - [ ] **Step 8.2: Confirm the new schemas are present**
 
@@ -1199,7 +1199,7 @@ describe('useDatasets', () => {
 - [ ] **Step 9.2: Run test, verify it fails**
 
 ```bash
-cd /Users/electron/Documents/Projets/kiki-cockpit/apps/cockpit-admin
+cd /Users/electron/Documents/Projets/ailiance-cockpit/apps/cockpit-admin
 pnpm test --run useDatasets
 ```
 Expected: FAIL — `Cannot find module '../../src/hooks/useDatasets'`.
@@ -1426,7 +1426,7 @@ Modify `apps/cockpit-admin/src/routes/__root.tsx` — find the nav element with 
 - [ ] **Step 11.3: Build to verify**
 
 ```bash
-cd /Users/electron/Documents/Projets/kiki-cockpit
+cd /Users/electron/Documents/Projets/ailiance-cockpit
 pnpm --filter cockpit-admin build
 ```
 Expected: build succeeds.
@@ -1501,7 +1501,7 @@ describe('useLaunchTraining', () => {
 - [ ] **Step 12.2: Run test, verify it fails**
 
 ```bash
-cd /Users/electron/Documents/Projets/kiki-cockpit/apps/cockpit-admin
+cd /Users/electron/Documents/Projets/ailiance-cockpit/apps/cockpit-admin
 pnpm test --run useLaunchTraining
 ```
 Expected: FAIL — `Cannot find module '../../src/hooks/useLaunchTraining'`.
@@ -1843,7 +1843,7 @@ At the end of the returned JSX (sibling of the runs list):
 - [ ] **Step 14.2: Build**
 
 ```bash
-cd /Users/electron/Documents/Projets/kiki-cockpit
+cd /Users/electron/Documents/Projets/ailiance-cockpit
 pnpm --filter cockpit-admin build
 ```
 Expected: build succeeds.
@@ -1879,11 +1879,11 @@ echo "[$(date -Iseconds)] datasets sync start"
 
 rsync -av --include="MANIFEST.json" --include="*/" --exclude="*" \
   -e "ssh -o BatchMode=yes -o ConnectTimeout=5" \
-  studio:/Users/clems/eu-kiki/data/hf-traced/ ~/datasets/ 2>&1 | tail -5
+  studio:/Users/clems/ailiance/data/hf-traced/ ~/datasets/ 2>&1 | tail -5
 
 # Sample preview: stream first 1 KB of each train.jsonl into a side file.
 ssh -o BatchMode=yes -o ConnectTimeout=5 studio \
-  'for f in /Users/clems/eu-kiki/data/hf-traced/*/train.jsonl; do
+  'for f in /Users/clems/ailiance/data/hf-traced/*/train.jsonl; do
      d=$(dirname "$f")
      name=$(basename "$d")
      head -c 1024 "$f"
@@ -1894,7 +1894,7 @@ ssh -o BatchMode=yes -o ConnectTimeout=5 studio \
 for dir in ~/datasets/*/; do
   name=$(basename "$dir")
   ssh -o BatchMode=yes studio \
-    "head -n 3 /Users/clems/eu-kiki/data/hf-traced/$name/train.jsonl 2>/dev/null" \
+    "head -n 3 /Users/clems/ailiance/data/hf-traced/$name/train.jsonl 2>/dev/null" \
     > "$dir/train.jsonl" 2>/dev/null || true
 done
 
@@ -1940,7 +1940,7 @@ Still inside `api:` `volumes:`, add (read-only) so `SSHScreenDispatcher` works:
 git add deploy/docker-compose.yml
 git commit -m "deploy: bind-mount datasets dir + ssh key"
 git push
-ssh electron-server 'cd /opt/kiki-cockpit && git pull --ff-only && docker compose -f deploy/docker-compose.yml up -d --force-recreate api'
+ssh electron-server 'cd /opt/ailiance-cockpit && git pull --ff-only && docker compose -f deploy/docker-compose.yml up -d --force-recreate api'
 sleep 5
 curl -sS --resolve admin.ml.saillant.cc:443:127.0.0.1 \
   https://admin.ml.saillant.cc/api/admin/datasets -k | head -c 400

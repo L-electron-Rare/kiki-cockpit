@@ -3,7 +3,7 @@ export function Footer() {
     <footer className="border-t border-slate-200 mt-12">
       <div className="max-w-6xl mx-auto px-6 py-6 text-sm text-slate-500">
         <p>
-          L'Électron Rare — Apache-2.0 — Models on{' '}
+          Ailiance — Apache-2.0 — Models on{' '}
           <a className="underline" href="https://huggingface.co/clemsail">
             clemsail
           </a>{' '}
@@ -14,8 +14,8 @@ export function Footer() {
         </p>
         <p className="mt-1">
           Source:{' '}
-          <a className="underline" href="https://github.com/L-electron-Rare">
-            https://github.com/L-electron-Rare
+          <a className="underline" href="https://github.com/ailiance">
+            https://github.com/ailiance
           </a>
           {' · '}
           <a className="underline" href="/transparency">

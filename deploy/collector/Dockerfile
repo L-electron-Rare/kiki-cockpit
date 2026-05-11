@@ -1,4 +1,4 @@
-# Optional: containerised ailiance-collector. The native launchd plist (cc.kiki.collector.plist)
+# Optional: containerised ailiance-collector. The native launchd plist (cc.ailiance.collector.plist)
 # is preferred on studio because the collector needs read access to logs and eval results
 # living under the user's home directory.
 FROM python:3.12-slim AS collector

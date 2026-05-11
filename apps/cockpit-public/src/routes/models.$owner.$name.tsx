@@ -73,11 +73,11 @@ function ModelDetailPage() {
             Sourced from{' '}
             <a
               className="underline"
-              href="https://github.com/L-electron-Rare/ailiance/blob/main/docs/provenance/"
+              href="https://github.com/ailiance/ailiance/blob/main/docs/provenance/"
               target="_blank"
               rel="noopener noreferrer"
             >
-              github.com/L-electron-Rare/ailiance/docs/provenance
+              github.com/ailiance/ailiance/docs/provenance
             </a>
           </p>
           <pre className="mt-3 overflow-x-auto rounded bg-slate-50 p-3 text-xs leading-snug">

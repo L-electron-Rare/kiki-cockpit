@@ -20,7 +20,7 @@ const baseCard: Card = {
   id: 'clemsail/micro-kiki-v3',
   owner: 'clemsail',
   name: 'micro-kiki-v3',
-  display_name: 'Micro-KIKI v3',
+  display_name: 'Micro-Ailiance v3',
   status: 'featured',
   chat_backend: 'hf_external',
   chat_eligible: false,
@@ -40,7 +40,7 @@ const baseCard: Card = {
 describe('ModelCard', () => {
   it('renders display name and downloads', () => {
     render(<ModelCard card={baseCard} />);
-    expect(screen.getByText('Micro-KIKI v3')).toBeInTheDocument();
+    expect(screen.getByText('Micro-Ailiance v3')).toBeInTheDocument();
     expect(screen.getByText(/242/)).toBeInTheDocument();
   });
 

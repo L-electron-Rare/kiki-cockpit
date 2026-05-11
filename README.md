@@ -18,7 +18,7 @@
 
 ## C'est quoi
 
-Le front-end de la flotte LLM [ailiance](https://github.com/L-electron-Rare/ailiance). Deux applications, un seul backend FastAPI :
+Le front-end de la flotte LLM [ailiance](https://github.com/ailiance/ailiance). Deux applications, un seul backend FastAPI :
 
 - **Vitrine publique** — galerie des modèles servis (5 workers ailiance + 24 modèles publiés sur HuggingFace), provenance EU AI Act inlinée par modèle, chat playground avec streaming SSE, page `/transparency`, page `/status` live.
 - **Admin (Tailscale-only)** — monitoring des runs de training, santé workers, résultats d'éval, futurs sprints orchestration eval/train.
@@ -186,7 +186,7 @@ Quand on ajoute / retire un modèle servi, **les 4 listes doivent bouger ensembl
 ## Démarrage rapide (dev)
 
 ```bash
-git clone https://github.com/L-electron-Rare/ailiance-demo.git
+git clone https://github.com/ailiance/ailiance-demo.git
 cd ailiance-demo
 pnpm install
 uv sync
@@ -264,8 +264,8 @@ cd apps/api && uv run pytest tests/integration/test_status_endpoint.py \
 
 ## Sister projects
 
-- [`ailiance`](https://github.com/L-electron-Rare/ailiance) — la passerelle LLM elle-même (workers, router-v6, dossier EU AI Act).
-- [`agent-kiki`](https://github.com/L-electron-Rare/agent-kiki) — agent de code (CLI `aki` + extension VS Code) qui pointe sur cette passerelle par défaut.
+- [`ailiance`](https://github.com/ailiance/ailiance) — la passerelle LLM elle-même (workers, router-v6, dossier EU AI Act).
+- [`agent-kiki`](https://github.com/ailiance/ailiance-agent) — agent de code (CLI `aki` + extension VS Code) qui pointe sur cette passerelle par défaut.
 
 ## Licence
 

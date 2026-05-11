@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-const RAW_BASE = 'https://raw.githubusercontent.com/L-electron-Rare/ailiance/main/docs/provenance';
+const RAW_BASE = 'https://raw.githubusercontent.com/ailiance/ailiance/main/docs/provenance';
 
 const PROVENANCE_FILES: Record<string, string> = {
   'ailiance/apertus-70b': 'apertus-70b-instruct-2509.json',

@@ -27,7 +27,7 @@ def test_get_model_returns_single_card(client_with_cache: TestClient) -> None:
 
     assert response.status_code == 200
     card = response.json()
-    assert card["display_name"] == "Micro-KIKI v3"
+    assert card["display_name"] == "Micro-Ailiance v3"
 
 
 def test_get_model_404_when_unknown(client_with_cache: TestClient) -> None:

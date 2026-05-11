@@ -1,4 +1,4 @@
-"""Parse mlx_lm training log format. Reuses regex from KIKI-Mac_tunner/scripts/training_tui.py."""
+"""Parse mlx_lm training log format. Reuses regex from ailiance-mac-tuner/scripts/training_tui.py."""
 from __future__ import annotations
 
 import re
