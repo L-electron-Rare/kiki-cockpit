@@ -18,14 +18,32 @@ ALIAS_TO_GATEWAY_MODEL: dict[str, str] = {
     # gateway fall through to its domain router, which produced garbled output
     # in tests because the request reaches a worker that doesn't recognize the
     # model id and degenerates.
+    # --- generalist base models served by the gateway ---
     "ailiance/mistral-medium-3.5-128b": "ailiance-mistral",
     "ailiance/gemma4-e4b-curriculum": "ailiance-gemma4",
     "ailiance/eurollm-22b": "ailiance-eurollm",
     "ailiance/gemma3-4b": "ailiance-gemma",
     "ailiance/qwen3-next-80b-a3b-instruct": "ailiance-qwen",
-    # The bare "ailiance" alias triggers the gateway's domain router (MiniLM
-    # MLP classifier) — not in MODEL_FORCE_MAP on purpose. We surface the
-    # decision in the chat stream via a route preamble (see stream_chat).
+    "ailiance/granite-30b": "ailiance-granite",
+    "ailiance/ministral-14b": "ailiance-ministral",
+    "ailiance/ministral-14b-reasoning": "ailiance-ministral-reasoning",
+    # --- mascarade hardware specialists (Qwen3-4B LoRA on Tower :8004) ---
+    "ailiance/mascarade-kicad": "ailiance-kicad",
+    "ailiance/mascarade-spice": "ailiance-spice",
+    "ailiance/mascarade-stm32": "ailiance-stm32",
+    "ailiance/mascarade-emc": "ailiance-emc",
+    "ailiance/mascarade-embedded": "ailiance-embedded",
+    "ailiance/mascarade-platformio": "ailiance-platformio",
+    "ailiance/mascarade-freecad": "ailiance-freecad",
+    "ailiance/mascarade-dsp": "ailiance-dsp",
+    "ailiance/mascarade-iot": "ailiance-iot",
+    "ailiance/mascarade-power": "ailiance-power",
+    "ailiance/mascarade-components-review": "ailiance-components-review",
+    "ailiance/mascarade-coder": "ailiance-coder",
+    # The bare "ailiance" alias triggers the gateway's domain router
+    # (Jina v3 embeddings + MLP classifier) — not in MODEL_FORCE_MAP on
+    # purpose. We surface the decision in the chat stream via a route
+    # preamble (see stream_chat).
     "ailiance/auto": "ailiance",
 }
 
