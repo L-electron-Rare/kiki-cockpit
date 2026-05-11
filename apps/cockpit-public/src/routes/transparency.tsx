@@ -58,11 +58,11 @@ const ENTRIES: ProvenanceEntry[] = [
   },
   {
     alias: 'ailiance/auto',
-    base: 'MiniLM-L6 + MLP head + chain orchestrator',
-    provider: "Microsoft + L'Électron Rare",
+    base: 'Jina v3 embeddings + MLP head + chain orchestrator',
+    provider: "Jina AI + L'Électron Rare",
     license: 'Apache-2.0',
     provenanceUrl:
-      'https://github.com/ailiance/ailiance/blob/main/docs/provenance/auto-router-minilm.json',
+      'https://github.com/ailiance/ailiance/blob/main/docs/provenance/auto-router.json',
     notes: 'Classifier 32 domaines · chain v0.3',
   },
 ];
@@ -72,10 +72,10 @@ function TransparencyPage() {
     <main>
       <section className="wrap page-head">
         <div className="kicker">
-          <span className="num">№ 05</span> · EU AI Act · Règlement (UE) 2024/1689
+          <span className="num">№ 03</span> · EU AI Act · Règlement (UE) 2024/1689
         </div>
         <h1 className="display">
-          Transparence &amp; <em>provenance</em>.
+          Démarche Qualité <em>IA Act</em>.
         </h1>
       </section>
 
@@ -83,35 +83,25 @@ function TransparencyPage() {
         <article className="prose">
           <p className="lede">
             Ce site est exploité par <strong>L'Électron Rare</strong> comme vitrine publique d'une
-            infrastructure LLM européenne. Il relève du règlement (UE) 2024/1689 sur
-            l'intelligence artificielle. Les divulgations ci-dessous couvrent l'
-            <strong>Article 50</strong> (transparence vis-à-vis des utilisateurs) et l'
-            <strong>Annexe IV</strong> (documentation technique).
+            infrastructure LLM européenne. Il relève du règlement (UE) 2024/1689. Les six blocs
+            ci-dessous décrivent notre démarche qualité : documentation technique, information
+            intégrateurs, résumé des données, procédure de validation, vérification des biais, et
+            mécanisme d'incidents. <em>L'obligation d'information d'utilisation IA (Article 50)
+            apparaît dès l'accueil.</em>
           </p>
 
-          <div className="disclosure">
-            <div>
-              <div className="num">50</div>
-              <div className="label">Article</div>
-            </div>
-            <div>
-              <h4>Vous interagissez avec une IA.</h4>
-              <p style={{ margin: 0, color: 'var(--ink-2)', fontSize: 15 }}>
-                Chaque réponse de chat sur ce site est produite par un grand modèle de langage. Les
-                sorties peuvent être inexactes, biaisées ou fabriquées. Elles ne constituent pas un
-                avis professionnel. <strong>Ne pas agir</strong> sur une réponse sans vérification
-                indépendante — en particulier dans les domaines régulés (santé, droit, finance,
-                ingénierie critique).
-              </p>
-            </div>
-          </div>
-
-          <h2>Modèles servis</h2>
+          {/* 1. Documentation technique */}
+          <h2>1 · Documentation technique actualisée par modèle</h2>
           <p>
-            Six alias gateway. Chacun pointe vers un fichier JSON de provenance Annex IV §1(c)
-            publié dans{' '}
-            <code>ailiance/ailiance/docs/provenance/</code>.
+            Chaque modèle servi expose un fichier JSON de provenance Annex IV §1(c) couvrant son
+            entraînement, ses tests et ses résultats — publié dans{' '}
+            <code>ailiance/ailiance/docs/provenance/</code>, daté et signé par commit Git.
           </p>
+          <ul>
+            <li><strong>Entraînement</strong> — repository source, SHA upstream, méthode (LoRA bf16 MLX, distillation, quantization), hyperparamètres, durée et coût matériel</li>
+            <li><strong>Tests</strong> — suites Lighteval / EvalPlus / MT-Bench / iact-bench avec git_sha et methodology pinned</li>
+            <li><strong>Résultats</strong> — scores par domaine, perplexité, task-score, LLM-judge, et validator exit-codes — toutes les cellules rejouables byte-à-byte</li>
+          </ul>
 
           <table className="prov-table">
             <thead>
@@ -145,107 +135,79 @@ function TransparencyPage() {
             </tbody>
           </table>
 
-          <h2>Ce que nous documentons par modèle</h2>
+          {/* 2. Information intégrateurs */}
+          <h2>2 · Information pour intégrateurs — capacités et limites</h2>
+          <p>
+            Chaque model card HuggingFace déclare explicitement les capacités prévues et les
+            limites — conformément à l'Article 53 pour les fournisseurs de modèles GPAI.
+          </p>
           <ul>
-            <li>Repository source et SHA exact du commit upstream sur lequel nous nous sommes figés</li>
-            <li>Licence (identifiant SPDX où applicable)</li>
-            <li>Architecture, paramètres totaux, paramètres actifs par token</li>
-            <li>Méthode et auteur de la quantization</li>
-            <li>Toute modification post-téléchargement (fine-tune LoRA, merge, distillation)</li>
-            <li>Usages prévus et cas hors-périmètre</li>
+            <li><strong>Capacités</strong> — domaines de spécialisation (KiCad, ngspice, embarqué, droit FR, médical EU, math), langue(s) supportées, longueur de contexte maximale, modes (chat, code, raisonnement)</li>
+            <li><strong>Limites</strong> — cas hors-périmètre, modes connus de défaillance (hallucination de pin-out, confusion d'unités, biais culturels), seuils de confiance recommandés</li>
+            <li><strong>Pré-requis matériels</strong> — quantization disponible, mémoire minimale, débit attendu sur backend de référence</li>
+            <li><strong>Intégration</strong> — endpoint OpenAI-compatible <code>/v1/chat/completions</code>, exemples d'appel curl/Python, paramètres recommandés par cas d'usage</li>
           </ul>
 
-          <h2>Adaptateurs LoRA publiés</h2>
+          {/* 3. Résumé du contenu d'entraînement */}
+          <h2>3 · Résumé compréhensible du contenu utilisé en entraînement</h2>
           <p>
-            Environ 25 adaptateurs spécialisés sous{' '}
-            <a href="https://huggingface.co/Ailiance-fr" target="_blank" rel="noopener noreferrer">
-              Ailiance-fr
-            </a>
-            . Chaque adaptateur expose une model card déclarant son modèle de base, un résumé des
-            données d'entraînement, et un usage prévu — conformément aux obligations de l'Article 53
-            pour les fournisseurs de GPAI.
+            Pour chaque adaptateur publié, nous fournissons un résumé en français accessible (pas
+            uniquement un dump technique) :
           </p>
+          <ul>
+            <li><strong>Sources principales</strong> — corpus internes L'Électron Rare (distillation synthétique de traces Claude Opus, documentation technique publique, prompts curés manuellement) et jeux de données ouverts sous licence (Stack Exchange, KiCad upstream, Wikipédia, Common Crawl filtré)</li>
+            <li><strong>Volume et composition</strong> — nombre approximatif d'exemples, distribution par langue, distribution par domaine</li>
+            <li><strong>Exclusions</strong> — contenus protégés non utilisés sciemment, respect des signaux d'opt-out (robots.txt, ai.txt) pour les données web</li>
+            <li><strong>Période de collecte</strong> — bornes temporelles des sources</li>
+          </ul>
 
-          <h2>Données d'entraînement &amp; droit d'auteur</h2>
+          {/* 4. Procédure de conception et validation */}
+          <h2>4 · Procédure documentée de conception et de validation</h2>
           <p>
-            Les adaptateurs sont entraînés sur un mélange de corpus internes L'Électron Rare
-            (distillation synthétique de traces de raisonnement Claude Opus, documentation technique
-            publique, prompts curés manuellement) et de jeux de données ouverts sous licence. Nous
-            n'entraînons pas sciemment sur des contenus protégés ; les signaux d'opt-out (robots.txt,
-            ai.txt) sont respectés pour toute donnée web.
+            La méthodologie iact-bench v1 est versionnée et exécutable. Chaque release d'un modèle
+            suit une procédure formelle reproductible :
           </p>
+          <ul>
+            <li><strong>Conception</strong> — sélection du modèle base, justification de la méthode (LoRA vs full fine-tune vs distillation), choix des hyperparamètres documenté dans le fichier de provenance</li>
+            <li><strong>Validation pré-publication</strong> — iact-bench complet (31 domaines × 23 modèles) + sandbox Docker validators (g++, KiCad DRC/ERC, ngspice, shellcheck, tsc, etc.) avec digests sha256 épinglés</li>
+            <li><strong>Critères de release</strong> — gain mesurable sur le domaine cible vs base model, absence de régression critique sur les autres domaines, validator exit-zero sur ≥ 80% des cellules domain-critical</li>
+            <li><strong>Trace d'audit</strong> — NDJSON par run avec <code>run_id</code>, <code>git_sha</code>, <code>seed</code>, <code>validator_image_digest</code>, <code>prompt_hash</code> et <code>output_hash</code></li>
+          </ul>
 
-          <h2>Logs &amp; rétention</h2>
+          {/* 5. Vérification des données */}
+          <h2>5 · Processus de vérification des données d'entraînement</h2>
+          <p>Trois axes contrôlés systématiquement avant fine-tuning :</p>
+          <ul>
+            <li><strong>Qualité</strong> — dédup near-duplicate (MinHash), filtrage des artefacts (HTML résiduel, encodage cassé, tronqué), validation syntaxique pour les corpus code/JSON/YAML, score de cohérence sur échantillon stratifié</li>
+            <li><strong>Biais</strong> — audit sur axes protégés (genre, origine, opinion politique, religion) via classifiers ouverts, comparaison de la distribution corpus vs distribution attendue, alerte si écart-type {'>'} 2σ</li>
+            <li><strong>Représentativité</strong> — couverture des sous-domaines techniques (par exemple en KiCad : symboles vs footprints vs schémas vs PCB layout), équilibrage langue FR / EN, équilibrage difficulté (basique → expert)</li>
+          </ul>
           <p>
-            L'API cockpit log les métadonnées de requête (timestamp, alias modèle, comptage tokens,
-            latence) pendant <strong>≤ 30 jours</strong> pour le débogage opérationnel et
-            l'application des rate-limits. Le <strong>contenu des prompts et réponses</strong> n'est
-            pas persisté sur disque par défaut. Les sessions de chat streaming ne vivent qu'en
-            mémoire volatile.
-          </p>
-
-          <h2>
-            Benchmark audit-grade —{' '}
-            <code>iact-bench v0.2.0</code>
-          </h2>
-          <p>
-            La capacité et la fiabilité de chaque modèle sont mesurées par{' '}
+            Les scripts de vérification sont publiés dans{' '}
             <a
-              href="https://github.com/electron-rare/iact-bench"
+              href="https://github.com/ailiance/ailiance/tree/main/scripts/data_audit"
               target="_blank"
               rel="noopener noreferrer"
             >
-              iact-bench
-            </a>{' '}
-            — un harnais d'évaluation aligné Article 53(1)(d) et Annexe XI. La matrice exécute{' '}
-            <strong>31 domaines canoniques × ≤ 23 modèles GPAI-éligibles</strong> avec triple
-            métrique : perplexité + task-score + LLM-judge +{' '}
-            <strong>validators sandboxés</strong>.
-          </p>
-          <p>Pour chaque cellule nous enregistrons :</p>
-          <ul>
-            <li>
-              <code>run_id</code>, <code>git_sha</code>, <code>methodology</code> (actuellement{' '}
-              <code>v1</code>)
-            </li>
-            <li>
-              <code>prompt_hash</code> et <code>output_hash</code> (sha256)
-            </li>
-            <li>
-              <code>seed</code> (crc32 déterministe par cellule + index échantillon)
-            </li>
-            <li>
-              <code>validator_image_digest</code> — sha256 épinglé de l'image Docker utilisée
-            </li>
-            <li>
-              <code>validator_exit_code</code>, stdout/stderr tronqués — pour rejouer la cellule à
-              l'identique
-            </li>
-          </ul>
-
-          <h2>Router v0.3 — chaîne agentique</h2>
-          <p>
-            Les appels à <code>model: "ailiance"</code> (alias auto-router nu) ne sont pas des
-            proxies à un coup. Depuis router v0.3 (mai 2026), la gateway consulte une{' '}
-            <strong>politique de chaîne</strong> par domaine et, sur les domaines hardware / code,
-            fait passer la sortie modèle par un validator iact-bench sandboxé avant retour. En cas
-            de rejet (par exemple <code>kicad-cli pcb drc</code> exit non-zéro), un prompt{' '}
-            <em>réflecteur</em> est émis avec le stderr du validator et une retry est tentée. La
-            trace complète est enregistrée en NDJSON audit-grade.
-          </p>
-          <p>
-            Les politiques par domaine vivent dans{' '}
-            <a
-              href="https://github.com/ailiance/ailiance/blob/main/configs/chain_policies.yaml"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              configs/chain_policies.yaml
+              ailiance/scripts/data_audit/
             </a>
-            . Les domaines hardware et ingénierie utilisent <code>deliberate</code> (LLM → validator
-            → reflector retry). Les domaines math, traduction et généraliste restent{' '}
-            <code>direct</code> (1-shot).
+            {' '}et exécutés en CI à chaque mise à jour de corpus.
           </p>
+
+          {/* 6. Mécanisme d'incidents */}
+          <h2>6 · Mécanisme de remontée et de traitement des incidents</h2>
+          <p>
+            Un canal unique de remontée pour plaintes, erreurs, biais détectés ou préoccupations
+            de droit d'auteur :{' '}
+            <a href="mailto:incidents@ailiance.fr">incidents@ailiance.fr</a>.
+          </p>
+          <ul>
+            <li><strong>Réception</strong> — accusé sous 48 heures ouvrées, identifiant d'incident unique, qualification (plainte / erreur factuelle / biais / droit d'auteur / autre)</li>
+            <li><strong>Investigation</strong> — reproduction de la sortie incriminée si possible (NDJSON audit-grade contient prompt_hash + seed), analyse de la chaîne de provenance, identification du ou des modèles concernés</li>
+            <li><strong>Traitement</strong> — retrait temporaire du modèle si gravité élevée, patch dataset ou règle de routage si biais reproductible, ré-entraînement si nécessaire, mise à jour de la model card</li>
+            <li><strong>Communication</strong> — réponse documentée au plaignant sous 7 jours ouvrés, et publication d'un post-mortem anonymisé dans <code>docs/incidents/</code> si l'incident a entraîné un changement de modèle ou de politique</li>
+            <li><strong>Registre public</strong> — incidents par catégorie et délais de traitement publiés trimestriellement sur cette page</li>
+          </ul>
 
           <div className="disclosure">
             <div>
@@ -259,21 +221,13 @@ function TransparencyPage() {
               </p>
               <p style={{ margin: '10px 0 0', color: 'var(--ink-3)', fontSize: 14 }}>
                 La sortie du modèle est <em>la seule entrée</em> du validator : pas d'exfiltration
-                de données, pas de fuite d'environnement. Douze validators sont stables aujourd'hui
+                de données, pas de fuite d'environnement. Douze validators stables aujourd'hui
                 (g++, arm-none-eabi-gcc, cargo embedded, shellcheck, tsc, ngspice, KiCad DRC/ERC,
-                FreeCAD scripting, html5lib strict, sqlglot, JSON/YAML). Dix validators
-                EDA/MCAD-as-code supplémentaires arrivent en v0.3.0.
+                FreeCAD scripting, html5lib strict, sqlglot, JSON/YAML). Dix validators EDA/MCAD
+                supplémentaires en v0.3.0.
               </p>
             </div>
           </div>
-
-          <h2>Contact &amp; droit d'opt-out</h2>
-          <p>
-            Signalements de sorties biaisées, préoccupations de droit d'auteur, ou toute autre
-            question AI Act :{' '}
-            <a href="mailto:postmaster@saillant.cc">postmaster@saillant.cc</a>. Délai de réponse
-            cible : 7 jours ouvrés.
-          </p>
         </article>
       </section>
     </main>
