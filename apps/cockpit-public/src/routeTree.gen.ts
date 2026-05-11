@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TransparencyRouteImport } from './routes/transparency'
 import { Route as StatusRouteImport } from './routes/status'
 import { Route as ChatRouteImport } from './routes/chat'
+import { Route as CatalogRouteImport } from './routes/catalog'
+import { Route as BenchRouteImport } from './routes/bench'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ModelsIndexRouteImport } from './routes/models.index'
@@ -31,6 +33,16 @@ const StatusRoute = StatusRouteImport.update({
 const ChatRoute = ChatRouteImport.update({
   id: '/chat',
   path: '/chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CatalogRoute = CatalogRouteImport.update({
+  id: '/catalog',
+  path: '/catalog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BenchRoute = BenchRouteImport.update({
+  id: '/bench',
+  path: '/bench',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -62,6 +74,8 @@ const ChatOwnerNameRoute = ChatOwnerNameRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/bench': typeof BenchRoute
+  '/catalog': typeof CatalogRoute
   '/chat': typeof ChatRouteWithChildren
   '/status': typeof StatusRoute
   '/transparency': typeof TransparencyRoute
@@ -72,6 +86,8 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/bench': typeof BenchRoute
+  '/catalog': typeof CatalogRoute
   '/chat': typeof ChatRouteWithChildren
   '/status': typeof StatusRoute
   '/transparency': typeof TransparencyRoute
@@ -83,6 +99,8 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/bench': typeof BenchRoute
+  '/catalog': typeof CatalogRoute
   '/chat': typeof ChatRouteWithChildren
   '/status': typeof StatusRoute
   '/transparency': typeof TransparencyRoute
@@ -95,6 +113,8 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/bench'
+    | '/catalog'
     | '/chat'
     | '/status'
     | '/transparency'
@@ -105,6 +125,8 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/bench'
+    | '/catalog'
     | '/chat'
     | '/status'
     | '/transparency'
@@ -115,6 +137,8 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/bench'
+    | '/catalog'
     | '/chat'
     | '/status'
     | '/transparency'
@@ -126,6 +150,8 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  BenchRoute: typeof BenchRoute
+  CatalogRoute: typeof CatalogRoute
   ChatRoute: typeof ChatRouteWithChildren
   StatusRoute: typeof StatusRoute
   TransparencyRoute: typeof TransparencyRoute
@@ -154,6 +180,20 @@ declare module '@tanstack/react-router' {
       path: '/chat'
       fullPath: '/chat'
       preLoaderRoute: typeof ChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/catalog': {
+      id: '/catalog'
+      path: '/catalog'
+      fullPath: '/catalog'
+      preLoaderRoute: typeof CatalogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bench': {
+      id: '/bench'
+      path: '/bench'
+      fullPath: '/bench'
+      preLoaderRoute: typeof BenchRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -207,6 +247,8 @@ const ChatRouteWithChildren = ChatRoute._addFileChildren(ChatRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  BenchRoute: BenchRoute,
+  CatalogRoute: CatalogRoute,
   ChatRoute: ChatRouteWithChildren,
   StatusRoute: StatusRoute,
   TransparencyRoute: TransparencyRoute,

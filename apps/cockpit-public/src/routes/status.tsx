@@ -9,17 +9,17 @@ export const Route = createFileRoute('/status')({
 function StatusPage() {
   const { data, isLoading, isError } = useStatus();
 
-  if (isLoading) return <p>Chargement…</p>;
-  if (isError || !data) return <p className="text-rose-700">Échec du chargement du statut.</p>;
+  if (isLoading) return <p>Loading…</p>;
+  if (isError || !data) return <p className="text-rose-700">Failed to load status.</p>;
 
   return (
     <article className="max-w-3xl mx-auto">
       <header className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold">Statut en direct</h1>
+          <h1 className="text-2xl font-bold">Live status</h1>
           <p className="text-sm text-slate-500">
-            {data.healthy_count} sur {data.total_count} workers sains ·
-            rafraîchi toutes les 15 s
+            {data.healthy_count} of {data.total_count} workers healthy ·
+            refreshed every 15 s
           </p>
         </div>
         <Activity className="text-emerald-600" size={32} />
@@ -45,15 +45,15 @@ function StatusPage() {
             </header>
             <p className="text-xs text-slate-600">{w.host}</p>
             <dl className="mt-2 grid grid-cols-2 gap-x-2 text-xs text-slate-700">
-              <dt>latence</dt>
+              <dt>latency</dt>
               <dd>{w.latency_ms ? `${w.latency_ms} ms` : '—'}</dd>
-              <dt>modèle chargé</dt>
-              <dd>{w.model_loaded ? 'oui' : 'non'}</dd>
+              <dt>model loaded</dt>
+              <dd>{w.model_loaded ? 'yes' : 'no'}</dd>
               <dt>uptime</dt>
               <dd>{w.uptime_s ? `${Math.floor(w.uptime_s / 60)} min` : '—'}</dd>
             </dl>
             {w.error && (
-              <p className="mt-2 text-xs font-monon text-rose-700 truncate" title={w.error}>
+              <p className="mt-2 text-xs font-mono text-rose-700 truncate" title={w.error}>
                 {w.error}
               </p>
             )}
@@ -62,7 +62,7 @@ function StatusPage() {
       </div>
 
       <p className="mt-6 text-xs text-slate-500">
-        Dernière mise à jour : {new Date(data.timestamp).toLocaleString()}
+        Last update: {new Date(data.timestamp).toLocaleString()}
       </p>
     </article>
   );
