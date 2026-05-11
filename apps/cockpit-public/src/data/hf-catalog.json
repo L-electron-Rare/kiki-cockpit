@@ -1,10 +1,263 @@
 {
-  "generated_at": "2026-05-11T18:34:04.692272Z",
+  "generated_at": "2026-05-11T20:13:49.853679Z",
   "orgs": {
     "electron-rare": 44,
     "Ailiance-fr": 67
   },
   "models": [
+    {
+      "modelId": "Ailiance-fr/apertus-electronics-hw-lora",
+      "org": "Ailiance-fr",
+      "lastModified": "2026-05-11T19:25:39.000Z",
+      "createdAt": "2026-05-06T18:08:41.000Z",
+      "downloads": 69,
+      "likes": 0,
+      "private": false,
+      "pipeline_tag": "text-generation",
+      "library_name": "peft",
+      "tags": [
+        "peft",
+        "lora",
+        "mlx",
+        "ailiance",
+        "eu-ai-act",
+        "art-52",
+        "art-53",
+        "gpai-fine-tune",
+        "pst-2025-07-24",
+        "text-generation",
+        "en",
+        "base_model:swiss-ai/Apertus-70B-Instruct-2509"
+      ]
+    },
+    {
+      "modelId": "Ailiance-fr/apertus-emc-dsp-power-curriculum-lora",
+      "org": "Ailiance-fr",
+      "lastModified": "2026-05-11T19:15:33.000Z",
+      "createdAt": "2026-05-11T16:49:56.000Z",
+      "downloads": 0,
+      "likes": 0,
+      "private": false,
+      "pipeline_tag": "text-generation",
+      "library_name": "peft",
+      "tags": [
+        "peft",
+        "mlx",
+        "lora",
+        "ailiance",
+        "apertus",
+        "emc-dsp-power",
+        "text-generation",
+        "en",
+        "fr",
+        "base_model:swiss-ai/Apertus-70B-Instruct-2509",
+        "license:cc-by-sa-4.0"
+      ]
+    },
+    {
+      "modelId": "Ailiance-fr/apertus-emc-dsp-power-lora",
+      "org": "Ailiance-fr",
+      "lastModified": "2026-05-11T19:15:30.000Z",
+      "createdAt": "2026-05-11T16:49:25.000Z",
+      "downloads": 0,
+      "likes": 0,
+      "private": false,
+      "pipeline_tag": "text-generation",
+      "library_name": "peft",
+      "tags": [
+        "peft",
+        "mlx",
+        "lora",
+        "ailiance",
+        "apertus",
+        "emc-dsp-power",
+        "text-generation",
+        "en",
+        "fr",
+        "base_model:swiss-ai/Apertus-70B-Instruct-2509",
+        "license:cc-by-sa-4.0"
+      ]
+    },
+    {
+      "modelId": "Ailiance-fr/qwen3-4b-mascarade-power-lora",
+      "org": "Ailiance-fr",
+      "lastModified": "2026-05-11T18:45:26.000Z",
+      "createdAt": "2026-05-11T18:18:39.000Z",
+      "downloads": 0,
+      "likes": 0,
+      "private": false,
+      "pipeline_tag": null,
+      "library_name": "transformers",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "generated_from_trainer",
+        "trl",
+        "sft",
+        "base_model:Qwen/Qwen3-4B-Instruct-2507",
+        "base_model:finetune:Qwen/Qwen3-4B-Instruct-2507",
+        "endpoints_compatible"
+      ]
+    },
+    {
+      "modelId": "Ailiance-fr/qwen3-4b-mascarade-iot-lora",
+      "org": "Ailiance-fr",
+      "lastModified": "2026-05-11T18:43:49.000Z",
+      "createdAt": "2026-05-11T17:55:31.000Z",
+      "downloads": 0,
+      "likes": 0,
+      "private": false,
+      "pipeline_tag": null,
+      "library_name": "transformers",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "generated_from_trainer",
+        "sft",
+        "trl",
+        "base_model:Qwen/Qwen3-4B-Instruct-2507",
+        "base_model:finetune:Qwen/Qwen3-4B-Instruct-2507",
+        "endpoints_compatible"
+      ]
+    },
+    {
+      "modelId": "Ailiance-fr/qwen3-4b-mascarade-dsp-lora",
+      "org": "Ailiance-fr",
+      "lastModified": "2026-05-11T18:42:49.000Z",
+      "createdAt": "2026-05-11T17:44:26.000Z",
+      "downloads": 0,
+      "likes": 0,
+      "private": false,
+      "pipeline_tag": null,
+      "library_name": "transformers",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "generated_from_trainer",
+        "trl",
+        "sft",
+        "base_model:Qwen/Qwen3-4B-Instruct-2507",
+        "base_model:finetune:Qwen/Qwen3-4B-Instruct-2507",
+        "endpoints_compatible"
+      ]
+    },
+    {
+      "modelId": "Ailiance-fr/qwen3-4b-mascarade-freecad-lora",
+      "org": "Ailiance-fr",
+      "lastModified": "2026-05-11T18:41:14.000Z",
+      "createdAt": "2026-05-11T17:25:31.000Z",
+      "downloads": 0,
+      "likes": 0,
+      "private": false,
+      "pipeline_tag": null,
+      "library_name": "transformers",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "generated_from_trainer",
+        "sft",
+        "trl",
+        "base_model:Qwen/Qwen3-4B-Instruct-2507",
+        "base_model:finetune:Qwen/Qwen3-4B-Instruct-2507",
+        "endpoints_compatible"
+      ]
+    },
+    {
+      "modelId": "Ailiance-fr/qwen3-4b-mascarade-platformio-lora",
+      "org": "Ailiance-fr",
+      "lastModified": "2026-05-11T18:39:50.000Z",
+      "createdAt": "2026-05-11T16:58:48.000Z",
+      "downloads": 0,
+      "likes": 0,
+      "private": false,
+      "pipeline_tag": null,
+      "library_name": "transformers",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "generated_from_trainer",
+        "sft",
+        "trl",
+        "base_model:Qwen/Qwen3-4B-Instruct-2507",
+        "base_model:finetune:Qwen/Qwen3-4B-Instruct-2507",
+        "endpoints_compatible"
+      ]
+    },
+    {
+      "modelId": "Ailiance-fr/qwen3-4b-mascarade-embedded-lora",
+      "org": "Ailiance-fr",
+      "lastModified": "2026-05-11T18:38:25.000Z",
+      "createdAt": "2026-05-11T13:34:55.000Z",
+      "downloads": 0,
+      "likes": 1,
+      "private": false,
+      "pipeline_tag": "text-generation",
+      "library_name": "peft",
+      "tags": [
+        "peft",
+        "safetensors",
+        "lora",
+        "sft",
+        "trl",
+        "qwen3",
+        "hardware",
+        "eu-ai-act",
+        "art-52",
+        "art-53",
+        "gpai-fine-tune",
+        "text-generation"
+      ]
+    },
+    {
+      "modelId": "Ailiance-fr/qwen3-4b-mascarade-emc-lora",
+      "org": "Ailiance-fr",
+      "lastModified": "2026-05-11T18:36:55.000Z",
+      "createdAt": "2026-05-11T13:18:44.000Z",
+      "downloads": 0,
+      "likes": 0,
+      "private": false,
+      "pipeline_tag": "text-generation",
+      "library_name": "peft",
+      "tags": [
+        "peft",
+        "safetensors",
+        "lora",
+        "sft",
+        "trl",
+        "qwen3",
+        "hardware",
+        "eu-ai-act",
+        "art-52",
+        "art-53",
+        "gpai-fine-tune",
+        "text-generation"
+      ]
+    },
+    {
+      "modelId": "Ailiance-fr/qwen3-4b-mascarade-stm32-lora",
+      "org": "Ailiance-fr",
+      "lastModified": "2026-05-11T18:35:30.000Z",
+      "createdAt": "2026-05-11T13:09:57.000Z",
+      "downloads": 0,
+      "likes": 0,
+      "private": false,
+      "pipeline_tag": "text-generation",
+      "library_name": "peft",
+      "tags": [
+        "peft",
+        "safetensors",
+        "lora",
+        "sft",
+        "trl",
+        "qwen3",
+        "hardware",
+        "eu-ai-act",
+        "art-52",
+        "art-53",
+        "gpai-fine-tune",
+        "text-generation"
+      ]
+    },
     {
       "modelId": "Ailiance-fr/qwen3-4b-mascarade-spice-lora",
       "org": "Ailiance-fr",
@@ -53,111 +306,6 @@
         "art-53",
         "gpai-fine-tune",
         "text-generation"
-      ]
-    },
-    {
-      "modelId": "Ailiance-fr/qwen3-4b-mascarade-power-lora",
-      "org": "Ailiance-fr",
-      "lastModified": "2026-05-11T18:30:29.000Z",
-      "createdAt": "2026-05-11T18:18:39.000Z",
-      "downloads": 0,
-      "likes": 0,
-      "private": false,
-      "pipeline_tag": null,
-      "library_name": "transformers",
-      "tags": [
-        "transformers",
-        "safetensors",
-        "generated_from_trainer",
-        "trl",
-        "sft",
-        "base_model:Qwen/Qwen3-4B-Instruct-2507",
-        "base_model:finetune:Qwen/Qwen3-4B-Instruct-2507",
-        "endpoints_compatible"
-      ]
-    },
-    {
-      "modelId": "Ailiance-fr/qwen3-4b-mascarade-iot-lora",
-      "org": "Ailiance-fr",
-      "lastModified": "2026-05-11T18:18:25.000Z",
-      "createdAt": "2026-05-11T17:55:31.000Z",
-      "downloads": 0,
-      "likes": 0,
-      "private": false,
-      "pipeline_tag": null,
-      "library_name": "transformers",
-      "tags": [
-        "transformers",
-        "safetensors",
-        "generated_from_trainer",
-        "sft",
-        "trl",
-        "base_model:Qwen/Qwen3-4B-Instruct-2507",
-        "base_model:finetune:Qwen/Qwen3-4B-Instruct-2507",
-        "endpoints_compatible"
-      ]
-    },
-    {
-      "modelId": "Ailiance-fr/qwen3-4b-mascarade-platformio-lora",
-      "org": "Ailiance-fr",
-      "lastModified": "2026-05-11T18:13:50.000Z",
-      "createdAt": "2026-05-11T16:58:48.000Z",
-      "downloads": 0,
-      "likes": 0,
-      "private": false,
-      "pipeline_tag": null,
-      "library_name": "transformers",
-      "tags": [
-        "transformers",
-        "safetensors",
-        "generated_from_trainer",
-        "sft",
-        "trl",
-        "base_model:Qwen/Qwen3-4B-Instruct-2507",
-        "base_model:finetune:Qwen/Qwen3-4B-Instruct-2507",
-        "endpoints_compatible"
-      ]
-    },
-    {
-      "modelId": "Ailiance-fr/qwen3-4b-mascarade-freecad-lora",
-      "org": "Ailiance-fr",
-      "lastModified": "2026-05-11T18:13:44.000Z",
-      "createdAt": "2026-05-11T17:25:31.000Z",
-      "downloads": 0,
-      "likes": 0,
-      "private": false,
-      "pipeline_tag": null,
-      "library_name": "transformers",
-      "tags": [
-        "transformers",
-        "safetensors",
-        "generated_from_trainer",
-        "sft",
-        "trl",
-        "base_model:Qwen/Qwen3-4B-Instruct-2507",
-        "base_model:finetune:Qwen/Qwen3-4B-Instruct-2507",
-        "endpoints_compatible"
-      ]
-    },
-    {
-      "modelId": "Ailiance-fr/qwen3-4b-mascarade-dsp-lora",
-      "org": "Ailiance-fr",
-      "lastModified": "2026-05-11T18:13:40.000Z",
-      "createdAt": "2026-05-11T17:44:26.000Z",
-      "downloads": 0,
-      "likes": 0,
-      "private": false,
-      "pipeline_tag": null,
-      "library_name": "transformers",
-      "tags": [
-        "transformers",
-        "safetensors",
-        "generated_from_trainer",
-        "trl",
-        "sft",
-        "base_model:Qwen/Qwen3-4B-Instruct-2507",
-        "base_model:finetune:Qwen/Qwen3-4B-Instruct-2507",
-        "endpoints_compatible"
       ]
     },
     {
@@ -1317,54 +1465,6 @@
       ]
     },
     {
-      "modelId": "Ailiance-fr/apertus-emc-dsp-power-lora",
-      "org": "Ailiance-fr",
-      "lastModified": "2026-05-11T18:11:07.000Z",
-      "createdAt": "2026-05-11T16:49:25.000Z",
-      "downloads": 0,
-      "likes": 0,
-      "private": false,
-      "pipeline_tag": "text-generation",
-      "library_name": "peft",
-      "tags": [
-        "peft",
-        "mlx",
-        "lora",
-        "ailiance",
-        "apertus",
-        "emc-dsp-power",
-        "text-generation",
-        "en",
-        "fr",
-        "base_model:swiss-ai/Apertus-70B-Instruct-2509",
-        "license:cc-by-sa-4.0"
-      ]
-    },
-    {
-      "modelId": "Ailiance-fr/apertus-emc-dsp-power-curriculum-lora",
-      "org": "Ailiance-fr",
-      "lastModified": "2026-05-11T18:11:04.000Z",
-      "createdAt": "2026-05-11T16:49:56.000Z",
-      "downloads": 0,
-      "likes": 0,
-      "private": false,
-      "pipeline_tag": "text-generation",
-      "library_name": "peft",
-      "tags": [
-        "peft",
-        "mlx",
-        "lora",
-        "ailiance",
-        "apertus",
-        "emc-dsp-power",
-        "text-generation",
-        "en",
-        "fr",
-        "base_model:swiss-ai/Apertus-70B-Instruct-2509",
-        "license:cc-by-sa-4.0"
-      ]
-    },
-    {
       "modelId": "Ailiance-fr/apertus-embedded-lora",
       "org": "Ailiance-fr",
       "lastModified": "2026-05-11T18:11:01.000Z",
@@ -1386,31 +1486,6 @@
         "fr",
         "base_model:swiss-ai/Apertus-70B-Instruct-2509",
         "license:cc-by-sa-4.0"
-      ]
-    },
-    {
-      "modelId": "Ailiance-fr/apertus-electronics-hw-lora",
-      "org": "Ailiance-fr",
-      "lastModified": "2026-05-11T18:10:58.000Z",
-      "createdAt": "2026-05-06T18:08:41.000Z",
-      "downloads": 69,
-      "likes": 0,
-      "private": false,
-      "pipeline_tag": null,
-      "library_name": "peft",
-      "tags": [
-        "peft",
-        "lora",
-        "mlx",
-        "ailiance",
-        "eu-ai-act",
-        "art-52",
-        "art-53",
-        "gpai-fine-tune",
-        "pst-2025-07-24",
-        "en",
-        "base_model:swiss-ai/Apertus-70B-Instruct-2509",
-        "license:apache-2.0"
       ]
     },
     {
@@ -1532,35 +1607,10 @@
       ]
     },
     {
-      "modelId": "Ailiance-fr/qwen3-4b-mascarade-embedded-lora",
-      "org": "Ailiance-fr",
-      "lastModified": "2026-05-11T16:40:30.000Z",
-      "createdAt": "2026-05-11T13:34:55.000Z",
-      "downloads": 0,
-      "likes": 1,
-      "private": false,
-      "pipeline_tag": "text-generation",
-      "library_name": "peft",
-      "tags": [
-        "peft",
-        "safetensors",
-        "lora",
-        "sft",
-        "trl",
-        "qwen3",
-        "hardware",
-        "eu-ai-act",
-        "art-52",
-        "art-53",
-        "gpai-fine-tune",
-        "text-generation"
-      ]
-    },
-    {
-      "modelId": "Ailiance-fr/qwen3-4b-mascarade-emc-lora",
-      "org": "Ailiance-fr",
-      "lastModified": "2026-05-11T16:40:29.000Z",
-      "createdAt": "2026-05-11T13:18:44.000Z",
+      "modelId": "electron-rare/kiki-models-tuning-sft-spice-qwen25-32b",
+      "org": "electron-rare",
+      "lastModified": "2026-05-11T19:27:47.000Z",
+      "createdAt": "2026-05-11T12:08:32.000Z",
       "downloads": 0,
       "likes": 0,
       "private": false,
@@ -1571,107 +1621,18 @@
         "safetensors",
         "lora",
         "sft",
+        "transformers",
         "trl",
-        "qwen3",
-        "hardware",
-        "eu-ai-act",
-        "art-52",
-        "art-53",
-        "gpai-fine-tune",
-        "text-generation"
-      ]
-    },
-    {
-      "modelId": "Ailiance-fr/qwen3-4b-mascarade-stm32-lora",
-      "org": "Ailiance-fr",
-      "lastModified": "2026-05-11T16:40:28.000Z",
-      "createdAt": "2026-05-11T13:09:57.000Z",
-      "downloads": 0,
-      "likes": 0,
-      "private": false,
-      "pipeline_tag": "text-generation",
-      "library_name": "peft",
-      "tags": [
-        "peft",
-        "safetensors",
-        "lora",
-        "sft",
-        "trl",
-        "qwen3",
-        "hardware",
-        "eu-ai-act",
-        "art-52",
-        "art-53",
-        "gpai-fine-tune",
-        "text-generation"
-      ]
-    },
-    {
-      "modelId": "electron-rare/spikingkiki-27b",
-      "org": "electron-rare",
-      "lastModified": "2026-05-11T16:11:36.000Z",
-      "createdAt": "2026-05-11T12:08:14.000Z",
-      "downloads": 0,
-      "likes": 0,
-      "private": false,
-      "pipeline_tag": null,
-      "library_name": null,
-      "tags": [
-        "safetensors",
-        "qwen3_5"
-      ]
-    },
-    {
-      "modelId": "electron-rare/spikingkiki-122b-a10b",
-      "org": "electron-rare",
-      "lastModified": "2026-05-11T15:59:22.000Z",
-      "createdAt": "2026-05-11T12:08:14.000Z",
-      "downloads": 0,
-      "likes": 0,
-      "private": false,
-      "pipeline_tag": null,
-      "library_name": null,
-      "tags": [
-        "safetensors",
-        "qwen3_5_moe_text"
-      ]
-    },
-    {
-      "modelId": "electron-rare/mistral-large-opus-Q4_K_M-gguf",
-      "org": "electron-rare",
-      "lastModified": "2026-05-11T12:59:05.000Z",
-      "createdAt": "2026-05-11T12:08:13.000Z",
-      "downloads": 0,
-      "likes": 0,
-      "private": false,
-      "pipeline_tag": null,
-      "library_name": null,
-      "tags": [
-        "gguf",
-        "endpoints_compatible",
-        "conversational"
-      ]
-    },
-    {
-      "modelId": "electron-rare/Qwen3.6-35B-A3B-Q4_K_M-gguf",
-      "org": "electron-rare",
-      "lastModified": "2026-05-11T12:13:46.000Z",
-      "createdAt": "2026-05-11T12:08:12.000Z",
-      "downloads": 0,
-      "likes": 0,
-      "private": false,
-      "pipeline_tag": null,
-      "library_name": null,
-      "tags": [
-        "gguf",
-        "endpoints_compatible",
-        "conversational"
+        "text-generation",
+        "conversational",
+        "base_model:Qwen/Qwen2.5-32B-Instruct",
+        "license:apache-2.0"
       ]
     },
     {
       "modelId": "electron-rare/kiki-models-tuning-sft-stm32-qwen25-32b",
       "org": "electron-rare",
-      "lastModified": "2026-05-11T12:10:53.000Z",
+      "lastModified": "2026-05-11T19:27:46.000Z",
       "createdAt": "2026-05-11T12:08:32.000Z",
       "downloads": 0,
       "likes": 0,
@@ -1687,35 +1648,14 @@
         "trl",
         "text-generation",
         "conversational",
-        "base_model:Qwen/Qwen2.5-32B-Instruct"
-      ]
-    },
-    {
-      "modelId": "electron-rare/kiki-models-tuning-sft-spice-qwen25-32b",
-      "org": "electron-rare",
-      "lastModified": "2026-05-11T12:10:51.000Z",
-      "createdAt": "2026-05-11T12:08:32.000Z",
-      "downloads": 0,
-      "likes": 0,
-      "private": false,
-      "pipeline_tag": "text-generation",
-      "library_name": "peft",
-      "tags": [
-        "peft",
-        "safetensors",
-        "lora",
-        "sft",
-        "transformers",
-        "trl",
-        "text-generation",
-        "conversational",
-        "base_model:Qwen/Qwen2.5-32B-Instruct"
+        "base_model:Qwen/Qwen2.5-32B-Instruct",
+        "license:apache-2.0"
       ]
     },
     {
       "modelId": "electron-rare/kiki-models-tuning-sft-power-qwen25-32b",
       "org": "electron-rare",
-      "lastModified": "2026-05-11T12:10:48.000Z",
+      "lastModified": "2026-05-11T19:27:45.000Z",
       "createdAt": "2026-05-11T12:08:31.000Z",
       "downloads": 0,
       "likes": 0,
@@ -1731,13 +1671,14 @@
         "trl",
         "text-generation",
         "conversational",
-        "base_model:Qwen/Qwen2.5-32B-Instruct"
+        "base_model:Qwen/Qwen2.5-32B-Instruct",
+        "license:apache-2.0"
       ]
     },
     {
       "modelId": "electron-rare/kiki-models-tuning-sft-platformio-qwen25-32b",
       "org": "electron-rare",
-      "lastModified": "2026-05-11T12:10:45.000Z",
+      "lastModified": "2026-05-11T19:27:44.000Z",
       "createdAt": "2026-05-11T12:08:30.000Z",
       "downloads": 0,
       "likes": 0,
@@ -1753,13 +1694,14 @@
         "trl",
         "text-generation",
         "conversational",
-        "base_model:Qwen/Qwen2.5-32B-Instruct"
+        "base_model:Qwen/Qwen2.5-32B-Instruct",
+        "license:apache-2.0"
       ]
     },
     {
       "modelId": "electron-rare/kiki-models-tuning-sft-kicad-qwen25-32b",
       "org": "electron-rare",
-      "lastModified": "2026-05-11T12:10:42.000Z",
+      "lastModified": "2026-05-11T19:27:43.000Z",
       "createdAt": "2026-05-11T12:08:29.000Z",
       "downloads": 0,
       "likes": 0,
@@ -1775,13 +1717,14 @@
         "trl",
         "text-generation",
         "conversational",
-        "base_model:Qwen/Qwen2.5-32B-Instruct"
+        "base_model:Qwen/Qwen2.5-32B-Instruct",
+        "license:apache-2.0"
       ]
     },
     {
       "modelId": "electron-rare/kiki-models-tuning-sft-iot-qwen25-32b",
       "org": "electron-rare",
-      "lastModified": "2026-05-11T12:10:39.000Z",
+      "lastModified": "2026-05-11T19:27:41.000Z",
       "createdAt": "2026-05-11T12:08:28.000Z",
       "downloads": 0,
       "likes": 0,
@@ -1797,13 +1740,14 @@
         "trl",
         "text-generation",
         "conversational",
-        "base_model:Qwen/Qwen2.5-32B-Instruct"
+        "base_model:Qwen/Qwen2.5-32B-Instruct",
+        "license:apache-2.0"
       ]
     },
     {
       "modelId": "electron-rare/kiki-models-tuning-sft-freecad-qwen25-32b",
       "org": "electron-rare",
-      "lastModified": "2026-05-11T12:10:36.000Z",
+      "lastModified": "2026-05-11T19:27:40.000Z",
       "createdAt": "2026-05-11T12:08:27.000Z",
       "downloads": 0,
       "likes": 0,
@@ -1819,13 +1763,14 @@
         "trl",
         "text-generation",
         "conversational",
-        "base_model:Qwen/Qwen2.5-32B-Instruct"
+        "base_model:Qwen/Qwen2.5-32B-Instruct",
+        "license:apache-2.0"
       ]
     },
     {
       "modelId": "electron-rare/kiki-models-tuning-sft-espidf-qwen25-32b",
       "org": "electron-rare",
-      "lastModified": "2026-05-11T12:10:33.000Z",
+      "lastModified": "2026-05-11T19:27:39.000Z",
       "createdAt": "2026-05-11T12:08:26.000Z",
       "downloads": 0,
       "likes": 0,
@@ -1841,13 +1786,14 @@
         "trl",
         "text-generation",
         "conversational",
-        "base_model:Qwen/Qwen2.5-32B-Instruct"
+        "base_model:Qwen/Qwen2.5-32B-Instruct",
+        "license:apache-2.0"
       ]
     },
     {
       "modelId": "electron-rare/kiki-models-tuning-sft-emc-qwen25-32b",
       "org": "electron-rare",
-      "lastModified": "2026-05-11T12:10:30.000Z",
+      "lastModified": "2026-05-11T19:27:38.000Z",
       "createdAt": "2026-05-11T12:08:25.000Z",
       "downloads": 0,
       "likes": 0,
@@ -1863,13 +1809,14 @@
         "trl",
         "text-generation",
         "conversational",
-        "base_model:Qwen/Qwen2.5-32B-Instruct"
+        "base_model:Qwen/Qwen2.5-32B-Instruct",
+        "license:apache-2.0"
       ]
     },
     {
       "modelId": "electron-rare/kiki-models-tuning-sft-embedded-qwen25-32b",
       "org": "electron-rare",
-      "lastModified": "2026-05-11T12:10:28.000Z",
+      "lastModified": "2026-05-11T19:27:37.000Z",
       "createdAt": "2026-05-11T12:08:24.000Z",
       "downloads": 0,
       "likes": 0,
@@ -1885,13 +1832,14 @@
         "trl",
         "text-generation",
         "conversational",
-        "base_model:Qwen/Qwen2.5-32B-Instruct"
+        "base_model:Qwen/Qwen2.5-32B-Instruct",
+        "license:apache-2.0"
       ]
     },
     {
       "modelId": "electron-rare/kiki-models-tuning-sft-dsp-qwen25-32b",
       "org": "electron-rare",
-      "lastModified": "2026-05-11T12:10:25.000Z",
+      "lastModified": "2026-05-11T19:27:36.000Z",
       "createdAt": "2026-05-11T12:08:23.000Z",
       "downloads": 0,
       "likes": 0,
@@ -1907,15 +1855,161 @@
         "trl",
         "text-generation",
         "conversational",
-        "base_model:Qwen/Qwen2.5-32B-Instruct"
+        "base_model:Qwen/Qwen2.5-32B-Instruct",
+        "license:apache-2.0"
       ]
     },
     {
-      "modelId": "electron-rare/kiki-models-tuning-sft-stm32",
+      "modelId": "electron-rare/spikingkiki-122b-a10b",
       "org": "electron-rare",
-      "lastModified": "2026-05-11T12:10:22.000Z",
-      "createdAt": "2026-05-11T12:08:22.000Z",
+      "lastModified": "2026-05-11T19:27:33.000Z",
+      "createdAt": "2026-05-11T12:08:14.000Z",
       "downloads": 0,
+      "likes": 0,
+      "private": false,
+      "pipeline_tag": "text-generation",
+      "library_name": "transformers",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "qwen3_5_moe_text",
+        "text-generation",
+        "spiking-neural-network",
+        "snn",
+        "leaky-integrate-fire",
+        "lif",
+        "moe",
+        "qwen3-5-moe",
+        "hypneum-lab",
+        "research"
+      ]
+    },
+    {
+      "modelId": "electron-rare/spikingkiki-27b",
+      "org": "electron-rare",
+      "lastModified": "2026-05-11T19:27:31.000Z",
+      "createdAt": "2026-05-11T12:08:14.000Z",
+      "downloads": 0,
+      "likes": 0,
+      "private": false,
+      "pipeline_tag": "text-generation",
+      "library_name": "transformers",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "qwen3_5",
+        "image-text-to-text",
+        "spiking-neural-network",
+        "snn",
+        "leaky-integrate-fire",
+        "lif",
+        "qwen3-5",
+        "hypneum-lab",
+        "research",
+        "text-generation"
+      ]
+    },
+    {
+      "modelId": "electron-rare/mistral-large-opus-Q4_K_M-gguf",
+      "org": "electron-rare",
+      "lastModified": "2026-05-11T19:27:30.000Z",
+      "createdAt": "2026-05-11T12:08:13.000Z",
+      "downloads": 0,
+      "likes": 0,
+      "private": false,
+      "pipeline_tag": "text-generation",
+      "library_name": "transformers",
+      "tags": [
+        "transformers",
+        "gguf",
+        "quantized",
+        "q4_k_m",
+        "llama-cpp",
+        "mistral",
+        "fine-tune",
+        "text-generation",
+        "en",
+        "fr",
+        "base_model:mistralai/Mistral-Large-Instruct-2411",
+        "base_model:quantized:mistralai/Mistral-Large-Instruct-2411"
+      ]
+    },
+    {
+      "modelId": "electron-rare/kiki-kicad-sft-v1",
+      "org": "electron-rare",
+      "lastModified": "2026-05-11T19:27:29.000Z",
+      "createdAt": "2026-03-31T17:59:18.000Z",
+      "downloads": 0,
+      "likes": 0,
+      "private": false,
+      "pipeline_tag": null,
+      "library_name": "transformers",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "kicad",
+        "eda",
+        "pcb",
+        "electronics",
+        "finefab",
+        "qlora",
+        "sft",
+        "fr",
+        "base_model:Qwen/Qwen2.5-7B",
+        "base_model:finetune:Qwen/Qwen2.5-7B"
+      ]
+    },
+    {
+      "modelId": "electron-rare/kiki-stm32-sft-v1",
+      "org": "electron-rare",
+      "lastModified": "2026-05-11T19:27:28.000Z",
+      "createdAt": "2026-03-31T17:52:38.000Z",
+      "downloads": 0,
+      "likes": 0,
+      "private": false,
+      "pipeline_tag": null,
+      "library_name": "transformers",
+      "tags": [
+        "transformers",
+        "safetensors",
+        "stm32",
+        "embedded",
+        "arm",
+        "cortex-m",
+        "finefab",
+        "qlora",
+        "sft",
+        "fr",
+        "base_model:Qwen/Qwen2.5-7B",
+        "base_model:finetune:Qwen/Qwen2.5-7B"
+      ]
+    },
+    {
+      "modelId": "electron-rare/mascarade-spice-v1-lora",
+      "org": "electron-rare",
+      "lastModified": "2026-05-11T19:27:27.000Z",
+      "createdAt": "2026-03-23T11:06:04.000Z",
+      "downloads": 11,
+      "likes": 0,
+      "private": false,
+      "pipeline_tag": null,
+      "library_name": "peft",
+      "tags": [
+        "peft",
+        "safetensors",
+        "ailiance",
+        "fine-tune",
+        "arxiv:1910.09700",
+        "base_model:Qwen/Qwen2.5-7B-Instruct",
+        "license:apache-2.0"
+      ]
+    },
+    {
+      "modelId": "electron-rare/mascarade-kicad-v2-lora",
+      "org": "electron-rare",
+      "lastModified": "2026-05-11T19:27:26.000Z",
+      "createdAt": "2026-03-23T11:05:52.000Z",
+      "downloads": 21,
       "likes": 0,
       "private": false,
       "pipeline_tag": "text-generation",
@@ -1923,47 +2017,22 @@
       "tags": [
         "peft",
         "safetensors",
-        "electronics",
-        "embedded-systems",
-        "stm32",
         "lora",
         "sft",
-        "kiki-tuning",
+        "transformers",
+        "trl",
+        "unsloth",
         "text-generation",
         "conversational",
-        "en",
-        "fr"
-      ]
-    },
-    {
-      "modelId": "electron-rare/kiki-models-tuning-sft-spice",
-      "org": "electron-rare",
-      "lastModified": "2026-05-11T12:10:18.000Z",
-      "createdAt": "2026-05-11T12:08:20.000Z",
-      "downloads": 0,
-      "likes": 1,
-      "private": false,
-      "pipeline_tag": "text-generation",
-      "library_name": "peft",
-      "tags": [
-        "peft",
-        "safetensors",
-        "electronics",
-        "embedded-systems",
-        "spice",
-        "lora",
-        "sft",
-        "kiki-tuning",
-        "text-generation",
-        "conversational",
-        "en",
-        "fr"
+        "arxiv:1910.09700",
+        "base_model:unsloth/Mistral-Small-3.1-24B-Instruct-2503-unsloth-bnb-4bit",
+        "license:apache-2.0"
       ]
     },
     {
       "modelId": "electron-rare/kiki-models-tuning-sft-power",
       "org": "electron-rare",
-      "lastModified": "2026-05-11T12:10:15.000Z",
+      "lastModified": "2026-05-11T19:25:48.000Z",
       "createdAt": "2026-05-11T12:08:20.000Z",
       "downloads": 0,
       "likes": 0,
@@ -1986,10 +2055,10 @@
       ]
     },
     {
-      "modelId": "electron-rare/kiki-models-tuning-sft-platformio",
+      "modelId": "electron-rare/kiki-models-tuning-sft-stm32",
       "org": "electron-rare",
-      "lastModified": "2026-05-11T12:10:12.000Z",
-      "createdAt": "2026-05-11T12:08:19.000Z",
+      "lastModified": "2026-05-11T19:25:48.000Z",
+      "createdAt": "2026-05-11T12:08:22.000Z",
       "downloads": 0,
       "likes": 0,
       "private": false,
@@ -2000,7 +2069,7 @@
         "safetensors",
         "electronics",
         "embedded-systems",
-        "platformio",
+        "stm32",
         "lora",
         "sft",
         "kiki-tuning",
@@ -2013,7 +2082,7 @@
     {
       "modelId": "electron-rare/kiki-models-tuning-sft-kicad",
       "org": "electron-rare",
-      "lastModified": "2026-05-11T12:10:09.000Z",
+      "lastModified": "2026-05-11T19:25:47.000Z",
       "createdAt": "2026-05-11T12:08:19.000Z",
       "downloads": 0,
       "likes": 0,
@@ -2038,7 +2107,7 @@
     {
       "modelId": "electron-rare/kiki-models-tuning-sft-iot",
       "org": "electron-rare",
-      "lastModified": "2026-05-11T12:10:06.000Z",
+      "lastModified": "2026-05-11T19:25:46.000Z",
       "createdAt": "2026-05-11T12:08:18.000Z",
       "downloads": 0,
       "likes": 0,
@@ -2061,9 +2130,34 @@
       ]
     },
     {
+      "modelId": "electron-rare/kiki-models-tuning-sft-platformio",
+      "org": "electron-rare",
+      "lastModified": "2026-05-11T19:25:46.000Z",
+      "createdAt": "2026-05-11T12:08:19.000Z",
+      "downloads": 0,
+      "likes": 0,
+      "private": false,
+      "pipeline_tag": "text-generation",
+      "library_name": "peft",
+      "tags": [
+        "peft",
+        "safetensors",
+        "electronics",
+        "embedded-systems",
+        "platformio",
+        "lora",
+        "sft",
+        "kiki-tuning",
+        "text-generation",
+        "conversational",
+        "en",
+        "fr"
+      ]
+    },
+    {
       "modelId": "electron-rare/kiki-models-tuning-sft-freecad",
       "org": "electron-rare",
-      "lastModified": "2026-05-11T12:10:02.000Z",
+      "lastModified": "2026-05-11T19:25:45.000Z",
       "createdAt": "2026-05-11T12:08:17.000Z",
       "downloads": 0,
       "likes": 0,
@@ -2088,7 +2182,7 @@
     {
       "modelId": "electron-rare/kiki-models-tuning-sft-emc",
       "org": "electron-rare",
-      "lastModified": "2026-05-11T12:09:59.000Z",
+      "lastModified": "2026-05-11T19:25:44.000Z",
       "createdAt": "2026-05-11T12:08:16.000Z",
       "downloads": 0,
       "likes": 0,
@@ -2111,34 +2205,9 @@
       ]
     },
     {
-      "modelId": "electron-rare/kiki-models-tuning-sft-embedded",
-      "org": "electron-rare",
-      "lastModified": "2026-05-11T12:09:56.000Z",
-      "createdAt": "2026-05-11T12:08:16.000Z",
-      "downloads": 0,
-      "likes": 0,
-      "private": false,
-      "pipeline_tag": "text-generation",
-      "library_name": "peft",
-      "tags": [
-        "peft",
-        "safetensors",
-        "electronics",
-        "embedded-systems",
-        "embedded",
-        "lora",
-        "sft",
-        "kiki-tuning",
-        "text-generation",
-        "conversational",
-        "en",
-        "fr"
-      ]
-    },
-    {
       "modelId": "electron-rare/kiki-models-tuning-sft-dsp",
       "org": "electron-rare",
-      "lastModified": "2026-05-11T12:09:53.000Z",
+      "lastModified": "2026-05-11T19:25:43.000Z",
       "createdAt": "2026-05-11T12:08:15.000Z",
       "downloads": 0,
       "likes": 0,
@@ -2161,9 +2230,59 @@
       ]
     },
     {
+      "modelId": "electron-rare/kiki-models-tuning-sft-embedded",
+      "org": "electron-rare",
+      "lastModified": "2026-05-11T19:25:43.000Z",
+      "createdAt": "2026-05-11T12:08:16.000Z",
+      "downloads": 0,
+      "likes": 0,
+      "private": false,
+      "pipeline_tag": "text-generation",
+      "library_name": "peft",
+      "tags": [
+        "peft",
+        "safetensors",
+        "electronics",
+        "embedded-systems",
+        "embedded",
+        "lora",
+        "sft",
+        "kiki-tuning",
+        "text-generation",
+        "conversational",
+        "en",
+        "fr"
+      ]
+    },
+    {
+      "modelId": "electron-rare/kiki-models-tuning-sft-spice",
+      "org": "electron-rare",
+      "lastModified": "2026-05-11T19:25:42.000Z",
+      "createdAt": "2026-05-11T12:08:20.000Z",
+      "downloads": 0,
+      "likes": 1,
+      "private": false,
+      "pipeline_tag": "text-generation",
+      "library_name": "peft",
+      "tags": [
+        "peft",
+        "safetensors",
+        "electronics",
+        "embedded-systems",
+        "spice",
+        "lora",
+        "sft",
+        "kiki-tuning",
+        "text-generation",
+        "conversational",
+        "en",
+        "fr"
+      ]
+    },
+    {
       "modelId": "electron-rare/mascarade-stm32-lora",
       "org": "electron-rare",
-      "lastModified": "2026-05-11T12:08:45.000Z",
+      "lastModified": "2026-05-11T19:25:37.000Z",
       "createdAt": "2026-05-11T12:07:02.000Z",
       "downloads": 0,
       "likes": 0,
@@ -2179,13 +2298,14 @@
         "trl",
         "text-generation",
         "conversational",
-        "base_model:Qwen/Qwen2.5-32B-Instruct"
+        "base_model:Qwen/Qwen2.5-32B-Instruct",
+        "license:apache-2.0"
       ]
     },
     {
       "modelId": "electron-rare/mascarade-spice-lora",
       "org": "electron-rare",
-      "lastModified": "2026-05-11T12:08:40.000Z",
+      "lastModified": "2026-05-11T19:25:36.000Z",
       "createdAt": "2026-05-11T12:07:01.000Z",
       "downloads": 0,
       "likes": 0,
@@ -2201,13 +2321,14 @@
         "trl",
         "text-generation",
         "conversational",
-        "base_model:Qwen/Qwen2.5-32B-Instruct"
+        "base_model:Qwen/Qwen2.5-32B-Instruct",
+        "license:apache-2.0"
       ]
     },
     {
       "modelId": "electron-rare/mascarade-power-lora",
       "org": "electron-rare",
-      "lastModified": "2026-05-11T12:08:35.000Z",
+      "lastModified": "2026-05-11T19:25:35.000Z",
       "createdAt": "2026-05-11T12:07:00.000Z",
       "downloads": 0,
       "likes": 0,
@@ -2223,13 +2344,14 @@
         "trl",
         "text-generation",
         "conversational",
-        "base_model:Qwen/Qwen2.5-32B-Instruct"
+        "base_model:Qwen/Qwen2.5-32B-Instruct",
+        "license:apache-2.0"
       ]
     },
     {
       "modelId": "electron-rare/mascarade-platformio-lora",
       "org": "electron-rare",
-      "lastModified": "2026-05-11T12:08:30.000Z",
+      "lastModified": "2026-05-11T19:25:34.000Z",
       "createdAt": "2026-05-11T12:07:00.000Z",
       "downloads": 0,
       "likes": 0,
@@ -2245,13 +2367,14 @@
         "trl",
         "text-generation",
         "conversational",
-        "base_model:Qwen/Qwen2.5-32B-Instruct"
+        "base_model:Qwen/Qwen2.5-32B-Instruct",
+        "license:apache-2.0"
       ]
     },
     {
       "modelId": "electron-rare/mascarade-kicad-lora",
       "org": "electron-rare",
-      "lastModified": "2026-05-11T12:08:25.000Z",
+      "lastModified": "2026-05-11T19:25:33.000Z",
       "createdAt": "2026-05-11T12:06:59.000Z",
       "downloads": 0,
       "likes": 0,
@@ -2267,35 +2390,14 @@
         "trl",
         "text-generation",
         "conversational",
-        "base_model:Qwen/Qwen2.5-32B-Instruct"
-      ]
-    },
-    {
-      "modelId": "electron-rare/mascarade-iot-lora",
-      "org": "electron-rare",
-      "lastModified": "2026-05-11T12:08:21.000Z",
-      "createdAt": "2026-05-11T12:06:58.000Z",
-      "downloads": 0,
-      "likes": 0,
-      "private": false,
-      "pipeline_tag": "text-generation",
-      "library_name": "peft",
-      "tags": [
-        "peft",
-        "safetensors",
-        "lora",
-        "sft",
-        "transformers",
-        "trl",
-        "text-generation",
-        "conversational",
-        "base_model:Qwen/Qwen2.5-32B-Instruct"
+        "base_model:Qwen/Qwen2.5-32B-Instruct",
+        "license:apache-2.0"
       ]
     },
     {
       "modelId": "electron-rare/mascarade-freecad-lora",
       "org": "electron-rare",
-      "lastModified": "2026-05-11T12:08:17.000Z",
+      "lastModified": "2026-05-11T19:25:32.000Z",
       "createdAt": "2026-05-11T12:06:58.000Z",
       "downloads": 0,
       "likes": 0,
@@ -2311,13 +2413,37 @@
         "trl",
         "text-generation",
         "conversational",
-        "base_model:Qwen/Qwen2.5-32B-Instruct"
+        "base_model:Qwen/Qwen2.5-32B-Instruct",
+        "license:apache-2.0"
+      ]
+    },
+    {
+      "modelId": "electron-rare/mascarade-iot-lora",
+      "org": "electron-rare",
+      "lastModified": "2026-05-11T19:25:31.000Z",
+      "createdAt": "2026-05-11T12:06:58.000Z",
+      "downloads": 0,
+      "likes": 0,
+      "private": false,
+      "pipeline_tag": "text-generation",
+      "library_name": "peft",
+      "tags": [
+        "peft",
+        "safetensors",
+        "lora",
+        "sft",
+        "transformers",
+        "trl",
+        "text-generation",
+        "conversational",
+        "base_model:Qwen/Qwen2.5-32B-Instruct",
+        "license:apache-2.0"
       ]
     },
     {
       "modelId": "electron-rare/mascarade-espidf-lora",
       "org": "electron-rare",
-      "lastModified": "2026-05-11T12:08:12.000Z",
+      "lastModified": "2026-05-11T19:25:30.000Z",
       "createdAt": "2026-05-11T12:06:57.000Z",
       "downloads": 0,
       "likes": 0,
@@ -2333,13 +2459,14 @@
         "trl",
         "text-generation",
         "conversational",
-        "base_model:Qwen/Qwen2.5-32B-Instruct"
+        "base_model:Qwen/Qwen2.5-32B-Instruct",
+        "license:apache-2.0"
       ]
     },
     {
       "modelId": "electron-rare/mascarade-emc-lora",
       "org": "electron-rare",
-      "lastModified": "2026-05-11T12:08:07.000Z",
+      "lastModified": "2026-05-11T19:25:29.000Z",
       "createdAt": "2026-05-11T12:06:56.000Z",
       "downloads": 0,
       "likes": 0,
@@ -2355,13 +2482,14 @@
         "trl",
         "text-generation",
         "conversational",
-        "base_model:Qwen/Qwen2.5-32B-Instruct"
+        "base_model:Qwen/Qwen2.5-32B-Instruct",
+        "license:apache-2.0"
       ]
     },
     {
       "modelId": "electron-rare/mascarade-embedded-lora",
       "org": "electron-rare",
-      "lastModified": "2026-05-11T12:08:02.000Z",
+      "lastModified": "2026-05-11T19:25:28.000Z",
       "createdAt": "2026-05-11T12:06:55.000Z",
       "downloads": 0,
       "likes": 0,
@@ -2377,13 +2505,14 @@
         "trl",
         "text-generation",
         "conversational",
-        "base_model:Qwen/Qwen2.5-32B-Instruct"
+        "base_model:Qwen/Qwen2.5-32B-Instruct",
+        "license:apache-2.0"
       ]
     },
     {
       "modelId": "electron-rare/mascarade-dsp-lora",
       "org": "electron-rare",
-      "lastModified": "2026-05-11T12:07:57.000Z",
+      "lastModified": "2026-05-11T19:25:27.000Z",
       "createdAt": "2026-05-11T12:06:54.000Z",
       "downloads": 0,
       "likes": 0,
@@ -2399,104 +2528,39 @@
         "trl",
         "text-generation",
         "conversational",
-        "base_model:Qwen/Qwen2.5-32B-Instruct"
-      ]
-    },
-    {
-      "modelId": "electron-rare/kiki-kicad-sft-v1",
-      "org": "electron-rare",
-      "lastModified": "2026-05-05T14:52:38.000Z",
-      "createdAt": "2026-03-31T17:59:18.000Z",
-      "downloads": 0,
-      "likes": 0,
-      "private": false,
-      "pipeline_tag": null,
-      "library_name": null,
-      "tags": [
-        "safetensors",
-        "kicad",
-        "eda",
-        "pcb",
-        "electronics",
-        "finefab",
-        "qlora",
-        "sft",
-        "fr",
-        "base_model:Qwen/Qwen2.5-7B",
-        "base_model:finetune:Qwen/Qwen2.5-7B",
+        "base_model:Qwen/Qwen2.5-32B-Instruct",
         "license:apache-2.0"
       ]
     },
     {
-      "modelId": "electron-rare/kiki-stm32-sft-v1",
+      "modelId": "electron-rare/Qwen3.6-35B-A3B-Q4_K_M-gguf",
       "org": "electron-rare",
-      "lastModified": "2026-05-05T14:52:36.000Z",
-      "createdAt": "2026-03-31T17:52:38.000Z",
+      "lastModified": "2026-05-11T19:24:18.000Z",
+      "createdAt": "2026-05-11T12:08:12.000Z",
       "downloads": 0,
-      "likes": 0,
-      "private": false,
-      "pipeline_tag": null,
-      "library_name": null,
-      "tags": [
-        "safetensors",
-        "stm32",
-        "embedded",
-        "arm",
-        "cortex-m",
-        "finefab",
-        "qlora",
-        "sft",
-        "fr",
-        "base_model:Qwen/Qwen2.5-7B",
-        "base_model:finetune:Qwen/Qwen2.5-7B",
-        "license:apache-2.0"
-      ]
-    },
-    {
-      "modelId": "electron-rare/mascarade-spice-v1-lora",
-      "org": "electron-rare",
-      "lastModified": "2026-05-05T14:52:35.000Z",
-      "createdAt": "2026-03-23T11:06:04.000Z",
-      "downloads": 11,
-      "likes": 0,
-      "private": false,
-      "pipeline_tag": null,
-      "library_name": "peft",
-      "tags": [
-        "peft",
-        "safetensors",
-        "arxiv:1910.09700",
-        "base_model:Qwen/Qwen2.5-7B-Instruct"
-      ]
-    },
-    {
-      "modelId": "electron-rare/mascarade-kicad-v2-lora",
-      "org": "electron-rare",
-      "lastModified": "2026-05-05T14:52:33.000Z",
-      "createdAt": "2026-03-23T11:05:52.000Z",
-      "downloads": 21,
       "likes": 0,
       "private": false,
       "pipeline_tag": "text-generation",
-      "library_name": "peft",
+      "library_name": null,
       "tags": [
-        "peft",
-        "safetensors",
-        "lora",
-        "sft",
-        "transformers",
-        "trl",
-        "unsloth",
+        "gguf",
+        "quantized",
+        "q4_k_m",
+        "llama-cpp",
+        "moe",
+        "qwen3-5",
         "text-generation",
-        "conversational",
-        "arxiv:1910.09700",
-        "base_model:unsloth/Mistral-Small-3.1-24B-Instruct-2503-unsloth-bnb-4bit"
+        "en",
+        "zh",
+        "fr",
+        "base_model:Qwen/Qwen3.6-35B-A3B",
+        "base_model:quantized:Qwen/Qwen3.6-35B-A3B"
       ]
     },
     {
       "modelId": "electron-rare/mascarade-platformio",
       "org": "electron-rare",
-      "lastModified": "2026-05-05T14:52:30.000Z",
+      "lastModified": "2026-05-11T18:39:51.000Z",
       "createdAt": "2026-03-09T00:18:38.000Z",
       "downloads": 20,
       "likes": 0,
@@ -2521,7 +2585,7 @@
     {
       "modelId": "electron-rare/mascarade-spice",
       "org": "electron-rare",
-      "lastModified": "2026-05-05T14:52:28.000Z",
+      "lastModified": "2026-05-11T18:39:49.000Z",
       "createdAt": "2026-03-09T00:18:37.000Z",
       "downloads": 19,
       "likes": 0,
@@ -2546,7 +2610,7 @@
     {
       "modelId": "electron-rare/mascarade-esp32",
       "org": "electron-rare",
-      "lastModified": "2026-05-05T14:52:25.000Z",
+      "lastModified": "2026-05-11T18:39:47.000Z",
       "createdAt": "2026-03-09T00:18:37.000Z",
       "downloads": 13,
       "likes": 0,
@@ -2571,7 +2635,7 @@
     {
       "modelId": "electron-rare/mascarade-iot",
       "org": "electron-rare",
-      "lastModified": "2026-05-05T14:52:22.000Z",
+      "lastModified": "2026-05-11T18:39:46.000Z",
       "createdAt": "2026-03-09T00:18:36.000Z",
       "downloads": 19,
       "likes": 0,

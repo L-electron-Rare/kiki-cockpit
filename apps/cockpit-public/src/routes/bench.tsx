@@ -195,10 +195,12 @@ function BenchPage() {
           </li>
           <li>
             Validators iact-bench Docker épinglés (
-            <code>ghcr.io/electron-rare/iact-bench-kicad</code>).
+            <code>ghcr.io/electron-rare/iact-bench-kicad</code>) — 24 images
+            verrouillées par digest <code>sha256</code>.
           </li>
           <li>
-            Hypothèses H1/H2/H3 pré-enregistrées, NDJSON audit trail signé.
+            Hypothèses H1/H2/H3 pré-enregistrées, NDJSON audit trail append-only
+            avec manifest <code>sha256</code> (EU AI Act Annex IV §7).
           </li>
           <li>
             Spec :{' '}
@@ -310,6 +312,75 @@ function BenchPage() {
                   </tr>
                 );
               })}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section className="wrap" style={{ paddingTop: 32 }}>
+        <h2
+          className="kicker"
+          style={{ fontSize: 11, margin: '0 0 12px', letterSpacing: '0.1em' }}
+        >
+          Auto-router classifier
+        </h2>
+        <p
+          style={{
+            fontFamily: 'var(--serif)',
+            fontSize: 16,
+            lineHeight: 1.6,
+            color: 'var(--ink-2)',
+            maxWidth: '70ch',
+          }}
+        >
+          L'alias <code>ailiance</code> route automatiquement chaque requête vers
+          le worker spécialisé via un classifier MLP entraîné sur 32 classes de
+          domaine.
+        </p>
+        <div style={{ overflowX: 'auto', borderTop: '1px solid var(--rule)', marginTop: 12 }}>
+          <table
+            style={{
+              width: '100%',
+              borderCollapse: 'collapse',
+              fontFamily: 'var(--mono)',
+              fontSize: 12,
+            }}
+          >
+            <thead>
+              <tr style={{ borderBottom: '1px solid var(--rule)' }}>
+                <th style={thStyle}>Version</th>
+                <th style={thStyle}>Encoder</th>
+                <th style={{ ...thStyle, textAlign: 'right' }}>Hidden</th>
+                <th style={{ ...thStyle, textAlign: 'right' }}>Top-1</th>
+                <th style={{ ...thStyle, textAlign: 'right' }}>Top-3</th>
+                <th style={thStyle}>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style={{ borderBottom: '1px solid var(--rule-soft, var(--rule))' }}>
+                <td style={tdStyle}><code>v6</code> (prod)</td>
+                <td style={tdStyle}>jina-v3 1024d</td>
+                <td style={{ ...tdStyle, textAlign: 'right' }}>512</td>
+                <td style={{ ...tdStyle, textAlign: 'right', fontWeight: 600 }}>0.877</td>
+                <td style={{ ...tdStyle, textAlign: 'right', fontWeight: 600 }}>0.987</td>
+                <td style={tdStyle}>déployé depuis 2026-05-08</td>
+              </tr>
+              <tr style={{ borderBottom: '1px solid var(--rule-soft, var(--rule))' }}>
+                <td style={tdStyle}><code>v7</code></td>
+                <td style={tdStyle}>MiniLM-L6 384d</td>
+                <td style={{ ...tdStyle, textAlign: 'right' }}>256</td>
+                <td style={{ ...tdStyle, textAlign: 'right' }}>0.879</td>
+                <td style={{ ...tdStyle, textAlign: 'right' }}>0.988</td>
+                <td style={tdStyle}>test régression encoder</td>
+              </tr>
+              <tr style={{ borderBottom: '1px solid var(--rule-soft, var(--rule))' }}>
+                <td style={tdStyle}><code>v8</code></td>
+                <td style={tdStyle}>jina-v3 1024d</td>
+                <td style={{ ...tdStyle, textAlign: 'right' }}>512</td>
+                <td style={{ ...tdStyle, textAlign: 'right' }}>0.875</td>
+                <td style={{ ...tdStyle, textAlign: 'right' }}>—</td>
+                <td style={tdStyle}>data augmentée, variation marginale</td>
+              </tr>
             </tbody>
           </table>
         </div>
