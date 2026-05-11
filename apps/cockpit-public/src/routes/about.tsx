@@ -134,6 +134,35 @@ function AboutPage() {
             </li>
           </ul>
 
+          <h2>Organisation des responsabilités</h2>
+          <p>
+            Trois pôles de responsabilité, séparés au sein de L'Électron Rare pour permettre la
+            traçabilité et la séparation des contrôles attendues par l'Article 17 IA Act
+            (Quality Management System) :
+          </p>
+          <ul>
+            <li>
+              <strong>Équipe Data</strong> — collecte, curation, audit qualité/biais/représentativité
+              des corpus, exécution iact-bench, gestion des datasets HuggingFace
+              {' '}<code>Ailiance-fr/</code>. Responsable du <em>bloc 3 et 5</em> de la démarche
+              qualité.
+            </li>
+            <li>
+              <strong>Conformité &amp; Sécurité</strong> — veille réglementaire (AI Act, RGPD, CRA),
+              tenue du registre d'incidents (<a href="mailto:incidents@ailiance.fr">incidents@ailiance.fr</a>),
+              audit interne semestriel, publication des post-mortems. Responsable du{' '}
+              <em>bloc 6</em> de la démarche qualité et du dossier Annex IV.
+            </li>
+            <li>
+              <strong>Direction technique</strong> — architecture gateway / routeur / validators,
+              arbitrage des releases, signature des commits de provenance, validation finale des
+              critères de release. Responsable du <em>bloc 4</em> et de la chaîne de signature.
+            </li>
+          </ul>
+          <p style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--ink-4)', marginTop: 8 }}>
+            Contact direction : <a href="mailto:contact@ailiance.fr">contact@ailiance.fr</a>
+          </p>
+
           <h2>Licence</h2>
           <p>Apache-2.0, sur l'ensemble du code et des adaptateurs.</p>
         </article>
