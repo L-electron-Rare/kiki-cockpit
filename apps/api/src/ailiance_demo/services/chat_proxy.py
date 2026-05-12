@@ -27,6 +27,18 @@ ALIAS_TO_GATEWAY_MODEL: dict[str, str] = {
     "ailiance/granite-30b": "ailiance-granite",
     "ailiance/ministral-14b": "ailiance-ministral",
     "ailiance/ministral-14b-reasoning": "ailiance-ministral-reasoning",
+    # --- additional gateway-exposed flagship / variant aliases ---
+    "ailiance/flagship": "ailiance-flagship",
+    "ailiance/mixtral-8x22b": "ailiance-mixtral",
+    "ailiance/pixtral-12b": "ailiance-pixtral",
+    "ailiance/qwen-235b": "ailiance-qwen-235b",
+    "ailiance/reasoning-r1": "ailiance-reasoning-r1",
+    "ailiance/coder-pro": "ailiance-coder-pro",
+    "ailiance/llama-3.3-70b": "ailiance-llama",
+    "ailiance/mistral-small-3.5": "ailiance-mistral-small",
+    # --- mascarade family card routes to auto-router (auto-classifies which
+    # mascarade specialist to use) ---
+    "ailiance/mascarade": "ailiance",
     # --- mascarade hardware specialists (Qwen3-4B LoRA on Tower :8004) ---
     "ailiance/mascarade-kicad": "ailiance-kicad",
     "ailiance/mascarade-spice": "ailiance-spice",
