@@ -258,30 +258,6 @@ MASCARADE_LORAS: list[dict] = [
 # Additional gateway aliases exposed by the router but without a dedicated
 # detail entry above. Light auto-generated cards so /models reflects the
 # real /v1/models surface of the gateway.
-_LIVE_DETAILS["ailiance/flagship"] = {
-    "display_name": "Flagship · best available",
-    "base_model": "ailiance auto-routed to best available specialist",
-    "domain": "general",
-    "description": "Bascule automatique vers le meilleur modèle disponible selon la charge — Mistral Medium 3.5, Qwen3-Next 80B ou Apertus 70B.",
-    "headline": "auto-routed · flagship",
-    "host": "gateway-side",
-    "license": "apache-2.0",
-    "kind": ModelKind.UNKNOWN,
-    "hf_url": "https://huggingface.co/Ailiance-fr",
-}
-_LIVE_DETAILS["ailiance/mixtral-8x22b"] = {
-    "display_name": "Mixtral 8x22B",
-    "base_model": "mistralai/Mixtral-8x22B-Instruct-v0.1",
-    "domain": "general",
-    "description": "Mistral Mixtral 8x22B MoE — 176B params totaux, 39B actifs par token.",
-    "headline": "MoE 8×22B · 39B actifs",
-    "host": "studio",
-    "license": "apache-2.0",
-    "kind": ModelKind.QUANTIZED,
-    "hf_url": "https://huggingface.co/mistralai/Mixtral-8x22B-Instruct-v0.1",
-    "top_eval_score": 0.85,
-    "top_eval_benchmark": "MMLU / MT-Bench",
-}
 _LIVE_DETAILS["ailiance/pixtral-12b"] = {
     "display_name": "Pixtral 12B (vision)",
     "base_model": "mistralai/Pixtral-12B",
@@ -294,19 +270,6 @@ _LIVE_DETAILS["ailiance/pixtral-12b"] = {
     "hf_url": "https://huggingface.co/mistralai/Pixtral-12B-2409",
     "top_eval_score": 0.72,
     "top_eval_benchmark": "MMMU vision",
-}
-_LIVE_DETAILS["ailiance/qwen-235b"] = {
-    "display_name": "Qwen3 235B",
-    "base_model": "Qwen/Qwen3-235B-A22B-Instruct",
-    "domain": "reasoning",
-    "description": "Qwen3 235B sparse MoE — raisonnement avancé, 22B actifs par token.",
-    "headline": "MoE 235B · 22B actifs",
-    "host": "studio",
-    "license": "apache-2.0",
-    "kind": ModelKind.QUANTIZED,
-    "hf_url": "https://huggingface.co/Qwen",
-    "top_eval_score": 0.93,
-    "top_eval_benchmark": "MMLU / GSM8K",
 }
 _LIVE_DETAILS["ailiance/reasoning-r1"] = {
     "display_name": "Reasoning R1",
@@ -333,19 +296,6 @@ _LIVE_DETAILS["ailiance/coder-pro"] = {
     "hf_url": "https://huggingface.co/Qwen/Qwen2.5-Coder-32B-Instruct",
     "top_eval_score": 0.86,
     "top_eval_benchmark": "HumanEval+ / MultiPL-E",
-}
-_LIVE_DETAILS["ailiance/llama-3.3-70b"] = {
-    "display_name": "Llama 3.3 70B",
-    "base_model": "meta-llama/Llama-3.3-70B-Instruct",
-    "domain": "general",
-    "description": "Meta Llama 3.3 70B Instruct — généraliste multilingue.",
-    "headline": "70B · général",
-    "host": "studio",
-    "license": "llama-3",
-    "kind": ModelKind.QUANTIZED,
-    "hf_url": "https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct",
-    "top_eval_score": 0.80,
-    "top_eval_benchmark": "MMLU / MT-Bench",
 }
 _LIVE_DETAILS["ailiance/mistral-small-3.5"] = {
     "display_name": "Mistral Small 3.5",
