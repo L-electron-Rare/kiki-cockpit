@@ -72,27 +72,6 @@ _LIVE_DETAILS: dict[str, dict] = {
         "top_eval_score": 0.61,
         "top_eval_benchmark": "MT-Bench-FR (LoRA tuned)",
     },
-    "ailiance/eurollm-22b": {
-        "display_name": "EuroLLM 22B",
-        "base_model": "EuroLLM 22B",
-        "domain": "multilingual",
-        "description": (
-            "EuroLLM 22B — multilingual EU coverage (24 official languages). "
-            "Runs on Mac Studio M3 Ultra."
-        ),
-        "headline": "22B params · MLX 8-bit · Mac Studio M3 Ultra",
-        "parameters": 22_000_000_000,
-        "disk_size_bytes": 22 * _GIB,
-        "memory_gb": 24.0,
-        "quantization": "MLX 8-bit",
-        "host": "studio (Mac Studio M3 Ultra)",
-        "architecture": "mlx",
-        "license": "apache-2.0",
-        "kind": ModelKind.QUANTIZED,
-        "hf_url": "https://huggingface.co/utter-project/EuroLLM-22B-Instruct-2512",
-        "top_eval_score": 0.74,
-        "top_eval_benchmark": "MMLU-FR / FLORES+",
-    },
     "ailiance/qwen3-next-80b-a3b-instruct": {
         "display_name": "Qwen3-Next 80B A3B Instruct",
         "base_model": "Qwen/Qwen3-Next-80B-A3B-Instruct",

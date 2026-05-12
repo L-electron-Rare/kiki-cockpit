@@ -21,7 +21,6 @@ ALIAS_TO_GATEWAY_MODEL: dict[str, str] = {
     # --- generalist base models served by the gateway ---
     "ailiance/mistral-medium-3.5-128b": "ailiance-mistral",
     "ailiance/gemma4-e4b-curriculum": "ailiance-gemma4",
-    "ailiance/eurollm-22b": "ailiance-eurollm",
     "ailiance/gemma3-4b": "ailiance-gemma",
     "ailiance/qwen3-next-80b-a3b-instruct": "ailiance-qwen",
     "ailiance/granite-30b": "ailiance-granite",
