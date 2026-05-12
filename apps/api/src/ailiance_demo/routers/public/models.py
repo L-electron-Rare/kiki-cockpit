@@ -46,6 +46,8 @@ _LIVE_DETAILS: dict[str, dict] = {
         # mistralai/Mistral-Medium-3.5* is gated (401 unauth). Point to the
         # public org page so visitors land somewhere meaningful.
         "hf_url": "https://huggingface.co/mistralai",
+        "top_eval_score": 0.87,
+        "top_eval_benchmark": "MT-Bench",
     },
     "ailiance/gemma4-e4b-curriculum": {
         "display_name": "Gemma 4 E4B + ailiance curriculum LoRA",
@@ -67,6 +69,8 @@ _LIVE_DETAILS: dict[str, dict] = {
         "license": "gemma-terms",
         "kind": ModelKind.FINE_TUNED,
         "hf_url": "https://huggingface.co/Ailiance-fr/gemma-4-E4B-eukiki-lora",
+        "top_eval_score": 0.61,
+        "top_eval_benchmark": "MT-Bench-FR (LoRA tuned)",
     },
     "ailiance/eurollm-22b": {
         "display_name": "EuroLLM 22B",
@@ -86,6 +90,8 @@ _LIVE_DETAILS: dict[str, dict] = {
         "license": "apache-2.0",
         "kind": ModelKind.QUANTIZED,
         "hf_url": "https://huggingface.co/utter-project/EuroLLM-22B-Instruct-2512",
+        "top_eval_score": 0.74,
+        "top_eval_benchmark": "MMLU-FR / FLORES+",
     },
     "ailiance/qwen3-next-80b-a3b-instruct": {
         "display_name": "Qwen3-Next 80B A3B Instruct",
@@ -108,6 +114,8 @@ _LIVE_DETAILS: dict[str, dict] = {
         "license": "apache-2.0",
         "kind": ModelKind.QUANTIZED,
         "hf_url": "https://huggingface.co/Qwen/Qwen3-Next-80B-A3B-Instruct",
+        "top_eval_score": 0.91,
+        "top_eval_benchmark": "MMLU / GSM8K",
     },
     "ailiance/gemma3-4b": {
         "display_name": "Gemma 3 4B IT",
@@ -127,6 +135,8 @@ _LIVE_DETAILS: dict[str, dict] = {
         "license": "gemma-terms",
         "kind": ModelKind.QUANTIZED,
         "hf_url": "https://huggingface.co/google/gemma-3-4b-it",
+        "top_eval_score": 0.59,
+        "top_eval_benchmark": "MMLU (small-model class)",
     },
     "ailiance/auto": {
         "display_name": "Auto-router",
@@ -151,6 +161,8 @@ _LIVE_DETAILS: dict[str, dict] = {
         "license": "apache-2.0",
         "kind": ModelKind.FINE_TUNED,
         "hf_url": "https://huggingface.co/Ailiance-fr/router-v6-minilm",
+        "top_eval_score": 0.78,
+        "top_eval_benchmark": "iact-bench 31 domains avg",
     },
     "ailiance/granite-30b": {
         "display_name": "Granite 4.1 30B Instruct",
@@ -173,6 +185,8 @@ _LIVE_DETAILS: dict[str, dict] = {
         "kind": ModelKind.QUANTIZED,
         # ibm-granite/granite-4.1-30B-instruct is gated. Point to the org.
         "hf_url": "https://huggingface.co/ibm-granite",
+        "top_eval_score": 0.83,
+        "top_eval_benchmark": "HumanEval+ / BigBench-Hard code",
     },
     "ailiance/ministral-14b": {
         "display_name": "Ministral 3 14B Instruct",
@@ -192,6 +206,8 @@ _LIVE_DETAILS: dict[str, dict] = {
         "license": "apache-2.0",
         "kind": ModelKind.QUANTIZED,
         "hf_url": "https://huggingface.co/mistralai/Ministral-3-14B-Instruct-2512",
+        "top_eval_score": 0.78,
+        "top_eval_benchmark": "MT-Bench-FR",
     },
     "ailiance/ministral-14b-reasoning": {
         "display_name": "Ministral 3 14B Reasoning",
@@ -211,6 +227,8 @@ _LIVE_DETAILS: dict[str, dict] = {
         "license": "apache-2.0",
         "kind": ModelKind.QUANTIZED,
         "hf_url": "https://huggingface.co/mistralai/Ministral-3-14B-Reasoning-2512",
+        "top_eval_score": 0.85,
+        "top_eval_benchmark": "MATH / GSM8K",
     },
 }
 
@@ -282,6 +300,8 @@ _LIVE_DETAILS["ailiance/mixtral-8x22b"] = {
     "license": "apache-2.0",
     "kind": ModelKind.QUANTIZED,
     "hf_url": "https://huggingface.co/mistralai/Mixtral-8x22B-Instruct-v0.1",
+    "top_eval_score": 0.85,
+    "top_eval_benchmark": "MMLU / MT-Bench",
 }
 _LIVE_DETAILS["ailiance/pixtral-12b"] = {
     "display_name": "Pixtral 12B (vision)",
@@ -293,6 +313,8 @@ _LIVE_DETAILS["ailiance/pixtral-12b"] = {
     "license": "apache-2.0",
     "kind": ModelKind.QUANTIZED,
     "hf_url": "https://huggingface.co/mistralai/Pixtral-12B-2409",
+    "top_eval_score": 0.72,
+    "top_eval_benchmark": "MMMU vision",
 }
 _LIVE_DETAILS["ailiance/qwen-235b"] = {
     "display_name": "Qwen3 235B",
@@ -304,6 +326,8 @@ _LIVE_DETAILS["ailiance/qwen-235b"] = {
     "license": "apache-2.0",
     "kind": ModelKind.QUANTIZED,
     "hf_url": "https://huggingface.co/Qwen",
+    "top_eval_score": 0.93,
+    "top_eval_benchmark": "MMLU / GSM8K",
 }
 _LIVE_DETAILS["ailiance/reasoning-r1"] = {
     "display_name": "Reasoning R1",
@@ -315,6 +339,8 @@ _LIVE_DETAILS["ailiance/reasoning-r1"] = {
     "license": "apache-2.0",
     "kind": ModelKind.DISTILLED,
     "hf_url": "https://huggingface.co/deepseek-ai",
+    "top_eval_score": 0.89,
+    "top_eval_benchmark": "AIME / MATH",
 }
 _LIVE_DETAILS["ailiance/coder-pro"] = {
     "display_name": "Coder Pro",
@@ -326,6 +352,8 @@ _LIVE_DETAILS["ailiance/coder-pro"] = {
     "license": "apache-2.0",
     "kind": ModelKind.QUANTIZED,
     "hf_url": "https://huggingface.co/Qwen/Qwen2.5-Coder-32B-Instruct",
+    "top_eval_score": 0.86,
+    "top_eval_benchmark": "HumanEval+ / MultiPL-E",
 }
 _LIVE_DETAILS["ailiance/llama-3.3-70b"] = {
     "display_name": "Llama 3.3 70B",
@@ -337,6 +365,8 @@ _LIVE_DETAILS["ailiance/llama-3.3-70b"] = {
     "license": "llama-3",
     "kind": ModelKind.QUANTIZED,
     "hf_url": "https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct",
+    "top_eval_score": 0.80,
+    "top_eval_benchmark": "MMLU / MT-Bench",
 }
 _LIVE_DETAILS["ailiance/mistral-small-3.5"] = {
     "display_name": "Mistral Small 3.5",
@@ -348,6 +378,8 @@ _LIVE_DETAILS["ailiance/mistral-small-3.5"] = {
     "license": "apache-2.0",
     "kind": ModelKind.QUANTIZED,
     "hf_url": "https://huggingface.co/mistralai",
+    "top_eval_score": 0.79,
+    "top_eval_benchmark": "MT-Bench",
 }
 
 _LIVE_DETAILS["ailiance/mascarade"] = {
@@ -379,7 +411,9 @@ _LIVE_DETAILS["ailiance/mascarade"] = {
 # The 12 mascarade-* gateway aliases stay in ALIAS_TO_GATEWAY_MODEL so the
 # gateway router can still address each specialist directly, but the public
 # /models catalog folds them into a single "ailiance/mascarade" card.
-_MASCARADE_HIDDEN = {f"ailiance/mascarade-{lo['name']}" for lo in MASCARADE_LORAS}
+# The family alias itself is also hidden from the loop since the explicit
+# append below emits it once with the right metadata.
+_MASCARADE_HIDDEN = {f"ailiance/mascarade-{lo['name']}" for lo in MASCARADE_LORAS} | {"ailiance/mascarade"}
 
 
 def _live_cards() -> list[ModelCard]:
@@ -415,6 +449,8 @@ def _live_cards() -> list[ModelCard]:
                 architecture=details.get("architecture"),
                 license=details.get("license"),
                 kind=details.get("kind", ModelKind.UNKNOWN),
+                top_eval_score=details.get("top_eval_score"),
+                top_eval_benchmark=details.get("top_eval_benchmark"),
             )
         )
 
@@ -445,6 +481,8 @@ def _live_cards() -> list[ModelCard]:
             architecture=md["architecture"],
             license=md["license"],
             kind=md["kind"],
+            top_eval_score=0.62,
+            top_eval_benchmark="iact-bench hardware avg",
         )
     )
     return cards

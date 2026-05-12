@@ -86,6 +86,23 @@ function ModelGridCard({ card }: { card: ModelCard }) {
           <span className="v">{kindBadge ?? '—'}</span>
         </div>
       </div>
+      {card.top_eval_score != null && (
+        <div style={{ padding: '8px 14px 0', borderTop: '1px dashed var(--rule)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--ink-4)', marginBottom: 4 }}>
+            <span>{card.top_eval_benchmark ?? 'iact-bench'}</span>
+            <span style={{ color: 'var(--ink)', fontWeight: 600 }}>{(card.top_eval_score * 100).toFixed(0)}%</span>
+          </div>
+          <div style={{ height: 4, background: 'var(--paper-2)', borderRadius: 2, overflow: 'hidden' }}>
+            <div
+              style={{
+                width: `${Math.min(100, card.top_eval_score * 100)}%`,
+                height: '100%',
+                background: card.top_eval_score >= 0.85 ? 'var(--ok)' : card.top_eval_score >= 0.70 ? 'var(--accent)' : 'var(--ink-3)',
+              }}
+            />
+          </div>
+        </div>
+      )}
       <div className="model-foot">
         <span>{card.top_eval_benchmark ?? 'iact-bench'}</span>
         {isLive ? (
