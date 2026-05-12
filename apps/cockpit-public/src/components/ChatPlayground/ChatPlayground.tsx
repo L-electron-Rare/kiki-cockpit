@@ -39,8 +39,8 @@ export function ChatPlayground({ modelId, modelDisplayName }: Props) {
           className="mt-2 rounded border border-amber-300 bg-amber-50 px-3 py-2 text-xs text-amber-900"
         >
           <span aria-hidden>⚠️ </span>
-          You are interacting with an AI. Replies may be inaccurate, biased, or fabricated and
-          must not be treated as professional advice. See the{' '}
+          You are interacting with an AI. Replies may be inaccurate, biased, or fabricated and must
+          not be treated as professional advice. See the{' '}
           <a className="underline font-medium" href="/transparency">
             transparency page
           </a>{' '}

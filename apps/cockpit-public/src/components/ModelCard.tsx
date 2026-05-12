@@ -62,7 +62,9 @@ export function ModelCard({ card }: Props) {
           {stats.map((s) => (
             <li key={s.label} className="inline-flex items-center gap-1.5 truncate">
               <s.icon size={12} className="shrink-0 text-slate-400" />
-              <span className="truncate" title={`${s.label}: ${s.value}`}>{s.value}</span>
+              <span className="truncate" title={`${s.label}: ${s.value}`}>
+                {s.value}
+              </span>
             </li>
           ))}
         </ul>
@@ -123,7 +125,9 @@ function StatusBadge({ status }: { status: string }) {
     deprecated: 'bg-rose-100 text-rose-700 line-through',
   };
   return (
-    <span className={`text-xs rounded-full px-2 py-0.5 shrink-0 ${colors[status] ?? colors.production}`}>
+    <span
+      className={`text-xs rounded-full px-2 py-0.5 shrink-0 ${colors[status] ?? colors.production}`}
+    >
       {status}
     </span>
   );

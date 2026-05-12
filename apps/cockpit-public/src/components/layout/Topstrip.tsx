@@ -59,10 +59,7 @@ export function Topstrip() {
             </span>
           </div>
         )}
-        <div
-          className="topstrip-cell"
-          style={{ marginLeft: 'auto', borderRight: 0 }}
-        >
+        <div className="topstrip-cell" style={{ marginLeft: 'auto', borderRight: 0 }}>
           <span className="k">tx</span>
           <span className="v">eu-fr · electron-server</span>
         </div>

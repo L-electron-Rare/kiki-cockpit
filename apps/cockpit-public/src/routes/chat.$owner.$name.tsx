@@ -95,10 +95,19 @@ function ChatPage() {
                 <div style={{ fontWeight: 600, color: 'var(--ink)', marginBottom: 4 }}>
                   {detail.data.display_name}
                 </div>
-                <div style={{ color: 'var(--ink-4)', wordBreak: 'break-all' }}>{detail.data.id}</div>
+                <div style={{ color: 'var(--ink-4)', wordBreak: 'break-all' }}>
+                  {detail.data.id}
+                </div>
                 {detail.data.domain && (
                   <div style={{ marginTop: 8 }}>
-                    <span style={{ textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: 10, color: 'var(--ink-5)' }}>
+                    <span
+                      style={{
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.1em',
+                        fontSize: 10,
+                        color: 'var(--ink-5)',
+                      }}
+                    >
                       domaine
                     </span>{' '}
                     {detail.data.domain}

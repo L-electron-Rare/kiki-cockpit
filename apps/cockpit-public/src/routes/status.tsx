@@ -28,10 +28,7 @@ interface StatusBadgeProps {
 
 function StatusBadge({ ok, label = 'healthy' }: StatusBadgeProps) {
   return (
-    <span
-      className="heartbeat"
-      style={ok ? undefined : { color: 'var(--bad)' }}
-    >
+    <span className="heartbeat" style={ok ? undefined : { color: 'var(--bad)' }}>
       <span className={`dot${ok ? '' : ' bad'}`} />
       {ok ? label : 'down'}
     </span>
@@ -46,9 +43,8 @@ interface WorkerRowProps {
 
 function WorkerRow({ worker, tick, index }: WorkerRowProps) {
   const bars = sparkValues(16, index + (tick % 5));
-  const liveLatency = worker.latency_ms != null
-    ? worker.latency_ms + (tick * 3 + index * 7) % 30 - 15
-    : null;
+  const liveLatency =
+    worker.latency_ms != null ? worker.latency_ms + ((tick * 3 + index * 7) % 30) - 15 : null;
 
   return (
     <div className={`board-row${worker.healthy ? '' : ' bad'}`}>

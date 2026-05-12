@@ -6,9 +6,7 @@ import { Suspense, lazy, useEffect } from 'react';
 
 // Dev-only: the ternary folds to null in production (import.meta.env.DEV === false),
 // so Vite tree-shakes the entire TweaksPanel module from the prod bundle.
-const TweaksPanel = import.meta.env.DEV
-  ? lazy(() => import('@/components/dev/TweaksPanel'))
-  : null;
+const TweaksPanel = import.meta.env.DEV ? lazy(() => import('@/components/dev/TweaksPanel')) : null;
 
 export const Route = createRootRoute({
   component: RootLayout,

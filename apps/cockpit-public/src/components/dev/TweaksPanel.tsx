@@ -90,8 +90,7 @@ function readInitialTweaks(): Tweaks {
   const html = document.documentElement;
   const theme = (html.dataset.theme as Tweaks['theme']) ?? 'paper';
   const density = (html.dataset.density as Tweaks['density']) ?? 'comfortable';
-  const accent =
-    getComputedStyle(html).getPropertyValue('--accent').trim() || '#1c3fbb';
+  const accent = getComputedStyle(html).getPropertyValue('--accent').trim() || '#1c3fbb';
   const showTopstrip = !html.classList.contains('hide-topstrip');
   return { theme, density, accent, showTopstrip };
 }
@@ -146,12 +145,7 @@ interface TweakRadioProps<T extends string> {
   options: T[];
   onChange: (v: T) => void;
 }
-function TweakRadio<T extends string>({
-  label,
-  value,
-  options,
-  onChange,
-}: TweakRadioProps<T>) {
+function TweakRadio<T extends string>({ label, value, options, onChange }: TweakRadioProps<T>) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [dragging, setDragging] = useState(false);
   const valueRef = useRef(value);
@@ -447,11 +441,7 @@ export default function TweaksPanel() {
             options={['compact', 'comfortable', 'airy'] as const}
             onChange={(v) => set('density', v)}
           />
-          <TweakColor
-            label="Accent"
-            value={tweaks.accent}
-            onChange={(v) => set('accent', v)}
-          />
+          <TweakColor label="Accent" value={tweaks.accent} onChange={(v) => set('accent', v)} />
         </TweakSection>
         <TweakSection label="Layout">
           <TweakToggle
