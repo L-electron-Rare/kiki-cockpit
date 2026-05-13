@@ -10,6 +10,7 @@ interface Props {
 // with src/gateway/file_extract.py — if a new format is added there,
 // add the matching MIME and extension here too.
 const ACCEPT_TYPES = [
+  // Documents
   '.pdf',
   '.docx',
   '.xlsx',
@@ -25,6 +26,21 @@ const ACCEPT_TYPES = [
   'text/plain',
   'text/markdown',
   'text/html',
+  // Images — gateway OCRs them via Tesseract (ailiance/ailiance#90)
+  '.png',
+  '.jpg',
+  '.jpeg',
+  '.gif',
+  '.bmp',
+  '.webp',
+  '.tiff',
+  '.tif',
+  'image/png',
+  'image/jpeg',
+  'image/gif',
+  'image/bmp',
+  'image/webp',
+  'image/tiff',
 ].join(',');
 
 // Gateway extract endpoint. Public host so the static cockpit doesn't
@@ -155,7 +171,7 @@ export function PromptInput({ onSubmit, disabled }: Props) {
           onClick={() => fileInputRef.current?.click()}
           disabled={disabled || uploading}
           aria-label="Attach a file"
-          title="Attach a PDF, DOCX, XLSX, PPTX, TXT, MD or HTML file"
+          title="Attach a file (PDF/DOCX/XLSX/PPTX/TXT/MD/HTML) or image (PNG/JPG/etc., OCR'd server-side)"
           className="rounded border border-slate-300 bg-white px-3 text-slate-700 disabled:opacity-50 hover:bg-slate-100"
         >
           <Paperclip size={16} />
