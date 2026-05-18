@@ -137,7 +137,11 @@ button {
   height: 30px;
   align-items: center;
   overflow-x: auto;
+  scrollbar-width: none;
   white-space: nowrap;
+}
+.topstrip-inner::-webkit-scrollbar {
+  display: none;
 }
 .topstrip-cell {
   padding: 0 18px;
@@ -460,6 +464,7 @@ button {
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.12em;
+  /* keep >= sum of .worker-row-rich columns so the header scrolls in sync */
   min-width: 900px;
 }
 .fleet-head .live {
@@ -1536,7 +1541,6 @@ section.block {
   background: var(--rouge);
 }
 
-/* responsive */
 /* ===== responsive — grids migrated from inline styles ===== */
 .cta-split {
   display: grid;
@@ -1588,5 +1592,10 @@ section.block {
   .chat-left,
   .chat-right {
     display: none;
+  }
+  .status-split > *:first-child,
+  .summary-grid > *:nth-child(2n),
+  .backends-grid > * {
+    border-right: none !important;
   }
 }
