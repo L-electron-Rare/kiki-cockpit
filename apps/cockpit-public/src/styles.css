@@ -121,6 +121,13 @@ button {
   margin: 0 auto;
   padding: 0 var(--pad);
 }
+/* The root layout <main> is a flex item; the auto side-margins from .wrap
+   disable stretch, so it would size to content (wide tables overflow the
+   page). Pin it to the flex container width so inner overflow-x containers
+   can scroll. Only matches the root <main> — route <main>s carry no class. */
+main.wrap {
+  width: 100%;
+}
 
 /* ============ topstrip — live telemetry ============ */
 .topstrip {
