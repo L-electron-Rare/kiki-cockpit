@@ -47,11 +47,11 @@ cd /opt/ailiance-demo
 gh repo clone ailiance/ailiance-demo .
 cp deploy/.env.example deploy/.env                    # then edit
 docker compose -f deploy/docker-compose.yml --env-file deploy/.env up -d --build
-
-# Install the SPA routers (compose labels for these are silently dropped — TBD)
-sudo cp deploy/traefik-dynamic/ailiance-demo.yml \
-  /home/electron/lelectron-rare/factory-4-life/traefik/dynamic/
 ```
+
+All Traefik routers (public, admin, preview, api) are defined via the
+compose `labels` and picked up by Traefik's docker provider — no extra
+dynamic file to install.
 
 Verify:
 ```bash
