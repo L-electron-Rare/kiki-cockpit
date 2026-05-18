@@ -11,7 +11,12 @@ interface UseDatasetSamplesParams {
   search?: string;
 }
 
-export function useDatasetSamples({ domain, offset = 0, limit = 10, search }: UseDatasetSamplesParams) {
+export function useDatasetSamples({
+  domain,
+  offset = 0,
+  limit = 10,
+  search,
+}: UseDatasetSamplesParams) {
   const params = new URLSearchParams({ offset: String(offset), limit: String(limit) });
   if (search) params.set('search', search);
 

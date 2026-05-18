@@ -1,5 +1,5 @@
-import { Link } from '@tanstack/react-router';
 import type { components } from '@cockpit/shared';
+import { Link } from '@tanstack/react-router';
 
 type DatasetSummary = components['schemas']['DatasetSummary'];
 
@@ -37,7 +37,10 @@ export function DatasetCard({ dataset }: Props) {
               {hfUrl ? (
                 <span
                   className="text-blue-400"
-                  onClick={(e) => { e.preventDefault(); window.open(hfUrl, '_blank', 'noreferrer'); }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.open(hfUrl, '_blank', 'noreferrer');
+                  }}
                 >
                   {dataset.hf_dataset_id}
                 </span>

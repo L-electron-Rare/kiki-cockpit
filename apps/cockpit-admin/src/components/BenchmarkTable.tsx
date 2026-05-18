@@ -18,7 +18,9 @@ export function BenchmarkTable({ benchmark, runs }: Props) {
     <section className="space-y-2">
       <header className="flex items-baseline gap-3">
         <h2 className="text-lg font-semibold text-violet-400">{benchmark}</h2>
-        <span className="text-xs text-slate-500">{runs.length} run{runs.length !== 1 ? 's' : ''}</span>
+        <span className="text-xs text-slate-500">
+          {runs.length} run{runs.length !== 1 ? 's' : ''}
+        </span>
       </header>
       <div className="overflow-x-auto rounded-lg border border-slate-700">
         <table className="w-full text-sm text-slate-300">
@@ -37,7 +39,8 @@ export function BenchmarkTable({ benchmark, runs }: Props) {
               <tr key={run.run_id} className="hover:bg-slate-800/50 transition">
                 <td className="px-4 py-2 font-medium">{run.adapter}</td>
                 <td className="px-4 py-2 text-right font-mono">
-                  {run.score}{run.score_unit}
+                  {run.score}
+                  {run.score_unit}
                 </td>
                 <td className="px-4 py-2 text-right">
                   <DeltaBadge delta={run.delta_vs_base} />

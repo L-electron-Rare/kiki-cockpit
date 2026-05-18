@@ -1,13 +1,5 @@
 import type { components } from '@cockpit/shared';
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from 'recharts';
+import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 type DatasetStats = components['schemas']['DatasetStats'];
 
@@ -51,7 +43,11 @@ export function StatsPanel({ stats }: Props) {
               <XAxis dataKey="bucket" tick={{ fill: '#94a3b8', fontSize: 12 }} />
               <YAxis tick={{ fill: '#94a3b8', fontSize: 12 }} />
               <Tooltip
-                contentStyle={{ background: '#1e293b', border: '1px solid #475569', color: '#e2e8f0' }}
+                contentStyle={{
+                  background: '#1e293b',
+                  border: '1px solid #475569',
+                  color: '#e2e8f0',
+                }}
               />
               <Bar dataKey="count" fill="#7c3aed" radius={[3, 3, 0, 0]} />
             </BarChart>

@@ -108,8 +108,7 @@ export function PromptInput({ onSubmit, disabled }: Props) {
       const resp = await fetch(EXTRACT_URL, { method: 'POST', body: form });
       if (!resp.ok) {
         const body = await resp.json().catch(() => ({}));
-        const msg =
-          body?.detail?.message ?? body?.detail ?? `Upload failed (HTTP ${resp.status})`;
+        const msg = body?.detail?.message ?? body?.detail ?? `Upload failed (HTTP ${resp.status})`;
         setUploadError(String(msg));
         return;
       }
@@ -137,7 +136,9 @@ export function PromptInput({ onSubmit, disabled }: Props) {
           <span className="rounded bg-emerald-200 px-1.5 py-0.5 text-[10px] uppercase tracking-wide">
             {attachment.format}
           </span>
-          <span className="text-emerald-700">{attachment.markdown.length.toLocaleString()} chars</span>
+          <span className="text-emerald-700">
+            {attachment.markdown.length.toLocaleString()} chars
+          </span>
           {attachment.truncated && (
             <span className="rounded bg-amber-200 px-1.5 py-0.5 text-[10px] uppercase text-amber-900">
               truncated
