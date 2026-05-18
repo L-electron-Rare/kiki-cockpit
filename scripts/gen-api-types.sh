@@ -14,13 +14,18 @@ mkdir -p "$(dirname "$OUT")"
 # can take 30+ s to re-resolve in restricted networks during Docker builds.
 cd "$ROOT"
 # Prefer a venv python that already has ailiance_demo installed (Docker
-# build, local .venv); fall back to `uv run` for fresh checkouts.
+# build, local .venv). On a fresh checkout no venv exists yet: sync one so
+# that `pnpm -r build` works end-to-end without a manual `uv sync` first.
 if [ -x "$ROOT/.venv/bin/python" ]; then
   PY="$ROOT/.venv/bin/python"
 elif [ -x "$ROOT/apps/api/.venv/bin/python" ]; then
   PY="$ROOT/apps/api/.venv/bin/python"
+elif command -v uv > /dev/null 2>&1; then
+  echo "No venv found — running 'uv sync' for ailiance-demo-api"
+  uv sync --frozen --no-dev --package ailiance-demo-api
+  PY="$ROOT/.venv/bin/python"
 fi
-if [ -n "${PY:-}" ]; then
+if [ -n "${PY:-}" ] && [ -x "$PY" ]; then
   "$PY" -m uvicorn ailiance_demo.main:app --host 127.0.0.1 --port 9199 &
 else
   uv run --no-sync uvicorn ailiance_demo.main:app --host 127.0.0.1 --port 9199 &

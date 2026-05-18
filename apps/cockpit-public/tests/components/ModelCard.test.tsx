@@ -22,6 +22,7 @@ const baseCard: Card = {
   name: 'micro-kiki-v3',
   display_name: 'Micro-Ailiance v3',
   status: 'featured',
+  kind: 'fine_tuned',
   chat_backend: 'hf_external',
   chat_eligible: false,
   downloads: 242,
