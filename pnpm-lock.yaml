@@ -108,9 +108,6 @@ importers:
       '@tanstack/react-start':
         specifier: ^1.131.0
         version: 1.168.6(crossws@0.4.5(srvx@0.8.16))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(vite@7.3.3(jiti@1.21.7)(lightningcss@1.32.0))
-      '@tanstack/router-devtools':
-        specifier: ^1.85.0
-        version: 1.166.13(@tanstack/react-router@1.169.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(@tanstack/router-core@1.171.2)(csstype@3.2.3)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       lucide-react:
         specifier: ^0.468.0
         version: 0.468.0(react@19.2.5)
