@@ -1,5 +1,4 @@
 import { ChatPlayground } from '@/components/ChatPlayground/ChatPlayground';
-import { useModels } from '@/hooks/useModels';
 import { createLazyFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
 
@@ -15,15 +14,18 @@ interface SelectedModel {
 }
 
 function PlaygroundPage() {
-  const models = useModels();
+  const { models } = Route.useLoaderData();
   const [selected, setSelected] = useState<SelectedModel | null>(null);
 
   // Place the auto-router first, then the rest (chat_eligible).
-  const chatEligible = (models.data?.filter((m) => m.chat_eligible) ?? []).slice().sort((a, b) => {
-    if (a.id.endsWith('/auto')) return -1;
-    if (b.id.endsWith('/auto')) return 1;
-    return (a.featured_rank ?? 999) - (b.featured_rank ?? 999);
-  });
+  const chatEligible = models
+    .filter((m) => m.chat_eligible)
+    .slice()
+    .sort((a, b) => {
+      if (a.id.endsWith('/auto')) return -1;
+      if (b.id.endsWith('/auto')) return 1;
+      return (a.featured_rank ?? 999) - (b.featured_rank ?? 999);
+    });
 
   // Default to the auto-router; fallback to first featured / first eligible.
   const defaultModel =
@@ -55,34 +57,12 @@ function PlaygroundPage() {
       </section>
 
       <section className="wrap" style={{ paddingBottom: 80 }}>
-        {models.isLoading && (
-          <p
-            style={{
-              fontFamily: 'var(--mono)',
-              fontSize: 12,
-              color: 'var(--ink-4)',
-              paddingTop: 24,
-            }}
-          >
-            Chargement des modèles…
-          </p>
-        )}
-        {models.isError && (
-          <p
-            style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--bad)', paddingTop: 24 }}
-          >
-            Impossible de charger la liste des modèles.
-            {/* TODO: wire to /api/public/models error handling */}
-          </p>
-        )}
-
-        {!models.isLoading && (
-          <div className="chat-shell">
+        <div className="chat-shell">
             {/* LEFT — model picker */}
             <aside className="chat-left">
               <div className="panel-section">
                 <h4>Modèle servi</h4>
-                {chatEligible.length === 0 && !models.isLoading && (
+                {chatEligible.length === 0 && (
                   <p style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--ink-4)' }}>
                     Aucun modèle disponible.
                   </p>
@@ -195,8 +175,7 @@ function PlaygroundPage() {
                 </div>
               )}
             </aside>
-          </div>
-        )}
+        </div>
       </section>
     </main>
   );

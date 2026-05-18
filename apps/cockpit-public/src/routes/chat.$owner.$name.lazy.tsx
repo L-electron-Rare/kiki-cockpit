@@ -1,5 +1,4 @@
 import { ChatPlayground } from '@/components/ChatPlayground/ChatPlayground';
-import { useModelDetail } from '@/hooks/useModelDetail';
 import { createLazyFileRoute } from '@tanstack/react-router';
 
 export const Route = createLazyFileRoute('/chat/$owner/$name')({
@@ -7,34 +6,8 @@ export const Route = createLazyFileRoute('/chat/$owner/$name')({
 });
 
 function ChatPage() {
-  const { owner, name } = Route.useParams();
-  const detail = useModelDetail(owner, name);
-
-  if (detail.isLoading) {
-    return (
-      <main>
-        <section className="wrap page-head">
-          <div className="kicker">
-            <span className="num">№ 03</span> · playground · SSE streaming
-          </div>
-          <h1 className="display">Chargement…</h1>
-        </section>
-      </main>
-    );
-  }
-
-  if (!detail.data) {
-    return (
-      <main>
-        <section className="wrap page-head">
-          <div className="kicker">
-            <span className="num">№ 03</span> · playground
-          </div>
-          <h1 className="display">Modèle introuvable.</h1>
-        </section>
-      </main>
-    );
-  }
+  const { model } = Route.useLoaderData();
+  const detail = { data: model };
 
   if (!detail.data.chat_eligible) {
     return (
