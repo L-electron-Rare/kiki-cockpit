@@ -32,3 +32,6 @@ packages/shared/src/api/types.ts
 .env
 .env.local
 *.local
+
+# Brainstorm companion runtime
+.superpowers/

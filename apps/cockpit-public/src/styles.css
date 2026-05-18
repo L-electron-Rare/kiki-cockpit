@@ -121,6 +121,13 @@ button {
   margin: 0 auto;
   padding: 0 var(--pad);
 }
+/* The root layout <main> is a flex item; the auto side-margins from .wrap
+   disable stretch, so it would size to content (wide tables overflow the
+   page). Pin it to the flex container width so inner overflow-x containers
+   can scroll. Only matches the root <main> — route <main>s carry no class. */
+main.wrap {
+  width: 100%;
+}
 
 /* ============ topstrip — live telemetry ============ */
 .topstrip {
@@ -136,8 +143,12 @@ button {
   gap: 0;
   height: 30px;
   align-items: center;
-  overflow: hidden;
+  overflow-x: auto;
+  scrollbar-width: none;
   white-space: nowrap;
+}
+.topstrip-inner::-webkit-scrollbar {
+  display: none;
 }
 .topstrip-cell {
   padding: 0 18px;
@@ -211,8 +222,9 @@ button {
   display: flex;
   align-items: stretch;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 32px;
-  height: 64px;
+  min-height: 64px;
 }
 .brand {
   display: flex;
@@ -445,6 +457,7 @@ button {
   background: var(--paper-2);
   padding: 0;
   position: relative;
+  overflow-x: auto;
 }
 .fleet-head {
   display: flex;
@@ -458,6 +471,8 @@ button {
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.12em;
+  /* keep >= sum of .worker-row-rich columns so the header scrolls in sync */
+  min-width: 900px;
 }
 .fleet-head .live {
   display: flex;
@@ -504,6 +519,10 @@ button {
   width: 3px;
   background: var(--ink-3);
   display: block;
+}
+.worker-row-rich {
+  grid-template-columns: 14px 1.8fr repeat(6, 1fr) 72px;
+  min-width: 900px;
 }
 
 /* ============ section ============ */
@@ -844,11 +863,6 @@ section.block {
   flex-direction: column;
   gap: 0;
 }
-@media (max-width: 900px) {
-  .router-branch {
-    grid-template-columns: 1fr;
-  }
-}
 
 /* ============ chat panel ============ */
 .chat-shell {
@@ -1080,6 +1094,7 @@ section.block {
 .fleet-board {
   border-top: 1px solid var(--ink);
   border-left: 1px solid var(--rule);
+  overflow-x: auto;
 }
 .board-row {
   display: grid;
@@ -1092,6 +1107,7 @@ section.block {
   background: var(--paper);
   font-family: var(--mono);
   font-size: 12px;
+  min-width: 860px;
 }
 .board-row.head {
   background: var(--ink);
@@ -1532,19 +1548,61 @@ section.block {
   background: var(--rouge);
 }
 
-/* responsive */
-@media (max-width: 1100px) {
+/* ===== responsive — grids migrated from inline styles ===== */
+.cta-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: end;
+}
+.backends-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0;
+  margin: 24px 0;
+  border: 1px solid var(--rule);
+}
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin-top: 40px;
+  border: 1px solid var(--ink);
+}
+.status-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  margin-top: 24px;
+  border: 1px solid var(--rule);
+}
+
+/* ===== responsive — single anti-casse breakpoint ===== */
+@media (max-width: 1024px) {
   .hero,
   .block-head,
   .chat-shell,
   .detail-grid,
   .pillars,
   .models-grid,
-  .foot-grid {
+  .foot-grid,
+  .router-branch,
+  .dl-grid,
+  .cta-split,
+  .backends-grid,
+  .status-split {
     grid-template-columns: 1fr !important;
+  }
+  .summary-grid {
+    grid-template-columns: 1fr 1fr !important;
   }
   .chat-left,
   .chat-right {
     display: none;
+  }
+  .status-split > *:first-child,
+  .summary-grid > *:nth-child(2n),
+  .backends-grid > * {
+    border-right: none !important;
   }
 }

@@ -65,6 +65,7 @@ function WorkerRow({ worker, tick, index }: WorkerRowProps) {
             <span className="latency-bar">
               {bars.map((v, k) => (
                 <i
+                  // biome-ignore lint/suspicious/noArrayIndexKey: fixed-position decorative sparkline bar
                   key={k}
                   style={{
                     height: `${Math.max(2, v * 26)}px`,
@@ -198,15 +199,7 @@ function StatusPage() {
           </div>
         </div>
 
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
-            gap: 0,
-            marginTop: 40,
-            border: '1px solid var(--ink)',
-          }}
-        >
+        <div className="summary-grid">
           <SummaryStat
             label="FLEET"
             value={statusLoading ? '…' : `${healthyCount}/${totalCount}`}
@@ -271,6 +264,7 @@ function StatusPage() {
               <span className="latency-bar">
                 {routerSparks.map((v, k) => (
                   <i
+                    // biome-ignore lint/suspicious/noArrayIndexKey: fixed-position decorative sparkline bar
                     key={k}
                     style={{ height: `${Math.max(2, v * 14)}px`, background: 'var(--accent)' }}
                   />
@@ -287,15 +281,7 @@ function StatusPage() {
           </div>
         </div>
 
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: 0,
-            marginTop: 24,
-            border: '1px solid var(--rule)',
-          }}
-        >
+        <div className="status-split">
           <div style={{ padding: '28px 32px', borderRight: '1px solid var(--rule)' }}>
             <div
               style={{

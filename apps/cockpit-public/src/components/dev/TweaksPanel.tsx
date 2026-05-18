@@ -205,6 +205,7 @@ function TweakRadio<T extends string>({ label, value, options, onChange }: Tweak
           }}
         />
         {options.map((o) => (
+          // biome-ignore lint/a11y/useSemanticElements: styled segmented control, button with role=radio by design
           <button key={o} type="button" role="radio" aria-checked={o === value}>
             {o}
           </button>

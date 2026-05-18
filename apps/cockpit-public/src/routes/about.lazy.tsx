@@ -68,15 +68,7 @@ function AboutPage() {
             <code>/v1/chat/completions</code>.
           </p>
 
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: 0,
-              margin: '24px 0',
-              border: '1px solid var(--rule)',
-            }}
-          >
+          <div className="backends-grid">
             {BACKENDS.map((b) => (
               <div
                 key={b.plat}
