@@ -1,8 +1,15 @@
+import { seo } from '@/lib/seo';
 import { getEvalScores, getMascaradeLoras, getModelDetail, getProvenance } from '@/lib/server-fns';
 import { ApiError } from '@cockpit/shared';
 import { createFileRoute, notFound } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/models/$owner/$name')({
+  head: ({ params }) =>
+    seo({
+      title: `${params.owner}/${params.name} — Ailiance`,
+      description: `Fiche du modèle ${params.owner}/${params.name} : scores d'évaluation audit-grade, provenance et chemin de requête sur la flotte Ailiance.`,
+      path: `/models/${params.owner}/${params.name}`,
+    }),
   notFoundComponent: () => (
     <main className="wrap" style={{ padding: '64px 0' }}>
       <h1 className="display">Modèle introuvable.</h1>

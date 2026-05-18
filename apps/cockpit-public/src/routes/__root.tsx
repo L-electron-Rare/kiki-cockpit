@@ -1,6 +1,7 @@
 import { Footer } from '@/components/layout/Footer';
 import { Header } from '@/components/layout/Header';
 import { Topstrip } from '@/components/layout/Topstrip';
+import { SITE_URL } from '@/lib/seo';
 import { getTelemetry } from '@/lib/server-fns';
 import type { components } from '@cockpit/shared';
 import { HeadContent, Outlet, Scripts, createRootRoute } from '@tanstack/react-router';
@@ -29,13 +30,54 @@ const THEME_INIT =
   `'dark':'paper');document.documentElement.dataset.theme=t;` +
   `document.documentElement.dataset.density='comfortable';}catch(e){}})();`;
 
+// Static structured data (schema.org). Rendered server-side as a
+// <script type="application/ld+json"> so crawlers index it without JS.
+const JSON_LD = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${SITE_URL}/#org`,
+      name: 'Ailiance',
+      url: SITE_URL,
+      description:
+        'Infrastructure LLM européenne souveraine : flotte de modèles spécialisés open-weights opérée depuis du matériel personnel en France.',
+      sameAs: ['https://github.com/ailiance', 'https://huggingface.co/Ailiance-fr'],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: 'Ailiance',
+      inLanguage: 'fr-FR',
+      publisher: { '@id': `${SITE_URL}/#org` },
+    },
+  ],
+});
+
 export const Route = createRootRoute({
   head: () => ({
     meta: [
       { charSet: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'AILIANCE LLM Workflow — Ailiance' },
+      { name: 'theme-color', content: '#1c3fbb' },
+      { title: 'Ailiance — Flotte LLM souveraine' },
+      {
+        name: 'description',
+        content:
+          'Flotte de LLM spécialisés open-weights, opérée depuis du matériel personnel en France. Frameworks de modèles, intégration, formation et schémas PCB sous Apache-2.0.',
+      },
+      { property: 'og:site_name', content: 'Ailiance' },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:locale', content: 'fr_FR' },
+      { property: 'og:image', content: `${SITE_URL}/og-default.png` },
+      { property: 'og:image:width', content: '1200' },
+      { property: 'og:image:height', content: '630' },
+      { property: 'og:image:alt', content: 'Ailiance — flotte LLM souveraine' },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:image', content: `${SITE_URL}/og-default.png` },
     ],
+    links: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
   }),
   loader: async (): Promise<{ telemetry: TelemetryResponse | null }> => {
     try {
@@ -103,6 +145,8 @@ function RootDocument({
         <HeadContent />
         {/* biome-ignore lint/security/noDangerouslySetInnerHtml: pre-hydration theme script, no user input */}
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT }} />
+        {/* biome-ignore lint/security/noDangerouslySetInnerHtml: static schema.org JSON-LD, no user input */}
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON_LD }} />
       </head>
       <body>
         <div className="min-h-screen flex flex-col bg-paper text-ink">
