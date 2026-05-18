@@ -1,6 +1,4 @@
 import { ChatPlayground } from '@/components/ChatPlayground/ChatPlayground';
-import { useModels } from '@/hooks/useModels';
-import { useStatus } from '@/hooks/useStatus';
 import type { components } from '@cockpit/shared';
 import { Link, createLazyFileRoute } from '@tanstack/react-router';
 import { useMemo } from 'react';
@@ -142,8 +140,7 @@ function ModelGridCard({ card }: { card: ModelCard }) {
 }
 
 function ModelsPage() {
-  const { data, isLoading, error } = useModels();
-  const cards = data ?? [];
+  const { models: cards, status } = Route.useLoaderData();
 
   // Modèles finaux uniquement : chat_eligible OU status === 'featured' OU id contient '/auto'
   const finalModels = useMemo(
@@ -160,7 +157,6 @@ function ModelsPage() {
     [cards],
   );
 
-  const { data: status, isLoading: statusLoading, error: statusError } = useStatus();
   const workers = status?.workers ?? [];
   const upCount = status?.healthy_count ?? 0;
   const totalCount = status?.total_count ?? workers.length;
@@ -276,18 +272,10 @@ function ModelsPage() {
           <p className="lede">
             Gateway et workers actifs, sondés en direct via{' '}
             <code className="mono">/api/public/status</code> toutes les 15 secondes.{' '}
-            {statusLoading ? (
-              <em>chargement…</em>
-            ) : statusError ? (
-              <em>probe indisponible</em>
-            ) : (
-              <>
-                <strong>
-                  {upCount} / {totalCount}
-                </strong>{' '}
-                healthy.
-              </>
-            )}
+            <strong>
+              {upCount} / {totalCount}
+            </strong>{' '}
+            healthy.
           </p>
         </div>
         <div className="fleet">
@@ -504,35 +492,25 @@ function ModelsPage() {
             HuggingFace complet (24 adaptateurs), voir la model card de chaque entrée.
           </p>
         </div>
-        {isLoading ? (
-          <p style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--ink-4)' }}>
-            Chargement…
-          </p>
-        ) : error ? (
-          <p style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--bad)' }}>
-            Erreur de chargement.
-          </p>
-        ) : (
-          <div className="models-grid">
-            {finalModels.map((card) => (
-              <ModelGridCard key={card.id} card={card} />
-            ))}
-            {finalModels.length === 0 && (
-              <div
-                style={{
-                  gridColumn: '1 / -1',
-                  padding: '48px 0',
-                  fontFamily: 'var(--mono)',
-                  fontSize: 12,
-                  color: 'var(--ink-4)',
-                  textAlign: 'center',
-                }}
-              >
-                Aucun modèle final.
-              </div>
-            )}
-          </div>
-        )}
+        <div className="models-grid">
+          {finalModels.map((card) => (
+            <ModelGridCard key={card.id} card={card} />
+          ))}
+          {finalModels.length === 0 && (
+            <div
+              style={{
+                gridColumn: '1 / -1',
+                padding: '48px 0',
+                fontFamily: 'var(--mono)',
+                fontSize: 12,
+                color: 'var(--ink-4)',
+                textAlign: 'center',
+              }}
+            >
+              Aucun modèle final.
+            </div>
+          )}
+        </div>
       </section>
 
       {/* Playground intégré — auto-router preset */}
