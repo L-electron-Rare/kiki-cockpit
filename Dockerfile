@@ -43,7 +43,15 @@ WORKDIR /app
 COPY --from=public-build /repo/apps/cockpit-public/.output ./.output
 ENV PORT=3000
 EXPOSE 3000
-HEALTHCHECK --interval=30s --timeout=3s CMD node -e "fetch('http://127.0.0.1:3000/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+# The SSR root render is slow on a cold container: its loaders fan out to
+# the gateway, worker probes and the HF API before the in-process caches
+# warm (~10s). A 3s timeout could never pass that first render, so the
+# container stayed `starting` and Traefik 404'd the site for ~60-90s on
+# every deploy. A generous timeout plus start-period/-interval lets the
+# first check both pass and warm the caches — Traefik then routes a box
+# that is already warm.
+HEALTHCHECK --interval=30s --timeout=15s --start-period=45s --start-interval=3s \
+  CMD node -e "fetch('http://127.0.0.1:3000/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
 CMD ["node", ".output/server/index.mjs"]
 
 # --- cockpit-admin build ----------------------------------------------------
