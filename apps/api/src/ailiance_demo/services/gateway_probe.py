@@ -9,7 +9,7 @@ from __future__ import annotations
 import asyncio
 import re
 import time
-from collections.abc import Iterable
+from collections.abc import Awaitable, Callable, Iterable
 
 import httpx
 import structlog
@@ -205,6 +205,49 @@ def _cache_get(key: str) -> object | None:
 
 def _cache_set(key: str, value: object) -> None:
     _cache[key] = (time.monotonic(), value)
+
+
+# Keys whose background refresh is in flight — stops a burst of stale-cache
+# reads from each spawning their own probe.
+_refreshing: set[str] = set()
+# Strong refs to background tasks so the event loop can't GC them mid-run.
+_bg_tasks: set[asyncio.Task] = set()
+
+
+async def _bg_refresh(key: str, producer: Callable[[], Awaitable[object]]) -> None:
+    """Recompute one cache key off the request path."""
+    try:
+        _cache_set(key, await producer())
+    except Exception as exc:  # noqa: BLE001
+        log.warning("gateway_probe.refresh_failed", key=key, error=str(exc))
+    finally:
+        _refreshing.discard(key)
+
+
+async def _swr(key: str, producer: Callable[[], Awaitable[object]]) -> object:
+    """Stale-while-revalidate read.
+
+    Fresh cache -> return it. Stale cache -> return the stale value at once
+    and refresh behind the request. Empty cache -> block once to populate,
+    so only the very first call after a process start pays the probe cost.
+
+    The worker/router probes take ~10s on a cache miss; without this, every
+    TTL window would hand one unlucky request a 10s page render.
+    """
+    entry = _cache.get(key)
+    if entry is not None:
+        ts, value = entry
+        if time.monotonic() - ts <= TTL_SECONDS:
+            return value
+        if key not in _refreshing:
+            _refreshing.add(key)
+            task = asyncio.create_task(_bg_refresh(key, producer))
+            _bg_tasks.add(task)
+            task.add_done_callback(_bg_tasks.discard)
+        return value
+    value = await producer()
+    _cache_set(key, value)
+    return value
 
 
 def _energy_per_day(tdp_w: int | None, healthy: bool) -> float | None:
@@ -522,21 +565,22 @@ async def _probe_one(
 
 
 async def fetch_workers_status(gateway_url: str) -> list[WorkerStatus]:
-    """Probe every worker we know about. Cached 10 s."""
-    cached = _cache_get("workers")
-    if isinstance(cached, list):
-        return cached  # type: ignore[return-value]
-    async with httpx.AsyncClient() as client:
-        request_counts = await _fetch_gateway_request_counts(client, gateway_url)
-        host_probes = await _gather_host_probes()
-        # Probe all workers in parallel to bound total latency to
-        # ~max(probe), not sum(probe). 11 workers * 300 ms sequential
-        # = 3.3 s -> ~500 ms. Fixes "probe indisponible" on cockpit.
-        results = list(await asyncio.gather(
-            *(_probe_one(client, w, request_counts, host_probes) for w in WORKERS)
-        ))
-    _cache_set("workers", results)
-    return results
+    """Probe every worker we know about. Stale-while-revalidate, TTL 30 s."""
+
+    async def _produce() -> list[WorkerStatus]:
+        async with httpx.AsyncClient() as client:
+            request_counts = await _fetch_gateway_request_counts(client, gateway_url)
+            host_probes = await _gather_host_probes()
+            # Probe all workers in parallel to bound total latency to
+            # ~max(probe), not sum(probe). 11 workers * 300 ms sequential
+            # = 3.3 s -> ~500 ms. Fixes "probe indisponible" on cockpit.
+            return list(
+                await asyncio.gather(
+                    *(_probe_one(client, w, request_counts, host_probes) for w in WORKERS)
+                )
+            )
+
+    return await _swr("workers", _produce)  # type: ignore[return-value]
 
 
 def _parse_prom_counter(lines: Iterable[str], metric: str) -> dict[str, float]:
@@ -555,27 +599,26 @@ def _parse_prom_counter(lines: Iterable[str], metric: str) -> dict[str, float]:
 
 
 async def fetch_router_stats(gateway_url: str) -> RouterStats:
-    """Pull cache hit/miss + per-model request counts from /metrics. Cached 30 s."""
-    cached = _cache_get("router_stats")
-    if isinstance(cached, RouterStats):
-        return cached
-    try:
-        async with httpx.AsyncClient(timeout=2.0) as client:
-            r = await client.get(f"{gateway_url}/metrics")
-        text = r.text if r.status_code == 200 else ""
-    except Exception as exc:  # noqa: BLE001
-        log.warning("router_stats.fetch_failed", error=str(exc))
-        text = ""
-    lines = text.splitlines()
-    hits = _parse_prom_counter(lines, "ailiance_router_cache_hits_total")
-    misses = _parse_prom_counter(lines, "ailiance_router_cache_misses_total")
-    requests = _parse_prom_counter(lines, "ailiance_gw_requests_total")
-    # Sum across labels for the headline numbers
-    stats = RouterStats(
-        cache_hits=int(sum(hits.values())),
-        cache_misses=int(sum(misses.values())),
-        total_requests=int(sum(requests.values())),
-        per_model_requests={k.strip("{}"): int(v) for k, v in requests.items()},
-    )
-    _cache_set("router_stats", stats)
-    return stats
+    """Pull cache hit/miss + per-model request counts from /metrics. SWR, TTL 30 s."""
+
+    async def _produce() -> RouterStats:
+        try:
+            async with httpx.AsyncClient(timeout=2.0) as client:
+                r = await client.get(f"{gateway_url}/metrics")
+            text = r.text if r.status_code == 200 else ""
+        except Exception as exc:  # noqa: BLE001
+            log.warning("router_stats.fetch_failed", error=str(exc))
+            text = ""
+        lines = text.splitlines()
+        hits = _parse_prom_counter(lines, "ailiance_router_cache_hits_total")
+        misses = _parse_prom_counter(lines, "ailiance_router_cache_misses_total")
+        requests = _parse_prom_counter(lines, "ailiance_gw_requests_total")
+        # Sum across labels for the headline numbers
+        return RouterStats(
+            cache_hits=int(sum(hits.values())),
+            cache_misses=int(sum(misses.values())),
+            total_requests=int(sum(requests.values())),
+            per_model_requests={k.strip("{}"): int(v) for k, v in requests.items()},
+        )
+
+    return await _swr("router_stats", _produce)  # type: ignore[return-value]
