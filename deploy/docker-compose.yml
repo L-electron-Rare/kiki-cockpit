@@ -89,8 +89,8 @@ services:
       dockerfile: Dockerfile
       target: public
       args:
-        # Empty: SPA hooks already include the /api/ prefix in their fetch
-        # paths (see useModels.ts, useTrainingRuns.ts, etc.).
+        # Empty: server-side fetches use INTERNAL_API_URL via server-fns;
+        # client-side chat stream uses the relative /api/ path via Traefik.
         VITE_API_BASE_URL: ""
     image: ailiance-demo-public:${TAG:-latest}
     environment:
@@ -169,8 +169,8 @@ services:
       dockerfile: Dockerfile
       target: admin
       args:
-        # Empty: SPA hooks already include the /api/ prefix in their fetch
-        # paths (see useModels.ts, useTrainingRuns.ts, etc.).
+        # Empty: server-side fetches use INTERNAL_API_URL via server-fns;
+        # client-side chat stream uses the relative /api/ path via Traefik.
         VITE_API_BASE_URL: ""
     image: ailiance-demo-admin:${TAG:-latest}
     networks:
