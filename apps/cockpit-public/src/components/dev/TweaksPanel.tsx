@@ -325,8 +325,8 @@ export default function TweaksPanel() {
       x: Math.min(maxRight, Math.max(PAD, offsetRef.current.x)),
       y: Math.min(maxBottom, Math.max(PAD, offsetRef.current.y)),
     };
-    panel.style.right = offsetRef.current.x + 'px';
-    panel.style.bottom = offsetRef.current.y + 'px';
+    panel.style.right = `${offsetRef.current.x}px`;
+    panel.style.bottom = `${offsetRef.current.y}px`;
   }, []);
 
   useEffect(() => {
@@ -419,6 +419,7 @@ export default function TweaksPanel() {
       <div className="twk-hd" onMouseDown={onDragStart}>
         <b>Design tweaks</b>
         <button
+          type="button"
           className="twk-x"
           aria-label="Close tweaks panel"
           onMouseDown={(e) => e.stopPropagation()}

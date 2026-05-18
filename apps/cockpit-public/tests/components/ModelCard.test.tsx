@@ -1,10 +1,17 @@
 import type { components } from '@cockpit/shared';
 import { render, screen } from '@testing-library/react';
+import type { ReactNode } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { ModelCard } from '../../src/components/ModelCard';
 
+type MockLinkProps = {
+  to: string;
+  params?: { owner?: string; name?: string };
+  children?: ReactNode;
+} & Record<string, unknown>;
+
 vi.mock('@tanstack/react-router', () => ({
-  Link: ({ to, params, children, ...props }: any) => {
+  Link: ({ to, params, children, ...props }: MockLinkProps) => {
     const href = to.replace('$owner', params?.owner || '').replace('$name', params?.name || '');
     return (
       <a href={href} {...props}>

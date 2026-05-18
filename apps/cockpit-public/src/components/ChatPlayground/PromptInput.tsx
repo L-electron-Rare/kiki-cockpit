@@ -45,9 +45,7 @@ const ACCEPT_TYPES = [
 
 // Gateway extract endpoint. Public host so the static cockpit doesn't
 // have to know the internal gateway address.
-const EXTRACT_URL =
-  (import.meta.env.VITE_AILIANCE_GATEWAY_URL ?? 'https://gateway.ailiance.fr') +
-  '/v1/files/extract';
+const EXTRACT_URL = `${import.meta.env.VITE_AILIANCE_GATEWAY_URL ?? 'https://gateway.ailiance.fr'}/v1/files/extract`;
 
 interface ExtractedAttachment {
   filename: string;

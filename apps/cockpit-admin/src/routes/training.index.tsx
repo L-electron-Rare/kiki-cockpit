@@ -21,6 +21,7 @@ function TrainingListPage() {
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-2xl font-bold">Training runs</h2>
           <button
+            type="button"
             className="px-3 py-1 bg-violet-600 hover:bg-violet-500 rounded text-sm"
             onClick={() => setDesignerOpen(true)}
           >
@@ -43,6 +44,7 @@ function TrainingListPage() {
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-2xl font-bold">Training runs ({data.length})</h2>
         <button
+          type="button"
           className="px-3 py-1 bg-violet-600 hover:bg-violet-500 rounded text-sm"
           onClick={() => setDesignerOpen(true)}
         >

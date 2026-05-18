@@ -343,9 +343,9 @@ function StatusPage() {
               Incidents · 30 derniers jours
             </div>
             <ul style={{ listStyle: 'none', padding: 0, margin: '12px 0 0', fontSize: 13 }}>
-              {INCIDENTS.map((x, i) => (
+              {INCIDENTS.map((x) => (
                 <li
-                  key={i}
+                  key={`${x.d}-${x.s}`}
                   style={{
                     display: 'grid',
                     gridTemplateColumns: '70px 100px 1fr',

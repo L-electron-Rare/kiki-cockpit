@@ -18,7 +18,7 @@ export function FlagButton({ idx, flags, onFlag, onUnflag }: Props) {
       onUnflag(idx);
     } else {
       const reason = window.prompt(`Flag sample #${idx} — reason:`);
-      if (reason && reason.trim()) {
+      if (reason?.trim()) {
         onFlag(idx, reason.trim());
       }
     }

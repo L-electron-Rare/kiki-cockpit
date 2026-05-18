@@ -64,12 +64,13 @@ export function TrainingDesigner({ onClose, onLaunched }: Props) {
               ))}
             </select>
           </label>
-          <label className="block text-sm">
+          <label className="block text-sm" htmlFor="training-dataset">
             Dataset
             {datasets.isLoading ? (
               <span className="mt-1 block text-slate-400 text-xs">Loading…</span>
             ) : (
               <select
+                id="training-dataset"
                 aria-label="dataset"
                 value={domain}
                 onChange={(e) => setDomain(e.target.value)}
@@ -117,7 +118,7 @@ export function TrainingDesigner({ onClose, onLaunched }: Props) {
               max={-3}
               step={0.5}
               value={Math.log10(lr)}
-              onChange={(e) => setLr(Math.pow(10, Number(e.target.value)))}
+              onChange={(e) => setLr(10 ** Number(e.target.value))}
               className="w-full"
             />
           </label>
@@ -140,10 +141,15 @@ export function TrainingDesigner({ onClose, onLaunched }: Props) {
         </pre>
 
         <div className="mt-4 flex justify-end gap-2">
-          <button className="px-3 py-1 text-slate-300 hover:text-white" onClick={onClose}>
+          <button
+            type="button"
+            className="px-3 py-1 text-slate-300 hover:text-white"
+            onClick={onClose}
+          >
             Cancel
           </button>
           <button
+            type="button"
             className="px-4 py-1 bg-violet-600 hover:bg-violet-500 rounded text-white disabled:opacity-50"
             onClick={onSubmit}
             disabled={!domain || launch.isPending}
