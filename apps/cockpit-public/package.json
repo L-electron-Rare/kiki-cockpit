@@ -12,15 +12,16 @@
   },
   "dependencies": {
     "@cockpit/shared": "workspace:*",
+    "@fontsource-variable/geist": "^5.2.9",
+    "@fontsource-variable/geist-mono": "^5.2.8",
+    "@fontsource/instrument-serif": "^5.2.8",
     "@tanstack/react-query": "^5.62.0",
     "@tanstack/react-router": "^1.85.0",
     "@tanstack/router-devtools": "^1.85.0",
     "lucide-react": "^0.468.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-markdown": "^9.0.1",
-    "shiki": "^1.24.0",
-    "zod": "^4.4.3"
+    "react-markdown": "^9.0.1"
   },
   "devDependencies": {
     "@tanstack/router-cli": "^1.85.0",

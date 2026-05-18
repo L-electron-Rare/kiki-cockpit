@@ -23,8 +23,8 @@
   --bad: #b1281a;
   --bad-soft: #f1d2cc;
   --serif: "Instrument Serif", "Times New Roman", serif;
-  --sans: "Geist", "Helvetica Neue", sans-serif;
-  --mono: "Geist Mono", "JetBrains Mono", ui-monospace, monospace;
+  --sans: "Geist Variable", "Geist", "Helvetica Neue", sans-serif;
+  --mono: "Geist Mono Variable", "Geist Mono", "JetBrains Mono", ui-monospace, monospace;
   --pad: 32px;
   --max: 1320px;
 }
