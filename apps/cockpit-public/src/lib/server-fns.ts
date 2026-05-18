@@ -3,7 +3,7 @@
 // without it, complex types (ModelCard, EvalSummary, etc.) are erased to
 // {} in loader callsites. Since Phase B only invokes these fns from SSR
 // loaders (no client-side RPC), there's no risk of silent JSON round-trip
-// data loss. Revisit if Phase C introduces client-side invalidation that
+// data loss. Revisit if Project 2 (SEO/AEO) or future client-side RPC
 // crosses the serialization boundary.
 import type { components } from '@cockpit/shared';
 import { ApiError } from '@cockpit/shared';
