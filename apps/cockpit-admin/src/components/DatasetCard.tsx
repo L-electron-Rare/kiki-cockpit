@@ -35,15 +35,9 @@ export function DatasetCard({ dataset }: Props) {
             <dt className="text-slate-500">Source</dt>
             <dd className="truncate">
               {hfUrl ? (
-                <span
-                  className="text-blue-400"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    window.open(hfUrl, '_blank', 'noreferrer');
-                  }}
-                >
+                <a className="text-blue-400" href={hfUrl} target="_blank" rel="noreferrer">
                   {dataset.hf_dataset_id}
-                </span>
+                </a>
               ) : (
                 <span>{dataset.name}</span>
               )}

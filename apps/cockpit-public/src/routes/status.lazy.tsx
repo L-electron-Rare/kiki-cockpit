@@ -65,6 +65,7 @@ function WorkerRow({ worker, tick, index }: WorkerRowProps) {
             <span className="latency-bar">
               {bars.map((v, k) => (
                 <i
+                  // biome-ignore lint/suspicious/noArrayIndexKey: fixed-position decorative sparkline bar
                   key={k}
                   style={{
                     height: `${Math.max(2, v * 26)}px`,
@@ -263,6 +264,7 @@ function StatusPage() {
               <span className="latency-bar">
                 {routerSparks.map((v, k) => (
                   <i
+                    // biome-ignore lint/suspicious/noArrayIndexKey: fixed-position decorative sparkline bar
                     key={k}
                     style={{ height: `${Math.max(2, v * 14)}px`, background: 'var(--accent)' }}
                   />
