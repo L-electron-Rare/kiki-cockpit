@@ -2,9 +2,7 @@ import { Footer } from '@/components/layout/Footer';
 import { Header } from '@/components/layout/Header';
 import { Topstrip } from '@/components/layout/Topstrip';
 import { getTelemetry } from '@/lib/server-fns';
-import { queryClient } from '@/queryClient';
 import type { components } from '@cockpit/shared';
-import { QueryClientProvider } from '@tanstack/react-query';
 import {
   HeadContent,
   Outlet,
@@ -114,22 +112,17 @@ function RootDocument({
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT }} />
       </head>
       <body>
-        {/* react-query is kept transitionally (Phases A-B) so routes whose
-            data layer is not yet migrated to loaders keep working; the
-            provider is removed in Task 14 together with react-query. */}
-        <QueryClientProvider client={queryClient}>
-          <div className="min-h-screen flex flex-col bg-paper text-ink">
-            <Topstrip telemetry={telemetry} />
-            <Header />
-            {children}
-            <Footer />
-            {TweaksPanel && (
-              <Suspense fallback={null}>
-                <TweaksPanel />
-              </Suspense>
-            )}
-          </div>
-        </QueryClientProvider>
+        <div className="min-h-screen flex flex-col bg-paper text-ink">
+          <Topstrip telemetry={telemetry} />
+          <Header />
+          {children}
+          <Footer />
+          {TweaksPanel && (
+            <Suspense fallback={null}>
+              <TweaksPanel />
+            </Suspense>
+          )}
+        </div>
         <Scripts />
       </body>
     </html>

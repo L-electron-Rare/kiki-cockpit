@@ -99,9 +99,6 @@ importers:
       '@fontsource/instrument-serif':
         specifier: ^5.2.8
         version: 5.2.8
-      '@tanstack/react-query':
-        specifier: ^5.62.0
-        version: 5.100.9(react@19.2.5)
       '@tanstack/react-router':
         specifier: ^1.85.0
         version: 1.169.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
