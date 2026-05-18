@@ -1,7 +1,5 @@
 import { Link } from '@tanstack/react-router';
 
-const BUILD_DATE = new Date().toISOString().slice(0, 10);
-
 export function Footer() {
   return (
     <footer className="foot">
@@ -77,7 +75,7 @@ export function Footer() {
         </div>
         <div className="foot-bottom">
           <span>Ailiance · Apache-2.0 · ailiance.fr</span>
-          <span>build 34894c1 · {BUILD_DATE}</span>
+          <span>build 34894c1 · {__BUILD_DATE__}</span>
         </div>
       </div>
     </footer>

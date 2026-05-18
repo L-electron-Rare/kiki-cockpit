@@ -87,6 +87,9 @@ function ensureStyle() {
 // ── Read initial state from document / localStorage ──────────────────────────
 
 function readInitialTweaks(): Tweaks {
+  if (typeof document === 'undefined') {
+    return { theme: 'paper', density: 'comfortable', accent: '#1c3fbb', showTopstrip: true };
+  }
   const html = document.documentElement;
   const theme = (html.dataset.theme as Tweaks['theme']) ?? 'paper';
   const density = (html.dataset.density as Tweaks['density']) ?? 'comfortable';
