@@ -35,16 +35,16 @@ const PROVENANCE_FILES: Record<string, string> = {
   'ailiance/auto': 'auto-router-minilm.json',
 };
 
-export const getModels = createServerFn({ method: 'GET', strict: false }).handler(
-  async () => serverApi.get<ModelCard[]>('/api/public/models'),
+export const getModels = createServerFn({ method: 'GET', strict: false }).handler(async () =>
+  serverApi.get<ModelCard[]>('/api/public/models'),
 );
 
-export const getStatus = createServerFn({ method: 'GET', strict: false }).handler(
-  async () => serverApi.get<StatusReport>('/api/public/status'),
+export const getStatus = createServerFn({ method: 'GET', strict: false }).handler(async () =>
+  serverApi.get<StatusReport>('/api/public/status'),
 );
 
-export const getTelemetry = createServerFn({ method: 'GET', strict: false }).handler(
-  async () => serverApi.get<TelemetryResponse>('/api/public/telemetry'),
+export const getTelemetry = createServerFn({ method: 'GET', strict: false }).handler(async () =>
+  serverApi.get<TelemetryResponse>('/api/public/telemetry'),
 );
 
 export const getModelDetail = createServerFn({ method: 'GET', strict: false })
@@ -57,9 +57,7 @@ export const getEvalScores = createServerFn({ method: 'GET', strict: false })
   .inputValidator((d: { owner: string; name: string }) => d)
   .handler(async ({ data }): Promise<EvalSummary | null> => {
     try {
-      return await serverApi.get<EvalSummary>(
-        `/api/public/eval/${data.owner}/${data.name}`,
-      );
+      return await serverApi.get<EvalSummary>(`/api/public/eval/${data.owner}/${data.name}`);
     } catch (err) {
       if (err instanceof ApiError && err.status === 404) return null;
       throw err;
@@ -67,10 +65,7 @@ export const getEvalScores = createServerFn({ method: 'GET', strict: false })
   });
 
 export const getMascaradeLoras = createServerFn({ method: 'GET', strict: false }).handler(
-  async () =>
-    serverApi.get<MascaradeLora[]>(
-      '/api/public/models/ailiance/mascarade/loras',
-    ),
+  async () => serverApi.get<MascaradeLora[]>('/api/public/models/ailiance/mascarade/loras'),
 );
 
 export const getProvenance = createServerFn({ method: 'GET', strict: false })

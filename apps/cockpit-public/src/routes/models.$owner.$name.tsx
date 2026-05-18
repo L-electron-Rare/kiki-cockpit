@@ -1,9 +1,4 @@
-import {
-  getEvalScores,
-  getMascaradeLoras,
-  getModelDetail,
-  getProvenance,
-} from '@/lib/server-fns';
+import { getEvalScores, getMascaradeLoras, getModelDetail, getProvenance } from '@/lib/server-fns';
 import { ApiError } from '@cockpit/shared';
 import { createFileRoute, notFound } from '@tanstack/react-router';
 

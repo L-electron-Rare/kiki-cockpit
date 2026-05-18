@@ -3,12 +3,7 @@ import { Header } from '@/components/layout/Header';
 import { Topstrip } from '@/components/layout/Topstrip';
 import { getTelemetry } from '@/lib/server-fns';
 import type { components } from '@cockpit/shared';
-import {
-  HeadContent,
-  Outlet,
-  Scripts,
-  createRootRoute,
-} from '@tanstack/react-router';
+import { HeadContent, Outlet, Scripts, createRootRoute } from '@tanstack/react-router';
 import { Suspense, lazy, useEffect } from 'react';
 
 type TelemetryResponse = components['schemas']['TelemetryResponse'];
@@ -22,9 +17,7 @@ import '@/styles.css';
 
 // Dev-only: the ternary folds to null in production (import.meta.env.DEV === false),
 // so Vite tree-shakes the entire TweaksPanel module from the prod bundle.
-const TweaksPanel = import.meta.env.DEV
-  ? lazy(() => import('@/components/dev/TweaksPanel'))
-  : null;
+const TweaksPanel = import.meta.env.DEV ? lazy(() => import('@/components/dev/TweaksPanel')) : null;
 
 // P0 SSR fix: the theme pref read (localStorage + matchMedia) ran as an
 // inline <script> in index.html. It must run before paint to avoid a

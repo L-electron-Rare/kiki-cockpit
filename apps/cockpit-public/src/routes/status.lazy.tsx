@@ -216,11 +216,7 @@ function StatusPage() {
         </div>
 
         <div className="summary-grid">
-          <SummaryStat
-            label="FLEET"
-            value={`${healthyCount}/${totalCount}`}
-            sub="healthy"
-          />
+          <SummaryStat label="FLEET" value={`${healthyCount}/${totalCount}`} sub="healthy" />
           <SummaryStat label="p50" value={p50} sub="ms" />
           {/* TODO: wire req/24h to /api/public/telemetry */}
           <SummaryStat label="req / 24h" value="—" sub="all workers" />

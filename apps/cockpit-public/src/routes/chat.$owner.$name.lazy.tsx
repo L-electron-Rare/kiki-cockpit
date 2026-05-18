@@ -28,10 +28,7 @@ function ChatPage() {
             }}
           >
             Ce modèle n'est pas éligible au chat.{' '}
-            <a
-              href={model.hf_url}
-              style={{ color: 'var(--accent)', textDecoration: 'underline' }}
-            >
+            <a href={model.hf_url} style={{ color: 'var(--accent)', textDecoration: 'underline' }}>
               Voir sur HuggingFace
             </a>
             .
@@ -67,9 +64,7 @@ function ChatPage() {
                 <div style={{ fontWeight: 600, color: 'var(--ink)', marginBottom: 4 }}>
                   {model.display_name}
                 </div>
-                <div style={{ color: 'var(--ink-4)', wordBreak: 'break-all' }}>
-                  {model.id}
-                </div>
+                <div style={{ color: 'var(--ink-4)', wordBreak: 'break-all' }}>{model.id}</div>
                 {model.domain && (
                   <div style={{ marginTop: 8 }}>
                     <span
