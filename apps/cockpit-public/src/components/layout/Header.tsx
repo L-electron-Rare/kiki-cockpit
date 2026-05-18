@@ -15,6 +15,7 @@ export function Header() {
         <Link to="/" className="brand">
           <span className="brand-mark">
             <svg
+              aria-hidden="true"
               viewBox="0 0 32 32"
               width="30"
               height="30"

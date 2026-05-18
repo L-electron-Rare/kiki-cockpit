@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from '@tanstack/react-router';
+import { Link, createFileRoute } from '@tanstack/react-router';
 import { ArrowLeft, ExternalLink } from 'lucide-react';
 import { useState } from 'react';
 
@@ -79,9 +79,7 @@ function DatasetDetailPage() {
             )}
           </div>
         </div>
-        {summary?.notes && (
-          <p className="text-sm text-slate-400 italic">{summary.notes}</p>
-        )}
+        {summary?.notes && <p className="text-sm text-slate-400 italic">{summary.notes}</p>}
       </header>
 
       {stats && <StatsPanel stats={stats} />}

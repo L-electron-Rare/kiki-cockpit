@@ -84,12 +84,7 @@ export function SampleViewer({
               >
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-mono text-slate-500">#{sampleIdx}</span>
-                  <FlagButton
-                    idx={sampleIdx}
-                    flags={flags}
-                    onFlag={onFlag}
-                    onUnflag={onUnflag}
-                  />
+                  <FlagButton idx={sampleIdx} flags={flags} onFlag={onFlag} onUnflag={onUnflag} />
                 </div>
                 <div className="space-y-2">
                   <div className="flex justify-start">
@@ -101,7 +96,9 @@ export function SampleViewer({
                   <div className="flex justify-end">
                     <div className="max-w-[85%] rounded-lg rounded-tr-none bg-violet-900/50 px-3 py-2">
                       <p className="text-xs text-violet-400 mb-1">Assistant</p>
-                      <p className="text-sm text-slate-200 whitespace-pre-wrap">{sample.assistant}</p>
+                      <p className="text-sm text-slate-200 whitespace-pre-wrap">
+                        {sample.assistant}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -113,7 +110,9 @@ export function SampleViewer({
 
       <div className="flex items-center justify-between text-sm text-slate-400">
         <span>
-          {total === 0 ? 'No results' : `${offset + 1}–${Math.min(offset + pageSize, total)} of ${total.toLocaleString('fr-FR')}`}
+          {total === 0
+            ? 'No results'
+            : `${offset + 1}–${Math.min(offset + pageSize, total)} of ${total.toLocaleString('fr-FR')}`}
         </span>
         <div className="flex gap-2">
           <button

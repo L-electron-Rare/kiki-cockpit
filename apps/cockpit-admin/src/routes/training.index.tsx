@@ -1,8 +1,8 @@
-import { useState } from 'react';
 import { TrainingDesigner } from '@/components/TrainingDesigner';
 import { TrainingRunCard } from '@/components/TrainingRunCard';
 import { useTrainingRuns } from '@/hooks/useTrainingRuns';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
+import { useState } from 'react';
 
 export const Route = createFileRoute('/training/')({
   component: TrainingListPage,
@@ -21,6 +21,7 @@ function TrainingListPage() {
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-2xl font-bold">Training runs</h2>
           <button
+            type="button"
             className="px-3 py-1 bg-violet-600 hover:bg-violet-500 rounded text-sm"
             onClick={() => setDesignerOpen(true)}
           >
@@ -43,6 +44,7 @@ function TrainingListPage() {
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-2xl font-bold">Training runs ({data.length})</h2>
         <button
+          type="button"
           className="px-3 py-1 bg-violet-600 hover:bg-violet-500 rounded text-sm"
           onClick={() => setDesignerOpen(true)}
         >

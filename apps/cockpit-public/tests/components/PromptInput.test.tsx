@@ -1,5 +1,5 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { PromptInput } from '../../src/components/ChatPlayground/PromptInput';
 
 const ORIG_FETCH = globalThis.fetch;

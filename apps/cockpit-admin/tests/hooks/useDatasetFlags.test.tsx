@@ -1,7 +1,7 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { renderHook, waitFor, act } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { useDatasetFlags } from '../../src/hooks/useDatasetFlags';
 
@@ -26,31 +26,37 @@ const fakeFlags = [
 ];
 
 describe('useDatasetFlags', () => {
-  beforeEach(() => { mockGet.mockReset(); mockPost.mockReset(); mockDelete.mockReset(); });
+  beforeEach(() => {
+    mockGet.mockReset();
+    mockPost.mockReset();
+    mockDelete.mockReset();
+  });
 
   it('lists flags for domain', async () => {
     mockGet.mockResolvedValueOnce(fakeFlags);
     const { result } = renderHook(() => useDatasetFlags('python'), { wrapper });
     await waitFor(() => expect(result.current.query.isSuccess).toBe(true));
     expect(result.current.query.data).toHaveLength(1);
-    expect(mockGet).toHaveBeenCalledWith(
-      '/api/admin/datasets/python/flags',
-      expect.anything(),
-    );
+    expect(mockGet).toHaveBeenCalledWith('/api/admin/datasets/python/flags', expect.anything());
   });
 
   it('flag mutation calls POST', async () => {
     mockGet.mockResolvedValue([]);
-    mockPost.mockResolvedValueOnce({ idx: 5, reason: 'dup', flagged_at: '2026-01-01T00:00:00Z', flagged_by: null });
+    mockPost.mockResolvedValueOnce({
+      idx: 5,
+      reason: 'dup',
+      flagged_at: '2026-01-01T00:00:00Z',
+      flagged_by: null,
+    });
     const { result } = renderHook(() => useDatasetFlags('python'), { wrapper });
     await waitFor(() => expect(result.current.query.isSuccess).toBe(true));
     await act(async () => {
       await result.current.flag.mutateAsync({ idx: 5, reason: 'dup' });
     });
-    expect(mockPost).toHaveBeenCalledWith(
-      '/api/admin/datasets/python/flags',
-      { idx: 5, reason: 'dup' },
-    );
+    expect(mockPost).toHaveBeenCalledWith('/api/admin/datasets/python/flags', {
+      idx: 5,
+      reason: 'dup',
+    });
   });
 
   it('unflag mutation calls DELETE', async () => {

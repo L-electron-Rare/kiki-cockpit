@@ -282,6 +282,7 @@ function HomePage() {
 function ArrowRight({ size = 14 }: { size?: number }) {
   return (
     <svg
+      aria-hidden="true"
       width={size}
       height={size}
       viewBox="0 0 16 16"

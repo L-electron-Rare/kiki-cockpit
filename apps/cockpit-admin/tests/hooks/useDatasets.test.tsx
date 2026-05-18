@@ -1,7 +1,7 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { renderHook, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { useDatasets } from '../../src/hooks/useDatasets';
 
@@ -20,7 +20,15 @@ describe('useDatasets', () => {
 
   it('fetches /api/admin/datasets and exposes data', async () => {
     mockFetch.mockResolvedValueOnce([
-      { domain: 'electronics-hw', name: 'oshwa', n_rows: 4321, license: 'CERN-OHL-S-2.0', size_mb: 14, hf_dataset_id: 'x/y', download_date: '2026-04-26' },
+      {
+        domain: 'electronics-hw',
+        name: 'oshwa',
+        n_rows: 4321,
+        license: 'CERN-OHL-S-2.0',
+        size_mb: 14,
+        hf_dataset_id: 'x/y',
+        download_date: '2026-04-26',
+      },
     ]);
     const { result } = renderHook(() => useDatasets(), { wrapper });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));

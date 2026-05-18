@@ -1,6 +1,6 @@
 import type { components } from '@cockpit/shared';
 
-type Worker = components["schemas"]["AdminWorkerStatus"];
+type Worker = components['schemas']['AdminWorkerStatus'];
 
 interface Props {
   workers: Worker[];

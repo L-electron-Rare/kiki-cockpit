@@ -1,7 +1,7 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { renderHook, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { useDatasetSamples } from '../../src/hooks/useDatasetSamples';
 
@@ -27,10 +27,7 @@ describe('useDatasetSamples', () => {
 
   it('fetches samples with default params', async () => {
     mockFetch.mockResolvedValueOnce(fakePage);
-    const { result } = renderHook(
-      () => useDatasetSamples({ domain: 'python' }),
-      { wrapper },
-    );
+    const { result } = renderHook(() => useDatasetSamples({ domain: 'python' }), { wrapper });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data?.total).toBe(25);
     expect(mockFetch).toHaveBeenCalledWith(
@@ -54,10 +51,7 @@ describe('useDatasetSamples', () => {
 
   it('exposes error on fetch failure', async () => {
     mockFetch.mockRejectedValueOnce(new Error('Network error'));
-    const { result } = renderHook(
-      () => useDatasetSamples({ domain: 'python' }),
-      { wrapper },
-    );
+    const { result } = renderHook(() => useDatasetSamples({ domain: 'python' }), { wrapper });
     await waitFor(() => expect(result.current.isError).toBe(true));
   });
 });

@@ -1,7 +1,7 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { renderHook, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { useDatasetStats } from '../../src/hooks/useDatasetStats';
 
@@ -39,10 +39,7 @@ describe('useDatasetStats', () => {
     const { result } = renderHook(() => useDatasetStats('python'), { wrapper });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data?.total).toBe(1000);
-    expect(mockFetch).toHaveBeenCalledWith(
-      '/api/admin/datasets/python/stats',
-      expect.anything(),
-    );
+    expect(mockFetch).toHaveBeenCalledWith('/api/admin/datasets/python/stats', expect.anything());
   });
 
   it('exposes length_buckets', async () => {

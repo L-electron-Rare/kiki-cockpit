@@ -10,8 +10,7 @@ export function useDatasetFlags(domain: string) {
 
   const query = useQuery<Flag[]>({
     queryKey: key,
-    queryFn: ({ signal }) =>
-      api.get<Flag[]>(`/api/admin/datasets/${domain}/flags`, { signal }),
+    queryFn: ({ signal }) => api.get<Flag[]>(`/api/admin/datasets/${domain}/flags`, { signal }),
     staleTime: 30_000,
   });
 

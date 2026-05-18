@@ -22,8 +22,8 @@ function DatasetsPage() {
       <header>
         <h1 className="text-2xl font-bold">Datasets</h1>
         <p className="text-sm text-slate-400">
-          {data.length} domaines · {totalRows.toLocaleString('fr-FR')} rows · {totalMb.toFixed(0)} MB ·
-          <span className="ml-1 text-emerald-400">100 % EU AI Act traceable</span>
+          {data.length} domaines · {totalRows.toLocaleString('fr-FR')} rows · {totalMb.toFixed(0)}{' '}
+          MB ·<span className="ml-1 text-emerald-400">100 % EU AI Act traceable</span>
         </p>
       </header>
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
