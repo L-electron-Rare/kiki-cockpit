@@ -222,14 +222,7 @@ function HomePage() {
         }}
       >
         <div className="wrap" style={{ padding: 0 }}>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
-              gap: 48,
-              alignItems: 'end',
-            }}
-          >
+          <div className="cta-split">
             <h2
               style={{
                 fontFamily: 'var(--serif)',

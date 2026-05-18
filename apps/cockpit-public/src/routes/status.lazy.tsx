@@ -198,15 +198,7 @@ function StatusPage() {
           </div>
         </div>
 
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
-            gap: 0,
-            marginTop: 40,
-            border: '1px solid var(--ink)',
-          }}
-        >
+        <div className="summary-grid">
           <SummaryStat
             label="FLEET"
             value={statusLoading ? '…' : `${healthyCount}/${totalCount}`}
@@ -287,15 +279,7 @@ function StatusPage() {
           </div>
         </div>
 
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: 0,
-            marginTop: 24,
-            border: '1px solid var(--rule)',
-          }}
-        >
+        <div className="status-split">
           <div style={{ padding: '28px 32px', borderRight: '1px solid var(--rule)' }}>
             <div
               style={{
