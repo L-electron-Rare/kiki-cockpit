@@ -7,16 +7,15 @@ export const Route = createLazyFileRoute('/chat/$owner/$name')({
 
 function ChatPage() {
   const { model } = Route.useLoaderData();
-  const detail = { data: model };
 
-  if (!detail.data.chat_eligible) {
+  if (!model.chat_eligible) {
     return (
       <main>
         <section className="wrap page-head">
           <div className="kicker">
             <span className="num">№ 03</span> · playground
           </div>
-          <h1 className="display">{detail.data.display_name}</h1>
+          <h1 className="display">{model.display_name}</h1>
         </section>
         <section className="wrap" style={{ paddingTop: 32 }}>
           <p
@@ -30,7 +29,7 @@ function ChatPage() {
           >
             Ce modèle n'est pas éligible au chat.{' '}
             <a
-              href={detail.data.hf_url}
+              href={model.hf_url}
               style={{ color: 'var(--accent)', textDecoration: 'underline' }}
             >
               Voir sur HuggingFace
@@ -49,7 +48,7 @@ function ChatPage() {
           <span className="num">№ 03</span> · playground · SSE streaming
         </div>
         <h1 className="display">
-          Parlez à <em>{detail.data.display_name}</em>.
+          Parlez à <em>{model.display_name}</em>.
         </h1>
       </section>
       <section className="wrap" style={{ paddingBottom: 80 }}>
@@ -66,12 +65,12 @@ function ChatPage() {
                 }}
               >
                 <div style={{ fontWeight: 600, color: 'var(--ink)', marginBottom: 4 }}>
-                  {detail.data.display_name}
+                  {model.display_name}
                 </div>
                 <div style={{ color: 'var(--ink-4)', wordBreak: 'break-all' }}>
-                  {detail.data.id}
+                  {model.id}
                 </div>
-                {detail.data.domain && (
+                {model.domain && (
                   <div style={{ marginTop: 8 }}>
                     <span
                       style={{
@@ -83,7 +82,7 @@ function ChatPage() {
                     >
                       domaine
                     </span>{' '}
-                    {detail.data.domain}
+                    {model.domain}
                   </div>
                 )}
               </div>
@@ -106,7 +105,7 @@ function ChatPage() {
           </aside>
 
           <div className="chat-center">
-            <ChatPlayground modelId={detail.data.id} modelDisplayName={detail.data.display_name} />
+            <ChatPlayground modelId={model.id} modelDisplayName={model.display_name} />
           </div>
 
           <aside className="chat-right">
@@ -119,15 +118,15 @@ function ChatPage() {
                 <span className="k">tokens/s</span>
                 <span className="v tnum">—</span>
                 <span className="k">backend</span>
-                <span className="v">{detail.data.chat_backend}</span>
+                <span className="v">{model.chat_backend}</span>
               </div>
             </div>
-            {detail.data.top_eval_score != null && (
+            {model.top_eval_score != null && (
               <div className="panel-section">
                 <h4>Meilleur score eval</h4>
                 <div className="kv">
-                  <span className="k">{detail.data.top_eval_benchmark ?? 'bench'}</span>
-                  <span className="v tnum">{(detail.data.top_eval_score * 100).toFixed(1)} %</span>
+                  <span className="k">{model.top_eval_benchmark ?? 'bench'}</span>
+                  <span className="v tnum">{(model.top_eval_score * 100).toFixed(1)} %</span>
                 </div>
               </div>
             )}
