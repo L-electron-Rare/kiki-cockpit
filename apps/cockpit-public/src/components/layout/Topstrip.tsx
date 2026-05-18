@@ -1,4 +1,10 @@
-import { useTelemetry } from '@/hooks/useTelemetry';
+import type { components } from '@cockpit/shared';
+
+type TelemetryResponse = components['schemas']['TelemetryResponse'];
+
+interface TopstripProps {
+  telemetry: TelemetryResponse | null | undefined;
+}
 
 function fmt(ms: number | null | undefined): string {
   if (ms == null) return '—';
@@ -6,10 +12,8 @@ function fmt(ms: number | null | undefined): string {
   return `${Math.round(ms)}ms`;
 }
 
-export function Topstrip() {
-  const { data, isLoading, isError } = useTelemetry();
-
-  if (isLoading || isError || !data) {
+export function Topstrip({ telemetry }: TopstripProps) {
+  if (!telemetry) {
     return (
       <div className="topstrip">
         <div className="wrap topstrip-inner" style={{ padding: 0 }}>
@@ -22,6 +26,7 @@ export function Topstrip() {
     );
   }
 
+  const data = telemetry;
   const gatewayClass = data.gateway === 'ok' ? 'ok' : 'v';
 
   return (

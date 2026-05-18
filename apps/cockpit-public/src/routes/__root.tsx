@@ -1,7 +1,9 @@
 import { Footer } from '@/components/layout/Footer';
 import { Header } from '@/components/layout/Header';
 import { Topstrip } from '@/components/layout/Topstrip';
+import { getTelemetry } from '@/lib/server-fns';
 import { queryClient } from '@/queryClient';
+import type { components } from '@cockpit/shared';
 import { QueryClientProvider } from '@tanstack/react-query';
 import {
   HeadContent,
@@ -10,6 +12,8 @@ import {
   createRootRoute,
 } from '@tanstack/react-router';
 import { Suspense, lazy, useEffect } from 'react';
+
+type TelemetryResponse = components['schemas']['TelemetryResponse'];
 
 import '@fontsource-variable/geist';
 import '@fontsource-variable/geist-mono';
@@ -42,16 +46,24 @@ export const Route = createRootRoute({
       { title: 'AILIANCE LLM Workflow — Ailiance' },
     ],
   }),
+  loader: async (): Promise<{ telemetry: TelemetryResponse | null }> => {
+    try {
+      return { telemetry: await getTelemetry() };
+    } catch {
+      // Topstrip telemetry is decorative; never break a page render.
+      return { telemetry: null };
+    }
+  },
   component: RootLayout,
   notFoundComponent: () => (
-    <RootDocument>
+    <RootDocument telemetry={null}>
       <main className="wrap" style={{ padding: '64px 0' }}>
         <h1 className="display">404 — page introuvable.</h1>
       </main>
     </RootDocument>
   ),
   errorComponent: ({ error }) => (
-    <RootDocument>
+    <RootDocument telemetry={null}>
       <main className="wrap" style={{ padding: '64px 0' }}>
         <h1 className="display">Erreur.</h1>
         <p style={{ fontFamily: 'var(--mono)', color: 'var(--ink-3)' }}>
@@ -63,8 +75,9 @@ export const Route = createRootRoute({
 });
 
 function RootLayout() {
+  const { telemetry } = Route.useLoaderData();
   return (
-    <RootDocument>
+    <RootDocument telemetry={telemetry}>
       <main
         className="wrap"
         style={{ flex: 1, paddingTop: 'var(--pad)', paddingBottom: 'var(--pad)' }}
@@ -75,7 +88,13 @@ function RootLayout() {
   );
 }
 
-function RootDocument({ children }: { children: React.ReactNode }) {
+function RootDocument({
+  children,
+  telemetry,
+}: {
+  children: React.ReactNode;
+  telemetry: TelemetryResponse | null;
+}) {
   useEffect(() => {
     const mq = window.matchMedia('(prefers-color-scheme: dark)');
     const handler = (e: MediaQueryListEvent) => {
@@ -100,7 +119,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             provider is removed in Task 14 together with react-query. */}
         <QueryClientProvider client={queryClient}>
           <div className="min-h-screen flex flex-col bg-paper text-ink">
-            <Topstrip />
+            <Topstrip telemetry={telemetry} />
             <Header />
             {children}
             <Footer />
