@@ -1,0 +1,5 @@
+# www.ailiance.fr — public crawl policy
+User-agent: *
+Allow: /
+
+Sitemap: https://www.ailiance.fr/sitemap.xml

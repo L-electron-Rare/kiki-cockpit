@@ -1,8 +1,16 @@
+import { seo } from '@/lib/seo';
 import { getModels } from '@/lib/server-fns';
 import { Link, createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/')({
   component: HomePage,
+  head: () =>
+    seo({
+      title: 'Ailiance — Flotte LLM souveraine servie depuis la France',
+      description:
+        "Frameworks de modèles spécialisés, aide à l'implémentation, formation et création de schémas PCB — opérés depuis du matériel personnel en France, sous Apache-2.0.",
+      path: '/',
+    }),
   loader: async () => {
     try {
       return { models: await getModels() };

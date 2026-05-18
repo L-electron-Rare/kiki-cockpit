@@ -1,8 +1,18 @@
+import { seo } from '@/lib/seo';
 import { getModelDetail } from '@/lib/server-fns';
 import { ApiError } from '@cockpit/shared';
 import { createFileRoute, notFound } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/chat/$owner/$name')({
+  // params is annotated explicitly: inferring it from the route context
+  // would create a circular type reference that erases the loader's
+  // inferred data type (consumed by the .lazy.tsx component).
+  head: ({ params }: { params: { owner: string; name: string } }) =>
+    seo({
+      title: `Chat ${params.owner}/${params.name} — Ailiance`,
+      description: `Playground du modèle ${params.owner}/${params.name} sur la flotte LLM souveraine Ailiance — sans inscription ni clé d'API.`,
+      path: `/chat/${params.owner}/${params.name}`,
+    }),
   notFoundComponent: () => (
     <main className="wrap" style={{ padding: '64px 0' }}>
       <h1 className="display">Modèle introuvable.</h1>
