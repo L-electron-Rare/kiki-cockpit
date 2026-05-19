@@ -53,6 +53,8 @@ COPY apps/cockpit-admin ./apps/cockpit-admin
 COPY --from=gen-types /repo/packages/shared/src/api/types.ts ./packages/shared/src/api/types.ts
 ARG VITE_API_BASE_URL=
 ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
+ARG VITE_GRIST_URL=
+ENV VITE_GRIST_URL=${VITE_GRIST_URL}
 RUN pnpm --filter cockpit-admin build
 
 # --- cockpit-admin runtime --------------------------------------------------
