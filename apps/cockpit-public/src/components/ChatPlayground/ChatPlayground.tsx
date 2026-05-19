@@ -1,5 +1,4 @@
 import { type ChatMessage, useChatStream } from '@/hooks/useChatStream';
-import { Square } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { MessageBubble } from './MessageBubble';
 import { type ChatParams, ParamsPanel } from './ParamsPanel';
@@ -74,41 +73,35 @@ export function ChatPlayground({ modelId, modelDisplayName }: Props) {
     }
   };
 
+  const isEmpty = messages.length === 0 && !isStreaming && !error;
+
   return (
-    <div className="max-w-3xl mx-auto flex flex-col h-[80vh] gap-4">
-      <header>
-        <h2 className="font-bold text-xl">Chat — {modelDisplayName}</h2>
-        <p className="text-xs text-slate-500">{modelId}</p>
-        <p
-          role="note"
-          className="mt-2 rounded border border-amber-300 bg-amber-50 px-3 py-2 text-xs text-amber-900"
-        >
-          <span aria-hidden>⚠️ </span>
-          You are interacting with an AI. Replies may be inaccurate, biased, or fabricated and must
-          not be treated as professional advice. See the{' '}
-          <a className="underline font-medium" href="/transparency">
-            transparency page
-          </a>{' '}
-          for model provenance and limitations.
-        </p>
-      </header>
+    <>
+      <div className="chat-banner">
+        <span className="live">
+          <span className="dot" />
+          {modelDisplayName}
+        </span>
+        <span>SSE streaming</span>
+      </div>
+
+      <p className="chat-note" role="note">
+        <span aria-hidden>⚠ </span>
+        Réponses générées par IA — potentiellement inexactes, biaisées ou fabriquées, à ne pas
+        traiter comme un avis professionnel. Voir la <a href="/transparency">démarche qualité</a>.
+      </p>
 
       <ParamsPanel value={params} onChange={setParams} />
 
-      <div className="flex-1 overflow-y-auto rounded border border-slate-200 p-4 flex flex-col gap-3">
-        {messages.length === 0 && !isStreaming && !error && (
-          <div className="m-auto w-full max-w-md text-center">
-            <p className="text-sm text-slate-500">
-              Posez votre première question à {modelDisplayName}.
+      <div className="chat-body">
+        {isEmpty && (
+          <div className="chat-empty">
+            <p>
+              Posez votre première question à <em>{modelDisplayName}</em>.
             </p>
-            <div className="mt-4 flex flex-col gap-2">
+            <div className="chat-empty-prompts">
               {EXAMPLE_PROMPTS.map((p) => (
-                <button
-                  key={p}
-                  type="button"
-                  onClick={() => setInputText(p)}
-                  className="rounded border border-slate-200 px-3 py-2 text-left text-sm text-slate-600 hover:border-slate-400 hover:bg-slate-50"
-                >
+                <button type="button" key={p} onClick={() => setInputText(p)}>
                   {p}
                 </button>
               ))}
@@ -124,24 +117,16 @@ export function ChatPlayground({ modelId, modelDisplayName }: Props) {
           />
         ))}
         {isStreaming && <MessageBubble speaker="assistant" content={assistantText} streaming />}
-        {error && <p className="text-rose-700 text-sm">Error: {error}</p>}
+        {error && <p className="chat-error">Erreur : {error}</p>}
       </div>
 
       <PromptInput
         value={inputText}
         onChange={setInputText}
         onSubmit={handleSubmit}
-        disabled={isStreaming}
+        streaming={isStreaming}
+        onStop={stop}
       />
-      {isStreaming && (
-        <button
-          type="button"
-          onClick={stop}
-          className="self-end rounded border border-rose-500 px-3 py-1 text-sm text-rose-700"
-        >
-          <Square size={12} className="inline mr-1" /> Stop
-        </button>
-      )}
-    </div>
+    </>
   );
 }
