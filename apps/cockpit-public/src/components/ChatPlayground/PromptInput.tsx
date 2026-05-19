@@ -2,6 +2,8 @@ import { Paperclip, Send, X } from 'lucide-react';
 import { type ChangeEvent, type KeyboardEvent, useRef, useState } from 'react';
 
 interface Props {
+  value: string;
+  onChange: (v: string) => void;
   onSubmit: (text: string) => void;
   disabled?: boolean;
 }
@@ -54,8 +56,7 @@ interface ExtractedAttachment {
   truncated?: boolean;
 }
 
-export function PromptInput({ onSubmit, disabled }: Props) {
-  const [text, setText] = useState('');
+export function PromptInput({ value, onChange, onSubmit, disabled }: Props) {
   const [attachment, setAttachment] = useState<ExtractedAttachment | null>(null);
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
@@ -65,8 +66,8 @@ export function PromptInput({ onSubmit, disabled }: Props) {
     // Prepend the attachment's extracted markdown so the LLM sees the
     // document context before the user's free-form prompt. Order matters
     // for some templates — context first, instruction second.
-    if (!attachment) return text.trim();
-    const userText = text.trim();
+    if (!attachment) return value.trim();
+    const userText = value.trim();
     const intro = userText
       ? userText
       : `Please analyze the attached ${attachment.format.toUpperCase()} file.`;
@@ -81,7 +82,7 @@ export function PromptInput({ onSubmit, disabled }: Props) {
     const payload = composePayload();
     if (!payload) return;
     onSubmit(payload);
-    setText('');
+    onChange('');
     setAttachment(null);
     setUploadError(null);
   };
@@ -124,7 +125,7 @@ export function PromptInput({ onSubmit, disabled }: Props) {
     }
   };
 
-  const canSend = !disabled && !uploading && (text.trim().length > 0 || attachment !== null);
+  const canSend = !disabled && !uploading && (value.trim().length > 0 || attachment !== null);
 
   return (
     <div className="space-y-2">
@@ -176,8 +177,8 @@ export function PromptInput({ onSubmit, disabled }: Props) {
           <Paperclip size={16} />
         </button>
         <textarea
-          value={text}
-          onChange={(e) => setText(e.target.value)}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder={
             uploading
@@ -188,7 +189,7 @@ export function PromptInput({ onSubmit, disabled }: Props) {
           }
           rows={3}
           disabled={disabled || uploading}
-          className="flex-1 rounded border border-slate-300 bg-white text-slate-900 placeholder:text-slate-400 p-2 resize-none focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          className="flex-1 min-w-0 rounded border border-slate-300 bg-white text-slate-900 placeholder:text-slate-400 p-2 resize-none focus:outline-none focus:ring-2 focus:ring-emerald-500"
         />
         <button
           type="button"
