@@ -16,7 +16,7 @@ vi.mock('@/hooks/useChatStream', () => ({
 
 function readMaxTokensInput(): HTMLInputElement {
   // ParamsPanel is collapsed by default — open it first.
-  const toggle = screen.getByRole('button', { name: /parameters/i });
+  const toggle = screen.getByRole('button', { name: /paramètres/i });
   fireEvent.click(toggle);
   // The only number input in ParamsPanel is max_tokens (temperature is a
   // range, system_prompt is a textarea).

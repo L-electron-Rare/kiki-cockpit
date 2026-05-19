@@ -21,7 +21,7 @@ describe('PromptInput', () => {
   it('submits plain text on Enter', () => {
     const onSubmit = vi.fn();
     render(<Harness onSubmit={onSubmit} />);
-    const textarea = screen.getByPlaceholderText(/Type a message/i);
+    const textarea = screen.getByPlaceholderText(/Écrivez un message/i);
     fireEvent.change(textarea, { target: { value: 'hello' } });
     fireEvent.keyDown(textarea, { key: 'Enter' });
     expect(onSubmit).toHaveBeenCalledWith('hello');
@@ -30,7 +30,7 @@ describe('PromptInput', () => {
   it("doesn't submit on Shift+Enter (newline)", () => {
     const onSubmit = vi.fn();
     render(<Harness onSubmit={onSubmit} />);
-    const textarea = screen.getByPlaceholderText(/Type a message/i);
+    const textarea = screen.getByPlaceholderText(/Écrivez un message/i);
     fireEvent.change(textarea, { target: { value: 'hello' } });
     fireEvent.keyDown(textarea, { key: 'Enter', shiftKey: true });
     expect(onSubmit).not.toHaveBeenCalled();
@@ -87,14 +87,14 @@ describe('PromptInput', () => {
       target: { files: [new File(['x'], 'q1.pdf', { type: 'application/pdf' })] },
     });
     await screen.findByText('q1.pdf');
-    fireEvent.change(screen.getByPlaceholderText(/Ask a question/i), {
+    fireEvent.change(screen.getByPlaceholderText(/question sur le fichier/i), {
       target: { value: 'summarize please' },
     });
-    fireEvent.keyDown(screen.getByPlaceholderText(/Ask a question/i), { key: 'Enter' });
+    fireEvent.keyDown(screen.getByPlaceholderText(/question sur le fichier/i), { key: 'Enter' });
     expect(onSubmit).toHaveBeenCalled();
     const payload = onSubmit.mock.calls[0]?.[0] as string | undefined;
     if (!payload) throw new Error('onSubmit was not called with a payload');
-    expect(payload).toContain('Attached file: q1.pdf');
+    expect(payload).toContain('Fichier joint : q1.pdf');
     expect(payload).toContain('EXTRACTED');
     expect(payload).toContain('summarize please');
   });

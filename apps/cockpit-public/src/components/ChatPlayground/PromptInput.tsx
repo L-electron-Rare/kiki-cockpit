@@ -1,11 +1,13 @@
-import { Paperclip, Send, X } from 'lucide-react';
+import { Paperclip, Send, Square, X } from 'lucide-react';
 import { type ChangeEvent, type KeyboardEvent, useRef, useState } from 'react';
 
 interface Props {
   value: string;
   onChange: (v: string) => void;
   onSubmit: (text: string) => void;
-  disabled?: boolean;
+  /** A reply is currently streaming — the send button becomes a stop button. */
+  streaming?: boolean;
+  onStop?: () => void;
 }
 
 // Mirrors the gateway's /v1/files/extract supported list. Kept in sync
@@ -56,7 +58,7 @@ interface ExtractedAttachment {
   truncated?: boolean;
 }
 
-export function PromptInput({ value, onChange, onSubmit, disabled }: Props) {
+export function PromptInput({ value, onChange, onSubmit, streaming, onStop }: Props) {
   const [attachment, setAttachment] = useState<ExtractedAttachment | null>(null);
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
@@ -70,15 +72,15 @@ export function PromptInput({ value, onChange, onSubmit, disabled }: Props) {
     const userText = value.trim();
     const intro = userText
       ? userText
-      : `Please analyze the attached ${attachment.format.toUpperCase()} file.`;
+      : `Analyse le fichier ${attachment.format.toUpperCase()} ci-joint.`;
     const truncNote = attachment.truncated
-      ? '\n\n[note: file was truncated by the server to fit prompt limits]'
+      ? '\n\n[note : le fichier a été tronqué par le serveur pour tenir dans les limites du prompt]'
       : '';
-    return `Attached file: ${attachment.filename}\n\n\`\`\`markdown\n${attachment.markdown}\n\`\`\`${truncNote}\n\n${intro}`;
+    return `Fichier joint : ${attachment.filename}\n\n\`\`\`markdown\n${attachment.markdown}\n\`\`\`${truncNote}\n\n${intro}`;
   };
 
   const handleSubmit = () => {
-    if (disabled) return;
+    if (streaming || uploading) return;
     const payload = composePayload();
     if (!payload) return;
     onSubmit(payload);
@@ -107,7 +109,8 @@ export function PromptInput({ value, onChange, onSubmit, disabled }: Props) {
       const resp = await fetch(EXTRACT_URL, { method: 'POST', body: form });
       if (!resp.ok) {
         const body = await resp.json().catch(() => ({}));
-        const msg = body?.detail?.message ?? body?.detail ?? `Upload failed (HTTP ${resp.status})`;
+        const msg =
+          body?.detail?.message ?? body?.detail ?? `Échec de l'envoi (HTTP ${resp.status})`;
         setUploadError(String(msg));
         return;
       }
@@ -119,60 +122,48 @@ export function PromptInput({ value, onChange, onSubmit, disabled }: Props) {
         truncated: body.metadata?.truncated === true,
       });
     } catch (err) {
-      setUploadError(err instanceof Error ? err.message : 'Upload failed');
+      setUploadError(err instanceof Error ? err.message : "Échec de l'envoi");
     } finally {
       setUploading(false);
     }
   };
 
-  const canSend = !disabled && !uploading && (value.trim().length > 0 || attachment !== null);
+  const canSend = !streaming && !uploading && (value.trim().length > 0 || attachment !== null);
 
   return (
-    <div className="space-y-2">
+    <div className="chat-input-wrap">
       {attachment && (
-        <div className="flex items-center gap-2 rounded border border-emerald-300 bg-emerald-50 px-3 py-2 text-xs text-emerald-900">
-          <span className="font-mono">{attachment.filename}</span>
-          <span className="rounded bg-emerald-200 px-1.5 py-0.5 text-[10px] uppercase tracking-wide">
-            {attachment.format}
+        <div className="chat-attach">
+          <span className="chat-attach-name">{attachment.filename}</span>
+          <span className="chat-attach-tag">{attachment.format}</span>
+          <span className="chat-attach-size">
+            {attachment.markdown.length.toLocaleString()} car.
           </span>
-          <span className="text-emerald-700">
-            {attachment.markdown.length.toLocaleString()} chars
-          </span>
-          {attachment.truncated && (
-            <span className="rounded bg-amber-200 px-1.5 py-0.5 text-[10px] uppercase text-amber-900">
-              truncated
-            </span>
-          )}
+          {attachment.truncated && <span className="chat-attach-warn">tronqué</span>}
           <button
             type="button"
             onClick={() => setAttachment(null)}
-            className="ml-auto rounded p-0.5 hover:bg-emerald-200"
-            aria-label="Remove attachment"
+            className="chat-attach-x"
+            aria-label="Retirer la pièce jointe"
           >
             <X size={12} />
           </button>
         </div>
       )}
       {uploadError && (
-        <p role="alert" className="text-xs text-rose-700">
+        <p role="alert" className="chat-error">
           {uploadError}
         </p>
       )}
-      <div className="flex gap-2">
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept={ACCEPT_TYPES}
-          onChange={handleFile}
-          className="hidden"
-        />
+      <div className="chat-input">
+        <input ref={fileInputRef} type="file" accept={ACCEPT_TYPES} onChange={handleFile} hidden />
         <button
           type="button"
           onClick={() => fileInputRef.current?.click()}
-          disabled={disabled || uploading}
-          aria-label="Attach a file"
-          title="Attach a file (PDF/DOCX/XLSX/PPTX/TXT/MD/HTML) or image (PNG/JPG/etc., OCR'd server-side)"
-          className="rounded border border-slate-300 bg-white px-3 text-slate-700 disabled:opacity-50 hover:bg-slate-100"
+          disabled={streaming || uploading}
+          className="chat-icon-btn"
+          aria-label="Joindre un fichier"
+          title="Joindre un fichier (PDF/DOCX/XLSX/PPTX/TXT/MD/HTML) ou une image (PNG/JPG/etc., OCR côté serveur)"
         >
           <Paperclip size={16} />
         </button>
@@ -182,23 +173,34 @@ export function PromptInput({ value, onChange, onSubmit, disabled }: Props) {
           onKeyDown={handleKeyDown}
           placeholder={
             uploading
-              ? 'Extracting file…'
+              ? 'Extraction du fichier…'
               : attachment
-                ? 'Ask a question about the attached file…'
-                : 'Type a message…'
+                ? 'Posez une question sur le fichier joint…'
+                : 'Écrivez un message…'
           }
-          rows={3}
-          disabled={disabled || uploading}
-          className="flex-1 min-w-0 rounded border border-slate-300 bg-white text-slate-900 placeholder:text-slate-400 p-2 resize-none focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          rows={1}
+          disabled={streaming || uploading}
         />
-        <button
-          type="button"
-          onClick={handleSubmit}
-          disabled={!canSend}
-          className="rounded bg-emerald-600 px-4 text-white disabled:opacity-50"
-        >
-          <Send size={16} />
-        </button>
+        {streaming ? (
+          <button
+            type="button"
+            onClick={onStop}
+            className="chat-stop"
+            aria-label="Arrêter la génération"
+          >
+            <Square size={14} />
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={handleSubmit}
+            disabled={!canSend}
+            className="chat-send"
+            aria-label="Envoyer"
+          >
+            <Send size={16} />
+          </button>
+        )}
       </div>
     </div>
   );
