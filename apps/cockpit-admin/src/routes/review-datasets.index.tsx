@@ -10,8 +10,8 @@ export function ReviewDatasetsPage() {
   if (!gristUrl) {
     return (
       <div className="p-6 text-sm text-gray-600">
-        Grist review URL not configured. Set <code>VITE_GRIST_URL</code> at
-        build time once the Grist review doc is published.
+        Grist review URL not configured. Set <code>VITE_GRIST_URL</code> at build time once the
+        Grist review doc is published.
       </div>
     );
   }
