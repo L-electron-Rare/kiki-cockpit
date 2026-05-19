@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WorkersIndexRouteImport } from './routes/workers.index'
 import { Route as TrainingIndexRouteImport } from './routes/training.index'
+import { Route as ReviewDatasetsIndexRouteImport } from './routes/review-datasets.index'
 import { Route as EvalIndexRouteImport } from './routes/eval.index'
 import { Route as DatasetsIndexRouteImport } from './routes/datasets.index'
 import { Route as BenchmarksIndexRouteImport } from './routes/benchmarks.index'
@@ -31,6 +32,11 @@ const WorkersIndexRoute = WorkersIndexRouteImport.update({
 const TrainingIndexRoute = TrainingIndexRouteImport.update({
   id: '/training/',
   path: '/training/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReviewDatasetsIndexRoute = ReviewDatasetsIndexRouteImport.update({
+  id: '/review-datasets/',
+  path: '/review-datasets/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EvalIndexRoute = EvalIndexRouteImport.update({
@@ -66,6 +72,7 @@ export interface FileRoutesByFullPath {
   '/benchmarks/': typeof BenchmarksIndexRoute
   '/datasets/': typeof DatasetsIndexRoute
   '/eval/': typeof EvalIndexRoute
+  '/review-datasets/': typeof ReviewDatasetsIndexRoute
   '/training/': typeof TrainingIndexRoute
   '/workers/': typeof WorkersIndexRoute
 }
@@ -76,6 +83,7 @@ export interface FileRoutesByTo {
   '/benchmarks': typeof BenchmarksIndexRoute
   '/datasets': typeof DatasetsIndexRoute
   '/eval': typeof EvalIndexRoute
+  '/review-datasets': typeof ReviewDatasetsIndexRoute
   '/training': typeof TrainingIndexRoute
   '/workers': typeof WorkersIndexRoute
 }
@@ -87,6 +95,7 @@ export interface FileRoutesById {
   '/benchmarks/': typeof BenchmarksIndexRoute
   '/datasets/': typeof DatasetsIndexRoute
   '/eval/': typeof EvalIndexRoute
+  '/review-datasets/': typeof ReviewDatasetsIndexRoute
   '/training/': typeof TrainingIndexRoute
   '/workers/': typeof WorkersIndexRoute
 }
@@ -99,6 +108,7 @@ export interface FileRouteTypes {
     | '/benchmarks/'
     | '/datasets/'
     | '/eval/'
+    | '/review-datasets/'
     | '/training/'
     | '/workers/'
   fileRoutesByTo: FileRoutesByTo
@@ -109,6 +119,7 @@ export interface FileRouteTypes {
     | '/benchmarks'
     | '/datasets'
     | '/eval'
+    | '/review-datasets'
     | '/training'
     | '/workers'
   id:
@@ -119,6 +130,7 @@ export interface FileRouteTypes {
     | '/benchmarks/'
     | '/datasets/'
     | '/eval/'
+    | '/review-datasets/'
     | '/training/'
     | '/workers/'
   fileRoutesById: FileRoutesById
@@ -130,6 +142,7 @@ export interface RootRouteChildren {
   BenchmarksIndexRoute: typeof BenchmarksIndexRoute
   DatasetsIndexRoute: typeof DatasetsIndexRoute
   EvalIndexRoute: typeof EvalIndexRoute
+  ReviewDatasetsIndexRoute: typeof ReviewDatasetsIndexRoute
   TrainingIndexRoute: typeof TrainingIndexRoute
   WorkersIndexRoute: typeof WorkersIndexRoute
 }
@@ -155,6 +168,13 @@ declare module '@tanstack/react-router' {
       path: '/training'
       fullPath: '/training/'
       preLoaderRoute: typeof TrainingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/review-datasets/': {
+      id: '/review-datasets/'
+      path: '/review-datasets'
+      fullPath: '/review-datasets/'
+      preLoaderRoute: typeof ReviewDatasetsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/eval/': {
@@ -202,6 +222,7 @@ const rootRouteChildren: RootRouteChildren = {
   BenchmarksIndexRoute: BenchmarksIndexRoute,
   DatasetsIndexRoute: DatasetsIndexRoute,
   EvalIndexRoute: EvalIndexRoute,
+  ReviewDatasetsIndexRoute: ReviewDatasetsIndexRoute,
   TrainingIndexRoute: TrainingIndexRoute,
   WorkersIndexRoute: WorkersIndexRoute,
 }

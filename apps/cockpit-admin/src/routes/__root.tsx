@@ -26,6 +26,9 @@ function RootLayout() {
             <Link to="/datasets" className="hover:underline">
               Datasets
             </Link>
+            <Link to="/review-datasets" className="hover:underline">
+              Review
+            </Link>
             <Link to="/benchmarks" className="hover:underline">
               Benchmarks
             </Link>
