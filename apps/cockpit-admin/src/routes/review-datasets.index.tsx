@@ -1,5 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router';
 
+export const Route = createFileRoute('/review-datasets/')({
+  component: ReviewDatasetsPage,
+});
+
 export function ReviewDatasetsPage() {
   const gristUrl = import.meta.env.VITE_GRIST_URL;
 
@@ -20,7 +24,3 @@ export function ReviewDatasetsPage() {
     />
   );
 }
-
-export const Route = createFileRoute('/review-datasets/')({
-  component: ReviewDatasetsPage,
-});
