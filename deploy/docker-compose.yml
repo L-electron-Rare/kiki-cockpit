@@ -172,6 +172,7 @@ services:
         # Empty: server-side fetches use INTERNAL_API_URL via server-fns;
         # client-side chat stream uses the relative /api/ path via Traefik.
         VITE_API_BASE_URL: ""
+        VITE_GRIST_URL: "${VITE_GRIST_URL:-}"
     image: ailiance-demo-admin:${TAG:-latest}
     networks:
       - traefik
