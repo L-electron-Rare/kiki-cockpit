@@ -1680,4 +1680,11 @@ section.block {
   .nav-flag {
     margin: 12px 4px 4px;
   }
+  /* The chat route nests section.wrap inside the root main.wrap, so the
+     shell is padded twice. Claw back one --pad each side so the playground
+     uses the full phone width instead of collapsing to ~247px. */
+  .chat-shell {
+    margin-left: calc(-1 * var(--pad));
+    margin-right: calc(-1 * var(--pad));
+  }
 }

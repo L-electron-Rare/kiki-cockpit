@@ -28,12 +28,21 @@ const REASONING_ALIASES = new Set([
 const DEFAULT_MAX_TOKENS = 1024;
 const REASONING_MAX_TOKENS = 2048;
 
+// Seed prompts shown on the empty playground — clicking one fills the
+// input (without sending) so the user can edit before submitting.
+const EXAMPLE_PROMPTS = [
+  "Explique le rôle d'un régulateur LDO dans une alimentation embarquée.",
+  'Écris une fonction Python qui parse un fichier de log et renvoie les erreurs.',
+  'Compare MQTT et HTTP pour relier des capteurs IoT à faible débit.',
+];
+
 function defaultMaxTokensFor(modelId: string): number {
   return REASONING_ALIASES.has(modelId) ? REASONING_MAX_TOKENS : DEFAULT_MAX_TOKENS;
 }
 
 export function ChatPlayground({ modelId, modelDisplayName }: Props) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [inputText, setInputText] = useState('');
   const [params, setParams] = useState<ChatParams>({
     temperature: 0.7,
     max_tokens: defaultMaxTokensFor(modelId),
@@ -86,7 +95,26 @@ export function ChatPlayground({ modelId, modelDisplayName }: Props) {
 
       <ParamsPanel value={params} onChange={setParams} />
 
-      <div className="flex-1 overflow-y-auto rounded border border-slate-200 p-4 space-y-3">
+      <div className="flex-1 overflow-y-auto rounded border border-slate-200 p-4 flex flex-col gap-3">
+        {messages.length === 0 && !isStreaming && !error && (
+          <div className="m-auto w-full max-w-md text-center">
+            <p className="text-sm text-slate-500">
+              Posez votre première question à {modelDisplayName}.
+            </p>
+            <div className="mt-4 flex flex-col gap-2">
+              {EXAMPLE_PROMPTS.map((p) => (
+                <button
+                  key={p}
+                  type="button"
+                  onClick={() => setInputText(p)}
+                  className="rounded border border-slate-200 px-3 py-2 text-left text-sm text-slate-600 hover:border-slate-400 hover:bg-slate-50"
+                >
+                  {p}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
         {messages.map((m, i) => (
           <MessageBubble
             // biome-ignore lint/suspicious/noArrayIndexKey: chat history is append-only, never reordered
@@ -99,7 +127,12 @@ export function ChatPlayground({ modelId, modelDisplayName }: Props) {
         {error && <p className="text-rose-700 text-sm">Error: {error}</p>}
       </div>
 
-      <PromptInput onSubmit={handleSubmit} disabled={isStreaming} />
+      <PromptInput
+        value={inputText}
+        onChange={setInputText}
+        onSubmit={handleSubmit}
+        disabled={isStreaming}
+      />
       {isStreaming && (
         <button
           type="button"

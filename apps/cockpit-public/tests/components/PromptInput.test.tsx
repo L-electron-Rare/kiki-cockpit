@@ -1,4 +1,5 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { useState } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { PromptInput } from '../../src/components/ChatPlayground/PromptInput';
 
@@ -9,10 +10,17 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
+// PromptInput is a controlled component; this harness owns the input
+// state the way ChatPlayground does in production.
+function Harness({ onSubmit }: { onSubmit?: (text: string) => void }) {
+  const [value, setValue] = useState('');
+  return <PromptInput value={value} onChange={setValue} onSubmit={onSubmit ?? (() => {})} />;
+}
+
 describe('PromptInput', () => {
   it('submits plain text on Enter', () => {
     const onSubmit = vi.fn();
-    render(<PromptInput onSubmit={onSubmit} />);
+    render(<Harness onSubmit={onSubmit} />);
     const textarea = screen.getByPlaceholderText(/Type a message/i);
     fireEvent.change(textarea, { target: { value: 'hello' } });
     fireEvent.keyDown(textarea, { key: 'Enter' });
@@ -21,7 +29,7 @@ describe('PromptInput', () => {
 
   it("doesn't submit on Shift+Enter (newline)", () => {
     const onSubmit = vi.fn();
-    render(<PromptInput onSubmit={onSubmit} />);
+    render(<Harness onSubmit={onSubmit} />);
     const textarea = screen.getByPlaceholderText(/Type a message/i);
     fireEvent.change(textarea, { target: { value: 'hello' } });
     fireEvent.keyDown(textarea, { key: 'Enter', shiftKey: true });
@@ -29,7 +37,7 @@ describe('PromptInput', () => {
   });
 
   it('disables send when no text and no attachment', () => {
-    render(<PromptInput onSubmit={vi.fn()} />);
+    render(<Harness />);
     // The Send button has no accessible name (icon only); pick last button.
     const buttons = screen.getAllByRole('button');
     const send = buttons[buttons.length - 1];
@@ -48,7 +56,7 @@ describe('PromptInput', () => {
     });
     globalThis.fetch = fetchMock as unknown as typeof fetch;
 
-    render(<PromptInput onSubmit={vi.fn()} />);
+    render(<Harness />);
     const input = document.querySelector('input[type="file"]') as HTMLInputElement;
     const file = new File(['fake docx bytes'], 'report.docx', {
       type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
@@ -73,7 +81,7 @@ describe('PromptInput', () => {
       }),
     }) as unknown as typeof fetch;
 
-    render(<PromptInput onSubmit={onSubmit} />);
+    render(<Harness onSubmit={onSubmit} />);
     const input = document.querySelector('input[type="file"]') as HTMLInputElement;
     fireEvent.change(input, {
       target: { files: [new File(['x'], 'q1.pdf', { type: 'application/pdf' })] },
@@ -98,7 +106,7 @@ describe('PromptInput', () => {
       json: async () => ({ detail: { code: 'file_too_large', message: 'too big' } }),
     }) as unknown as typeof fetch;
 
-    render(<PromptInput onSubmit={vi.fn()} />);
+    render(<Harness />);
     const input = document.querySelector('input[type="file"]') as HTMLInputElement;
     fireEvent.change(input, {
       target: { files: [new File(['x'], 'big.pdf', { type: 'application/pdf' })] },
